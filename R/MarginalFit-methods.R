@@ -36,9 +36,11 @@ print.summary.MarginalFit <- function(x, ...) {
   cat("Common baseline at:", round(x$baseline, 3))
   cat("\n")
 
-  if (any(eigen(x$vcov)$values < 0))
+  if (is.character(x$vcov))
+    warning(x$vcov)
+  else if (any(eigen(x$vcov)$values < 0))
     warning("Hessian is not positive definite. Estimates might be unstable.")
-  else if (any(sqrt(diag(x$vcov)[5:6]) > 0.3))
+  else if (any(sqrt(na.omit(diag(x$vcov)[c("e1", "e2")])) > 0.3))
     warning("Variance of EC50 estimates may be large.")
 
   if (x$n < 12)

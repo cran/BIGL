@@ -100,6 +100,9 @@ rs <- fitSurface(data, marginalFit,
                  B.CP = 50, statistic = "none", parallel = FALSE)
 summary(rs)
 
+## ----image, warning=FALSE, comment = NA, fig.width = 6, fig.height = 4, fig.align = "center"----
+isobologram(rs)
+
 ## ----plot3d, warning=FALSE, fig.align="center", fig.height=7, fig.width=7----
 plot(rs, legend = FALSE, main = "")
 view3d(0, -75)
