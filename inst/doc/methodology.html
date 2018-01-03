@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2017-09-22" />
+<meta name="date" content="2018-01-03" />
 
 <title>Methodology</title>
 
@@ -20,7 +20,189 @@
 
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%7D%0Apre%20%7B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -30,86 +212,86 @@
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date"><em>2017-09-22</em></h4>
+<h4 class="date"><em>2018-01-03</em></h4>
 
 
 
-<p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
-<div id="marginal-monotherapy-curves" class="section level2">
+<p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans (<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>) as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
+<section id="marginal-monotherapy-curves" class="level2">
 <h2>Marginal monotherapy curves</h2>
 <p>First, a monotherapy model is described by the following equation.</p>
-<p><span class="math">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{d}{\operatorname{EC50}}\right)^{|h|}} \]</span></p>
-<p>where <span class="math">\(y\)</span> is the response (or effect), <span class="math">\(d\)</span> is the dose (or concentration) of the compound, <span class="math">\(h\)</span> is the Hill’s coefficient and <span class="math">\(b\)</span> and <span class="math">\(m\)</span> are respectively baseline and maximum response for that compound. Lastly, <span class="math">\(\textrm{EC50}\)</span> stands for the dose level of the compound needed to attain the midpoint effect, i.e. <span class="math">\[y\left(\textrm{EC50}\right) = b + \frac{m - b}{2}\]</span></p>
-<p>Note that <span class="math">\(m &gt; b\)</span> if and only if the response is increasing with the dose of the compound. If the response is decreasing, then <span class="math">\(m &lt; b\)</span>.</p>
-<p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math">\(m_{1}\)</span> and <span class="math">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
-</div>
-<div id="null-models-of-no-synergy" class="section level2">
+<p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{d}{\operatorname{EC50}}\right)^{|h|}} \]</span></p>
+<p>where <span class="math inline">\(y\)</span> is the response (or effect), <span class="math inline">\(d\)</span> is the dose (or concentration) of the compound, <span class="math inline">\(h\)</span> is the Hill’s coefficient and <span class="math inline">\(b\)</span> and <span class="math inline">\(m\)</span> are respectively baseline and maximum response for that compound. Lastly, <span class="math inline">\(\textrm{EC50}\)</span> stands for the dose level of the compound needed to attain the midpoint effect, i.e. <span class="math display">\[y\left(\textrm{EC50}\right) = b + \frac{m - b}{2}\]</span></p>
+<p>Note that <span class="math inline">\(m &gt; b\)</span> if and only if the response is increasing with the dose of the compound. If the response is decreasing, then <span class="math inline">\(m &lt; b\)</span>.</p>
+<p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math inline">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
+</section>
+<section id="null-models-of-no-synergy" class="level2">
 <h2>Null models of no synergy</h2>
-<div id="occupancy" class="section level3">
+<section id="occupancy" class="level3">
 <h3>Occupancy</h3>
-<p>Define the occupancy level <span class="math">\(\textrm{occup}\)</span>, i.e. the fractional (enzymatic) effect or observed effect relative to maximal effect, for both compounds at given dose levels as <span class="math">\[
+<p>Define the occupancy level <span class="math inline">\(\textrm{occup}\)</span>, i.e. the fractional (enzymatic) effect or observed effect relative to maximal effect, for both compounds at given dose levels as <span class="math display">\[
 \textrm{occup}_{1}\left(d_{1}\right) = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{h_{1}}}
-\]</span> <span class="math">\[
+\]</span> <span class="math display">\[
 \textrm{occup}_{2}\left(d_{2}\right) = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{h_{2}}}
-\]</span> Alternatively, the above equations can be rearranged to express dose in terms of occupancy so that <span class="math">\[
+\]</span> Alternatively, the above equations can be rearranged to express dose in terms of occupancy so that <span class="math display">\[
 d_{1} = \operatorname{EC50}_{1} \left(\frac{1}{\operatorname{occup_{1}}} - 1 \right)^{-1/h_{1}}
-\]</span> <span class="math">\[
+\]</span> <span class="math display">\[
 d_{2} = \operatorname{EC50}_{2} \left(\frac{1}{\operatorname{occup_{2}}} - 1 \right)^{-1/h_{2}}
 \]</span> Although the occupancy was considered here in the marginal case, it is equally well-defined when compounds are combined and is understood as the fraction of enzyme bound to any compound. It can thus be used to re-express classical Loewe additivity equations.</p>
-</div>
-<div id="classical-loewe-model" class="section level3">
+</section>
+<section id="classical-loewe-model" class="level3">
 <h3>Classical Loewe model</h3>
-<p>In the classical Loewe model where both marginal models share upper <span class="math">\((m)\)</span> and lower <span class="math">\((b)\)</span> asymptotes, occupancy is defined as the solution to this additivity equation for each dose combination <span class="math">\((d_{1}, d_{2})\)</span>, namely <span class="math">\[\frac{d_1\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}}+ 
+<p>In the classical Loewe model where both marginal models share upper <span class="math inline">\((m)\)</span> and lower <span class="math inline">\((b)\)</span> asymptotes, occupancy is defined as the solution to this additivity equation for each dose combination <span class="math inline">\((d_{1}, d_{2})\)</span>, namely <span class="math display">\[\frac{d_1\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}}+ 
 \frac{d_2\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}} = 1\]</span></p>
-<p>Once occupancy is computed, in the classical Loewe model the predicted response at dose combination <span class="math">\((d_{1}, d_{2})\)</span> can be calculated to be <span class="math">\[ y = b + \left(m - b\right) \times \textrm{occup} \times \left[\frac{d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
-</div>
-<div id="generalized-loewe-model" class="section level3">
+<p>Once occupancy is computed, in the classical Loewe model the predicted response at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> can be calculated to be <span class="math display">\[ y = b + \left(m - b\right) \times \textrm{occup} \times \left[\frac{d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
+</section>
+<section id="generalized-loewe-model" class="level3">
 <h3>Generalized Loewe model</h3>
-<p>Generalized Loewe model extends the classical Loewe model by allowing compounds to have different upper asymptotes so that when adjusted, the above predicted response is written instead as <span class="math">\[ y = b + \textrm{occup} \times \left[\frac{\left(m_{1} - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{\left(m_{2} - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
-<p>In particular, if <span class="math">\(m_{1} = m_{2}\)</span>, then generalized Loewe is equivalent to the classical Loewe.</p>
-</div>
-<div id="highest-single-agent" class="section level3">
+<p>Generalized Loewe model extends the classical Loewe model by allowing compounds to have different upper asymptotes so that when adjusted, the above predicted response is written instead as <span class="math display">\[ y = b + \textrm{occup} \times \left[\frac{\left(m_{1} - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{\left(m_{2} - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
+<p>In particular, if <span class="math inline">\(m_{1} = m_{2}\)</span>, then generalized Loewe is equivalent to the classical Loewe.</p>
+</section>
+<section id="highest-single-agent" class="level3">
 <h3>Highest Single Agent</h3>
 <p>A null model based on the Highest Single Agent (HSA) model does not attempt to model interaction effects at all and the predicted effect of a combination is either the minimum (if marginal curves are decreasing) or the maximum (if marginal curves are increasing) of both monotherapy curves.</p>
-</div>
-<div id="calculation-procedure" class="section level3">
+</section>
+<section id="calculation-procedure" class="level3">
 <h3>Calculation procedure</h3>
 <p>In order to evaluate any of the null models described above, the <code>fitSurface</code> function will use the monotherapy parameter estimates from the previous step. The idea is if there are synergistic or antagonistic effects, then administration of both compounds will lead to important deviations from what combined monotherapy data would suggest according to the null model. Routines within <code>fitSurface</code> function do essentially the following.</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Find occupancy for each combination of doses by solving the additivity equation of the classical Loewe model. This step does not require knowledge of the baseline or maximal response for either of the compounds. Occupancy solution is also reported in the HSA model case although occupancy plays no role in such a model.</li>
 <li>Compute the predicted response based on the above described response equations and the previously computed occupancy rate for each dose combination.</li>
 <li>If desired, the function will then calculate the selected statistic to evaluate the deviation of the predictions from the desired null model.</li>
 </ol>
-</div>
-</div>
-<div id="synergy-evaluation" class="section level2">
+</section>
+</section>
+<section id="synergy-evaluation" class="level2">
 <h2>Synergy evaluation</h2>
 <p>Synergy is evaluated for all off-axis dose combinations, i.e. dose combinations that are not used in the monotherapy curve estimation. Synergy evaluation depends on the underlying null model and any of the above models, i.e. generalized or classical Loewe or Highest Single Agent, can be used for this purpose. We provide here a brief summary of both statistical tests. Technical derivations and further details are available in the article cited at the beginning of the document.</p>
 <p>To define test statistics, the following notations are used.</p>
 <ul>
-<li>Let <span class="math">\(y_{ij}\)</span> be the observed effect for replicate <span class="math">\(j\)</span> of dose combination <span class="math">\(i\)</span>, so that <span class="math">\(y_{11}, y_{12}, y_{13}, y_{21}, ..., y_{kn_{k}}\)</span> is a set of observed effects. We assume <span class="math">\(k\)</span> different dose combinations and <span class="math">\(n_{k}\)</span> replicates for each combination. The number of different off-axis dose combinations is denoted as <span class="math">\(n_{1}\)</span>.</li>
-<li><span class="math">\(p_{1}, ..., p_{k}\)</span> are the predicted responses for the <span class="math">\(k\)</span> off-axis dose combinations.</li>
-<li><span class="math">\(\sigma^{2}\)</span> is the variance of the replicate observations, assumed to be constant over all dose combinations. <span class="math">\(\operatorname{df}_{0}\)</span> is the number of degrees of freedom from the marginal model estimation.</li>
+<li>Let <span class="math inline">\(y_{ij}\)</span> be the observed effect for replicate <span class="math inline">\(j\)</span> of dose combination <span class="math inline">\(i\)</span>, so that <span class="math inline">\(y_{11}, y_{12}, y_{13}, y_{21}, ..., y_{kn_{k}}\)</span> is a set of observed effects. We assume <span class="math inline">\(k\)</span> different dose combinations and <span class="math inline">\(n_{k}\)</span> replicates for each combination. The number of different off-axis dose combinations is denoted as <span class="math inline">\(n_{1}\)</span>.</li>
+<li><span class="math inline">\(p_{1}, ..., p_{k}\)</span> are the predicted responses for the <span class="math inline">\(k\)</span> off-axis dose combinations.</li>
+<li><span class="math inline">\(\sigma^{2}\)</span> is the variance of the replicate observations, assumed to be constant over all dose combinations. <span class="math inline">\(\operatorname{df}_{0}\)</span> is the number of degrees of freedom from the marginal model estimation.</li>
 </ul>
-<p>We construct a vector <span class="math">\(R = (r_{1}, ..., r_{k})\)</span> which represents mean deviation from the predicted effect. In particular, <span class="math">\[
+<p>We construct a vector <span class="math inline">\(R = (r_{1}, ..., r_{k})\)</span> which represents mean deviation from the predicted effect. In particular, <span class="math display">\[
 r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 \]</span></p>
-<p>With the help of bootstrapping, the covariance matrix of <span class="math">\(R\)</span> can be estimated under the null hypothesis of no synergy so that <span class="math">\(\operatorname{Var}\left(R\right) = \sigma^{2}\left(D + C_{p}\right)\)</span> where <span class="math">\(D\)</span> is a diagonal matrix with <span class="math">\(1 / n_{i}\)</span> in the <span class="math">\(i\)</span>-th position and <span class="math">\(C_{p}\)</span> is the covariance matrix obtained from bootstrap.</p>
-<div id="meanr" class="section level3">
+<p>With the help of bootstrapping, the covariance matrix of <span class="math inline">\(R\)</span> can be estimated under the null hypothesis of no synergy so that <span class="math inline">\(\operatorname{Var}\left(R\right) = \sigma^{2}\left(D + C_{p}\right)\)</span> where <span class="math inline">\(D\)</span> is a diagonal matrix with <span class="math inline">\(1 / n_{i}\)</span> in the <span class="math inline">\(i\)</span>-th position and <span class="math inline">\(C_{p}\)</span> is the covariance matrix obtained from bootstrap.</p>
+<section id="meanr" class="level3">
 <h3><code>meanR</code></h3>
-<p>The <code>meanR</code> test will evaluate whether the null model globally fits well the observed data. It is derived using a lack-of-fit sum of squares technique. In particular, the test statistic is given by <span class="math">\[
+<p>The <code>meanR</code> test will evaluate whether the null model globally fits well the observed data. It is derived using a lack-of-fit sum of squares technique. In particular, the test statistic is given by <span class="math display">\[
 \operatorname{TestStat} = \frac{R^{T}\left(D + C_{p}\right)^{-1}R}{n_{1}\sigma^{2}}
-\]</span> Assuming that residuals from the generalized Loewe model are normally distributed, it can be shown that this statistic follows an <span class="math">\(F_{n_{1}, \operatorname{df}_{0}}\)</span> distribution under the null. If these assumptions are not satisfied, the null distribution can be approximated by bootstrapping.</p>
-</div>
-<div id="maxr" class="section level3">
+\]</span> Assuming that residuals from the generalized Loewe model are normally distributed, it can be shown that this statistic follows an <span class="math inline">\(F_{n_{1}, \operatorname{df}_{0}}\)</span> distribution under the null. If these assumptions are not satisfied, the null distribution can be approximated by bootstrapping.</p>
+</section>
+<section id="maxr" class="level3">
 <h3><code>maxR</code></h3>
-<p>The <code>maxR</code> test evaluates whether the null model locally fits the observed data. In particular, it provides a test score for each off-axis combination. Based on the sign of this score, it can be determined whether synergy or antagonism is more likely and a formal test can be constructed. Under the null hypothesis of no lack-of-fit and normally distributed effects, <span class="math">\[
+<p>The <code>maxR</code> test evaluates whether the null model locally fits the observed data. In particular, it provides a test score for each off-axis combination. Based on the sign of this score, it can be determined whether synergy or antagonism is more likely and a formal test can be constructed. Under the null hypothesis of no lack-of-fit and normally distributed effects, <span class="math display">\[
 \max \left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma \sim \max \left| Z_{1}, \dots, Z_{k} \right|
-\]</span> where <span class="math">\(Z_{j} \sim N\left(0,1\right)\)</span>. More particularly, the test statistic for the <span class="math">\(k\)</span>-th off-axis dose combination <span class="math">\((d_{1}, d_{2})\)</span> is computed as <span class="math">\[
+\]</span> where <span class="math inline">\(Z_{j} \sim N\left(0,1\right)\)</span>. More particularly, the test statistic for the <span class="math inline">\(k\)</span>-th off-axis dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
 \operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma\right]_{k}
-\]</span> where <span class="math">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math">\(k\)</span>-th coordinate. This test statistic is then compared either to the null distribution based on normal approximation or a bootstrapped approximation.</p>
-</div>
-</div>
+\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate. This test statistic is then compared either to the null distribution based on normal approximation or a bootstrapped approximation.</p>
+</section>
+</section>
 
 
 

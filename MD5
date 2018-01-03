@@ -1,4 +1,4 @@
-e1763e3e8873ec32ee7fb7dc1ee5d91e *DESCRIPTION
+96a075d3153825571f16e2d85026c017 *DESCRIPTION
 9b2557851a9fe9e4fcc912c529a76101 *NAMESPACE
 742eb8b8ce18286c5596142e136f2896 *R/MarginalFit-methods.R
 89206d210597e7d56ebf2082be81a5ec *R/ResponseSurface-methods.R
@@ -18,15 +18,15 @@ d746736ad51d000db4d4ca15ffeee49a *R/predictOffAxis.R
 8cb3a2290e3db4280787b6090d99d056 *R/runBIGL.R
 d587a3c2487508d29617308f9c576b83 *R/statistics.R
 9c23bfcedcb6a9a37b49b021d00ee096 *R/transformations.R
-39de21e1de327e76ce40bd174b4c213a *build/vignette.rds
+674bf14972202b5154cff7d035d15655 *build/vignette.rds
 0f67a5bd309c196fc18f1f9d6d60a63c *data/directAntivirals.RData
 9608b3c946e3f6b8443b66f0f472e435 *data/directAntivirals_ALL.RData
-1ee91e7978b53b7ed241081e60706e1e *inst/NEWS
+24c32aac85fd86c5320845085273b670 *inst/NEWS
 07a4086839e673f065c14be53b8b336a *inst/doc/analysis.R
 3122864fb915a029f739440b05a1b22c *inst/doc/analysis.Rmd
-fb5c28395bdc679b0fbe874b06ee461f *inst/doc/analysis.html
-a711e876f1f41d9919ab8b08a8d5266e *inst/doc/methodology.Rmd
-46d4ea64e7c0bc728efc51f423fac927 *inst/doc/methodology.html
+9f89087324f25b7c27a2269c0e4ca7de *inst/doc/analysis.html
+5c6a6e0671731cd7474eb63b45121752 *inst/doc/methodology.Rmd
+18f817a4f985565d47b27951f9ac0e70 *inst/doc/methodology.html
 33e134789ba451028f718adbc517fb9b *inst/ui/server.R
 e4c59ef3facb2f5216a48012e017cef3 *inst/ui/ui.R
 f5ed76ce49d019aad8b39cae82c5a6f8 *man/CPBootstrap.Rd
@@ -86,6 +86,6 @@ e34dd68f609353099750653e0a6a16e3 *tests/testthat/test_logistic.R
 a165f7e5e50c3285201f0c936a8a8fdb *tests/testthat/test_marginals.R
 bd4fb61602d7fd6a9db65a0fbded689d *tests/testthat/test_maxR.R
 7201d24b808475b5f6b9ae091a0b8408 *tests/testthat/test_meanR.R
-a6578ff3f1ebba8870a22003c403261f *tests/testthat/test_wrapper.R
+5a4011cbe539eaf3f3990be37759c50f *tests/testthat/test_wrapper.R
 3122864fb915a029f739440b05a1b22c *vignettes/analysis.Rmd
-a711e876f1f41d9919ab8b08a8d5266e *vignettes/methodology.Rmd
+5c6a6e0671731cd7474eb63b45121752 *vignettes/methodology.Rmd
