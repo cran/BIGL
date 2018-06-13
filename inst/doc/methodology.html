@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-01-03" />
+<meta name="date" content="2018-06-13" />
 
 <title>Methodology</title>
 
@@ -212,22 +212,22 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date"><em>2018-01-03</em></h4>
+<h4 class="date"><em>2018-06-13</em></h4>
 
 
 
 <p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans (<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>) as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
-<section id="marginal-monotherapy-curves" class="level2">
+<div id="marginal-monotherapy-curves" class="section level2">
 <h2>Marginal monotherapy curves</h2>
 <p>First, a monotherapy model is described by the following equation.</p>
-<p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{d}{\operatorname{EC50}}\right)^{|h|}} \]</span></p>
+<p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{\operatorname{EC50}}{d}\right)^{|h|}} \]</span></p>
 <p>where <span class="math inline">\(y\)</span> is the response (or effect), <span class="math inline">\(d\)</span> is the dose (or concentration) of the compound, <span class="math inline">\(h\)</span> is the Hill’s coefficient and <span class="math inline">\(b\)</span> and <span class="math inline">\(m\)</span> are respectively baseline and maximum response for that compound. Lastly, <span class="math inline">\(\textrm{EC50}\)</span> stands for the dose level of the compound needed to attain the midpoint effect, i.e. <span class="math display">\[y\left(\textrm{EC50}\right) = b + \frac{m - b}{2}\]</span></p>
 <p>Note that <span class="math inline">\(m &gt; b\)</span> if and only if the response is increasing with the dose of the compound. If the response is decreasing, then <span class="math inline">\(m &lt; b\)</span>.</p>
 <p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math inline">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
-</section>
-<section id="null-models-of-no-synergy" class="level2">
+</div>
+<div id="null-models-of-no-synergy" class="section level2">
 <h2>Null models of no synergy</h2>
-<section id="occupancy" class="level3">
+<div id="occupancy" class="section level3">
 <h3>Occupancy</h3>
 <p>Define the occupancy level <span class="math inline">\(\textrm{occup}\)</span>, i.e. the fractional (enzymatic) effect or observed effect relative to maximal effect, for both compounds at given dose levels as <span class="math display">\[
 \textrm{occup}_{1}\left(d_{1}\right) = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{h_{1}}}
@@ -238,60 +238,103 @@ d_{1} = \operatorname{EC50}_{1} \left(\frac{1}{\operatorname{occup_{1}}} - 1 \ri
 \]</span> <span class="math display">\[
 d_{2} = \operatorname{EC50}_{2} \left(\frac{1}{\operatorname{occup_{2}}} - 1 \right)^{-1/h_{2}}
 \]</span> Although the occupancy was considered here in the marginal case, it is equally well-defined when compounds are combined and is understood as the fraction of enzyme bound to any compound. It can thus be used to re-express classical Loewe additivity equations.</p>
-</section>
-<section id="classical-loewe-model" class="level3">
+</div>
+<div id="classical-loewe-model" class="section level3">
 <h3>Classical Loewe model</h3>
 <p>In the classical Loewe model where both marginal models share upper <span class="math inline">\((m)\)</span> and lower <span class="math inline">\((b)\)</span> asymptotes, occupancy is defined as the solution to this additivity equation for each dose combination <span class="math inline">\((d_{1}, d_{2})\)</span>, namely <span class="math display">\[\frac{d_1\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}}+ 
 \frac{d_2\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}} = 1\]</span></p>
-<p>Once occupancy is computed, in the classical Loewe model the predicted response at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> can be calculated to be <span class="math display">\[ y = b + \left(m - b\right) \times \textrm{occup} \times \left[\frac{d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
-</section>
-<section id="generalized-loewe-model" class="level3">
+<p>Once occupancy is computed, in the classical Loewe model the predicted response at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> can be calculated to be <span class="math display">\[\begin{equation}
+\begin{split}
+y &amp; = b + \left(m - b\right) \times \textrm{occup} = \\
+&amp; = b + \left(m - b\right) \times \textrm{occup}
+\times
+\left[\frac{d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
+= \\
+&amp; = b + \textrm{occup} \times
+\left[\frac{ \left(m - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{ \left(m - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
+\end{split}
+\end{equation}\]</span></p>
+</div>
+<div id="generalized-loewe-model" class="section level3">
 <h3>Generalized Loewe model</h3>
 <p>Generalized Loewe model extends the classical Loewe model by allowing compounds to have different upper asymptotes so that when adjusted, the above predicted response is written instead as <span class="math display">\[ y = b + \textrm{occup} \times \left[\frac{\left(m_{1} - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{\left(m_{2} - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
 <p>In particular, if <span class="math inline">\(m_{1} = m_{2}\)</span>, then generalized Loewe is equivalent to the classical Loewe.</p>
-</section>
-<section id="highest-single-agent" class="level3">
+</div>
+<div id="highest-single-agent" class="section level3">
 <h3>Highest Single Agent</h3>
 <p>A null model based on the Highest Single Agent (HSA) model does not attempt to model interaction effects at all and the predicted effect of a combination is either the minimum (if marginal curves are decreasing) or the maximum (if marginal curves are increasing) of both monotherapy curves.</p>
-</section>
-<section id="calculation-procedure" class="level3">
+</div>
+<div id="calculation-procedure" class="section level3">
 <h3>Calculation procedure</h3>
 <p>In order to evaluate any of the null models described above, the <code>fitSurface</code> function will use the monotherapy parameter estimates from the previous step. The idea is if there are synergistic or antagonistic effects, then administration of both compounds will lead to important deviations from what combined monotherapy data would suggest according to the null model. Routines within <code>fitSurface</code> function do essentially the following.</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>Find occupancy for each combination of doses by solving the additivity equation of the classical Loewe model. This step does not require knowledge of the baseline or maximal response for either of the compounds. Occupancy solution is also reported in the HSA model case although occupancy plays no role in such a model.</li>
 <li>Compute the predicted response based on the above described response equations and the previously computed occupancy rate for each dose combination.</li>
 <li>If desired, the function will then calculate the selected statistic to evaluate the deviation of the predictions from the desired null model.</li>
 </ol>
-</section>
-</section>
-<section id="synergy-evaluation" class="level2">
-<h2>Synergy evaluation</h2>
+</div>
+</div>
+<div id="synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points" class="section level2">
+<h2>Synergy evaluation assuming equal variances for on- and off-axis points</h2>
 <p>Synergy is evaluated for all off-axis dose combinations, i.e. dose combinations that are not used in the monotherapy curve estimation. Synergy evaluation depends on the underlying null model and any of the above models, i.e. generalized or classical Loewe or Highest Single Agent, can be used for this purpose. We provide here a brief summary of both statistical tests. Technical derivations and further details are available in the article cited at the beginning of the document.</p>
 <p>To define test statistics, the following notations are used.</p>
 <ul>
 <li>Let <span class="math inline">\(y_{ij}\)</span> be the observed effect for replicate <span class="math inline">\(j\)</span> of dose combination <span class="math inline">\(i\)</span>, so that <span class="math inline">\(y_{11}, y_{12}, y_{13}, y_{21}, ..., y_{kn_{k}}\)</span> is a set of observed effects. We assume <span class="math inline">\(k\)</span> different dose combinations and <span class="math inline">\(n_{k}\)</span> replicates for each combination. The number of different off-axis dose combinations is denoted as <span class="math inline">\(n_{1}\)</span>.</li>
 <li><span class="math inline">\(p_{1}, ..., p_{k}\)</span> are the predicted responses for the <span class="math inline">\(k\)</span> off-axis dose combinations.</li>
-<li><span class="math inline">\(\sigma^{2}\)</span> is the variance of the replicate observations, assumed to be constant over all dose combinations. <span class="math inline">\(\operatorname{df}_{0}\)</span> is the number of degrees of freedom from the marginal model estimation.</li>
+<li><span class="math inline">\(\sigma^{2}\)</span> is the variance of the replicate observations, assumed to be constant over all dose combinations, and estimated by taking MSE of the null model.</li>
+<li><span class="math inline">\(\operatorname{df}_{0}\)</span> is the number of degrees of freedom from the marginal model estimation.</li>
 </ul>
 <p>We construct a vector <span class="math inline">\(R = (r_{1}, ..., r_{k})\)</span> which represents mean deviation from the predicted effect. In particular, <span class="math display">\[
 r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 \]</span></p>
 <p>With the help of bootstrapping, the covariance matrix of <span class="math inline">\(R\)</span> can be estimated under the null hypothesis of no synergy so that <span class="math inline">\(\operatorname{Var}\left(R\right) = \sigma^{2}\left(D + C_{p}\right)\)</span> where <span class="math inline">\(D\)</span> is a diagonal matrix with <span class="math inline">\(1 / n_{i}\)</span> in the <span class="math inline">\(i\)</span>-th position and <span class="math inline">\(C_{p}\)</span> is the covariance matrix obtained from bootstrap.</p>
-<section id="meanr" class="level3">
+<div id="meanr" class="section level3">
 <h3><code>meanR</code></h3>
 <p>The <code>meanR</code> test will evaluate whether the null model globally fits well the observed data. It is derived using a lack-of-fit sum of squares technique. In particular, the test statistic is given by <span class="math display">\[
 \operatorname{TestStat} = \frac{R^{T}\left(D + C_{p}\right)^{-1}R}{n_{1}\sigma^{2}}
 \]</span> Assuming that residuals from the generalized Loewe model are normally distributed, it can be shown that this statistic follows an <span class="math inline">\(F_{n_{1}, \operatorname{df}_{0}}\)</span> distribution under the null. If these assumptions are not satisfied, the null distribution can be approximated by bootstrapping.</p>
-</section>
-<section id="maxr" class="level3">
+</div>
+<div id="maxr" class="section level3">
 <h3><code>maxR</code></h3>
 <p>The <code>maxR</code> test evaluates whether the null model locally fits the observed data. In particular, it provides a test score for each off-axis combination. Based on the sign of this score, it can be determined whether synergy or antagonism is more likely and a formal test can be constructed. Under the null hypothesis of no lack-of-fit and normally distributed effects, <span class="math display">\[
 \max \left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma \sim \max \left| Z_{1}, \dots, Z_{k} \right|
 \]</span> where <span class="math inline">\(Z_{j} \sim N\left(0,1\right)\)</span>. More particularly, the test statistic for the <span class="math inline">\(k\)</span>-th off-axis dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
 \operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma\right]_{k}
 \]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate. This test statistic is then compared either to the null distribution based on normal approximation or a bootstrapped approximation.</p>
-</section>
-</section>
+</div>
+</div>
+<div id="synergy-evaluation-in-case-of-variance-heterogeneity" class="section level2">
+<h2>Synergy evaluation in case of variance heterogeneity</h2>
+<p>In the methodology described above one important assumption is made regarding the variance of the on- and off-axis dose combinations. It is considered to be equal across all points. This assumption is also mentioned in the original article and its technical supplement.</p>
+<p>In reality it is often seen that the variance of the monotherapies is not equal to the variance of the off-axis combinations. The assumption of equal variances is thus not always valid. That is why the <code>meanR</code> and <code>maxR</code> test-statistics can also estimate the variances for on-axis (monotherapies) and off-axis dose-combinations separately. Two extra methods are described below: the <code>SepVar</code> method (Separated variance) and the <code>ModVar</code> method (Modeled variance). For both methods replicates are required and no variance-stabilizing transformations are required. The latter is often necessary when assuming equal variances.</p>
+<div id="adapted-meanr" class="section level3">
+<h3>Adapted <code>meanR</code></h3>
+<p>The adapted <code>meanR</code> test uses two separate variance estimates for (a) the monotherapies (= <span class="math inline">\(\sigma^{2}_{0}\)</span>) and (b) the dose combinations (= <span class="math inline">\(\Sigma_{1}\)</span>, a diagonal matrix). The notation for both <code>SepVar</code> as <code>ModVar</code> will be the same, but the estimation of <span class="math inline">\(\Sigma_{1}\)</span> will be different. The variance of the monotherapies <span class="math inline">\(\sigma^{2}_{0}\)</span> is estimated as <span class="math inline">\(\sigma^{2}\)</span> above by taking the MSE of the null model. The test statistic is given by:</p>
+<p><span class="math display">\[
+\operatorname{TestStat} = \frac{R^{T}\left(\Sigma_{1}D + \sigma^{2}_{0}C_{p}\right)^{-1}R}{n_{1}}
+\]</span></p>
+<ol style="list-style-type: decimal">
+<li><p><strong><code>SepVar</code> method</strong>: The variance for the dose combinations is estimated by taking the variance in each dose combination and then taking the mean of all these variances, thus <span class="math inline">\(\Sigma_{1} = \sigma^2_1 I_{n_1}\)</span>. The downside of this method is that the variance for all combinations is assumed to be equal. In reality the variance often depends on the mean effect. This is taken into account in the <code>ModVar</code> method.</p></li>
+<li><p><strong><code>ModVar</code> method</strong>: In this method the diagonal elements of <span class="math inline">\(\Sigma_{1}\)</span> are no longer estimated as single number but rather as a vector of variances. Each off-axis point has now its own variance. A linear model is fitted on the original dataset, modeling the variance of each off-axis point as a function of its mean effect. The estimated model parameters are then used to predict the variance for the corresponding mean effect measured for that dose combination. These predicted variances are placed in the diagonal of <span class="math inline">\(\Sigma_{1}\)</span>.</p></li>
+</ol>
+</div>
+<div id="adapted-maxr" class="section level3">
+<h3>Adapted <code>maxR</code></h3>
+<p>The same approach is taken for the adapted <code>maxR</code> test statistic. Instead of using one estimated variance for both on- and off-axis points, two separate estimates are used. The estimates for <span class="math inline">\(\Sigma_{1}\)</span> are different depending on the method used (<code>ModVar</code> or <code>SepVar</code>). The methodology of estimating the variance is the same as was described in the “Adapted <code>meanR</code>” section above.</p>
+<p>The <code>maxR</code> test becomes</p>
+<p><span class="math display">\[
+\max \left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right|  \sim \max \left| Z_{1}, \dots, Z_{k} \right|
+\]</span></p>
+<p>where <span class="math inline">\(Z_{j} \sim N\left(0,1\right)\)</span>. In particular, the test statistic for the <span class="math inline">\(k\)</span>-th off-axis dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
+\operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right| \right]_{k}
+\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate.</p>
+</div>
+<div id="advantages-of-modvar-and-sepvar-methods-compared-to-assumption-of-equal-variances" class="section level3">
+<h3>Advantages of <code>ModVar</code> and <code>SepVar</code> methods compared to assumption of equal variances</h3>
+<p>The assumption of equal variances between monotherapies and off-axis dose-combinations fails to control the type I error rate around pre-specified level, when the variance of off-axis points increases (natural variance or outliers). This results in false positive synergy calls when in reality there were none. Both the <code>SepVar</code> and the <code>ModVar</code> methods control the type I error rate far better, with slightly better results obtained by the <code>ModVar</code> method.</p>
+<p>Furthermore, the sensitivity and specificity of the <code>maxR</code> test statistics are higher with the methods assuming variance heterogeneity compared to the methods where equal variances are assumed.</p>
+</div>
+</div>
 
 
 

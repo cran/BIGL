@@ -46,7 +46,8 @@ transforms <- list(
 
 ## ----marginalFit---------------------------------------------------------
 ## Fitting marginal models
-marginalFit <- fitMarginals(data, transforms = transforms, method = "nls")
+marginalFit <- fitMarginals(data, transforms = transforms, method = "nls", 
+    names = c("Drug A", "Drug B"))
 summary(marginalFit)
 
 ## ----marginalPlot, fig.align="center", fig.height = 4, fig.width = 6-----
@@ -158,6 +159,19 @@ contour(maxR_B,
 plot(maxR_B, color = "maxR", legend = FALSE, main = "")
 view3d(0, -75)
 rglwidget()
+
+## ----heterogenanalysis, fig.width=6, fig.height=5------------------------
+marginalFit <- fitMarginals(data, transforms = NULL)
+summary(marginalFit)
+
+resM <- fitSurface(data, marginalFit, method = "model", 
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+
+resU <- fitSurface(data, marginalFit, method = "unequal", 
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+
+summary(resM) 
+summary(resU)
 
 ## ----fullanalysis, message=FALSE-----------------------------------------
 marginalFits <- list()

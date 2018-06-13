@@ -66,7 +66,13 @@ contour.ResponseSurface <- function(x, ...) {
   if (!exists("maxR", x))
     stop("maxR statistics were not found.")
 
-  plot(x$maxR, ...)
+  cpdNames <- if (!is.null(x$names)) x$names else c("Compound 1", "Compound 2") 
+  if (!hasArg("xlab"))
+    xlab <- paste0("Dose (", cpdNames[[1]], ")")
+  if (!hasArg("ylab"))
+    ylab <- paste0("Dose (", cpdNames[[2]], ")")
+  
+  plot(x$maxR, xlab = xlab, ylab = ylab, ...)
 
 }
 
@@ -86,6 +92,7 @@ summary.ResponseSurface <- function(object, ...) {
   if (!is.null(object$maxR)) ans$maxR <- summary(object$maxR)
 
   ans$occup <- mean(object$occupancy$occupancy)
+  ans$method <- object$method
 
   class(ans) <- "summary.ResponseSurface"
   ans
@@ -110,6 +117,8 @@ print.summary.ResponseSurface <- function(x, ...) {
   else
     cat(x$null_model)
 
+  cat("\n")
+  cat("Variance assumption used:", dQuote(x$method))
   cat("\n")
   cat("Mean occupancy rate:", x$occup)
   cat("\n\n")
