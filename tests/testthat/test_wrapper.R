@@ -31,3 +31,9 @@ test_that('statistics', {
   expect_identical(rs$transforms, transforms)
 
 })
+
+test_that("plots", {
+      contour(rs)
+      contour(rs, xlab = "x-label", ylab = "y-label")
+      plot(rs, "maxR")
+    })

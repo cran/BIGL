@@ -1,4 +1,8 @@
-1.2.0 (2018-06-08)
+1.2.2 (2018-09-07)
+  o make sure if no replicates are there model/unequal method is not allowed
+1.2.1 (2018-08-24)
+  o fix regression bug to allow custom axis labels for the contour plot
+1.2.0 (2018-06-13)
   o support heterogeneous variance with new argument 'method' for 'fitSurface'
 1.1.3 (2018-05-14)
   o show EC50 in log10 terms for monotherapy summary
