@@ -1,4 +1,4 @@
-bd1b2572b9198a2557b3cdf7afe1da72 *DESCRIPTION
+e1d9ddd7d9cbe27bc66f5ba835c295f4 *DESCRIPTION
 9b2557851a9fe9e4fcc912c529a76101 *NAMESPACE
 96910669227a7c273db9a1e0f7fea041 *R/MarginalFit-methods.R
 e7444a5c36190093d1fec3fb6dd67b49 *R/ResponseSurface-methods.R
@@ -16,17 +16,17 @@ df47bed44780a25ebee1433c5976521c *R/helper.R
 8d42b6edc7e11fe67d2d878fe69511c3 *R/plotReponseSurface.R
 d746736ad51d000db4d4ca15ffeee49a *R/predictOffAxis.R
 8cb3a2290e3db4280787b6090d99d056 *R/runBIGL.R
-20f2700e4976822b319ff4dfefa62dd7 *R/statistics.R
+0f09fdab8c7bf8db01aa3fdd73c5bd99 *R/statistics.R
 9c23bfcedcb6a9a37b49b021d00ee096 *R/transformations.R
 7ef5a8febc959825acdc88b74e343ce9 *build/vignette.rds
 0f67a5bd309c196fc18f1f9d6d60a63c *data/directAntivirals.RData
 9608b3c946e3f6b8443b66f0f472e435 *data/directAntivirals_ALL.RData
-d840ae3da505b8c782e3f3aebf33f60e *inst/NEWS
+6b5de068dd9edc8e25f7e6eee3c575bf *inst/NEWS
 0694bd2ea80ef6e9acbfd1178cf4f8f5 *inst/doc/analysis.R
 7a5e827bdc9282e866996386a8d2fda1 *inst/doc/analysis.Rmd
-f9452ab6de831896efb139a3747faa6f *inst/doc/analysis.html
+b8797e65986c4216ecd810e4b649a0be *inst/doc/analysis.html
 e02b4a16f1c148e1520e4414384ecaa1 *inst/doc/methodology.Rmd
-bd6324d8670e09ae1361923a418f3a58 *inst/doc/methodology.html
+1bc32e8d88f7be294be48fb93bb76016 *inst/doc/methodology.html
 33e134789ba451028f718adbc517fb9b *inst/ui/server.R
 e4c59ef3facb2f5216a48012e017cef3 *inst/ui/ui.R
 f5ed76ce49d019aad8b39cae82c5a6f8 *man/CPBootstrap.Rd
