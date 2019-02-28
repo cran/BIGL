@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-11-21" />
+<meta name="date" content="2019-02-28" />
 
 <title>Methodology</title>
 
@@ -212,18 +212,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date"><em>2018-11-21</em></h4>
+<h4 class="date"><em>2019-02-28</em></h4>
 
 
 
 <p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans (<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>) as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
+<p>Further chapters were added as extensions on top of the original article regarding variance heterogeneity and Bliss independence.</p>
 <div id="marginal-monotherapy-curves" class="section level2">
 <h2>Marginal monotherapy curves</h2>
 <p>First, a monotherapy model is described by the following equation.</p>
 <p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{\operatorname{EC50}}{d}\right)^{|h|}} \]</span></p>
 <p>where <span class="math inline">\(y\)</span> is the response (or effect), <span class="math inline">\(d\)</span> is the dose (or concentration) of the compound, <span class="math inline">\(h\)</span> is the Hill’s coefficient and <span class="math inline">\(b\)</span> and <span class="math inline">\(m\)</span> are respectively baseline and maximum response for that compound. Lastly, <span class="math inline">\(\textrm{EC50}\)</span> stands for the dose level of the compound needed to attain the midpoint effect, i.e. <span class="math display">\[y\left(\textrm{EC50}\right) = b + \frac{m - b}{2}\]</span></p>
 <p>Note that <span class="math inline">\(m &gt; b\)</span> if and only if the response is increasing with the dose of the compound. If the response is decreasing, then <span class="math inline">\(m &lt; b\)</span>.</p>
-<p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math inline">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
+<p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math inline">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
 </div>
 <div id="null-models-of-no-synergy" class="section level2">
 <h2>Null models of no synergy</h2>
@@ -263,6 +264,17 @@ y &amp; = b + \left(m - b\right) \times \textrm{occup} = \\
 <div id="highest-single-agent" class="section level3">
 <h3>Highest Single Agent</h3>
 <p>A null model based on the Highest Single Agent (HSA) model does not attempt to model interaction effects at all and the predicted effect of a combination is either the minimum (if marginal curves are decreasing) or the maximum (if marginal curves are increasing) of both monotherapy curves.</p>
+</div>
+<div id="bliss-independence-model" class="section level3">
+<h3>Bliss independence model</h3>
+<p>Bliss independence implies that two agents do not cooperate, i.e. act independently of each other. <!-- In the classical Bliss independence model where marginal models share baseline and maximum response, the predicted response at dose combination $(d_{1}, d_{2})$ is based on the fractional effects of the marginal responses: --></p>
+<p>Bliss independence model is formulated for the fractional responses <span class="math inline">\(f\)</span>, where the predicted response <span class="math inline">\(f_{12}\)</span> at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is defined as:</p>
+<p><span class="math display">\[ f_{12}(d_1, d_2) = f_1(d_1) + f_2(d_2) - f_1(d_1)f_2(d_2), \]</span></p>
+<p>with <span class="math display">\[f_1(d_1) = \frac{y\left(d_1\right) - b}{m_1 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{|h_{1}|}}\]</span> <span class="math display">\[f_2(d_2) = \frac{y\left(d_2\right) - b}{m_2 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{|h_{2}|}}\]</span> In the classical Bliss independence model, marginal models share baseline and maximum response.</p>
+<p>To allow the compounds to have different maximal responses, the fractional responses are rescaled to the maximum range (i.e. absolute difference between baseline and maximal response). Then the predicted response is defined as:<br />
+<span class="math display">\[
+y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) - \tilde{f_1}(d_1)\tilde{f_2}(d_2) \right],
+\]</span> where <span class="math inline">\(m_{max}\)</span> is one of <span class="math inline">\(m_1\)</span> or <span class="math inline">\(m_2\)</span>, for which the value of <span class="math inline">\(|m_i - b|\)</span> is larger, and <span class="math display">\[ \tilde{f_i} = f_i\frac{m_i-b}{m_{max}-b}~~\text{for}~~i = 1, 2.\]</span></p>
 </div>
 <div id="calculation-procedure" class="section level3">
 <h3>Calculation procedure</h3>

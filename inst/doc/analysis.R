@@ -115,6 +115,12 @@ rsh <- fitSurface(data, marginalFit,
                   B.CP = 50, statistic = "both", parallel = FALSE)
 summary(rsh)
 
+## ----analysis_bliss, message=FALSE, comment = NA-------------------------
+rsb <- fitSurface(data, marginalFit, 
+                  null_model = "bliss",
+                  B.CP = 50, statistic = "both", parallel = FALSE)
+summary(rsb)
+
 ## ----meanrnorm, message = FALSE------------------------------------------
 meanR_N <- fitSurface(data, marginalFit,
                       statistic = "meanR", CP = rs$CP, B.B = NULL,
