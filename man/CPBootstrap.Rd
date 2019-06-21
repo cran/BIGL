@@ -5,7 +5,7 @@
 \title{Estimate CP matrix with bootstrap}
 \usage{
 CPBootstrap(data, fitResult, transforms = fitResult$transforms,
-  null_model = c("loewe", "hsa", "bliss"), B.CP, ...)
+  null_model = c("loewe", "hsa", "bliss", "loewe2"), B.CP, ...)
 }
 \arguments{
 \item{data}{Dose-response dataframe.}
@@ -30,7 +30,8 @@ information.}
 
 \item{null_model}{Specified null model for the expected response surface.
 Currently, allowed options are \code{"loewe"} for generalized Loewe model,
-and \code{"hsa"} for Highest Single Agent model.}
+\code{"hsa"} for Highest Single Agent model, \code{"bliss"} for Bliss additivity,
+and \code{"loewe2"} for the alternative Loewe generalization.}
 
 \item{B.CP}{Number of bootstrap iterations to use for CP matrix estimation}
 

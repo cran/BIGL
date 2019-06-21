@@ -121,6 +121,12 @@ rsb <- fitSurface(data, marginalFit,
                   B.CP = 50, statistic = "both", parallel = FALSE)
 summary(rsb)
 
+## ----analysis_loewe2, message=FALSE, comment = NA------------------------
+rsl2 <- fitSurface(data, marginalFit, 
+                  null_model = "loewe2",
+                  B.CP = 50, statistic = "both", parallel = FALSE)
+summary(rsl2)
+
 ## ----meanrnorm, message = FALSE------------------------------------------
 meanR_N <- fitSurface(data, marginalFit,
                       statistic = "meanR", CP = rs$CP, B.B = NULL,

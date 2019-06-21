@@ -6,13 +6,13 @@
 \usage{
 plotResponseSurface(data, fitResult = NULL,
   transforms = fitResult$transforms, predSurface = NULL,
-  null_model = c("loewe", "hsa", "bliss"), colorPalette = c("blue",
-  "grey70", "red"), colorBy = "none", colorPoints = c("black",
-  "sandybrown", "brown", "white"), breaks = c(-Inf, 0, Inf),
-  radius = NULL, logScale = TRUE, colorfun = median,
-  zTransform = function(x) x, add = FALSE, main = "",
-  legend = TRUE, xat = "actual", yat = "actual", plotfun = NULL,
-  ...)
+  null_model = c("loewe", "hsa", "bliss", "loewe2"),
+  colorPalette = c("blue", "grey70", "red"), colorBy = "none",
+  colorPoints = c("black", "sandybrown", "brown", "white"),
+  breaks = c(-Inf, 0, Inf), radius = NULL, logScale = TRUE,
+  colorfun = median, zTransform = function(x) x, add = FALSE,
+  main = "", legend = TRUE, xat = "actual", yat = "actual",
+  plotfun = NULL, ...)
 }
 \arguments{
 \item{data}{Dose-response dataframe.}
@@ -40,8 +40,8 @@ information.}
 with \code{\link{predictOffAxis}} function.}
 
 \item{null_model}{If \code{predSurface} is not supplied, it is computed using
-one of the available null models, i.e. \code{"loewe"} or \code{"hsa"}. See
-also \code{\link{fitSurface}}.}
+one of the available null models, i.e. \code{"loewe"}, \code{"hsa"}, 
+\code{"bliss"} and \code{"loewe2"}. See also \code{\link{fitSurface}}.}
 
 \item{colorPalette}{Vector of color names for surface}
 

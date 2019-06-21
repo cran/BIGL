@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-02-28" />
+<meta name="date" content="2019-06-20" />
 
 <title>Methodology</title>
 
@@ -204,6 +204,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -212,12 +215,35 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date"><em>2019-02-28</em></h4>
+<h4 class="date">2019-06-20</h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#marginal-monotherapy-curves">Marginal monotherapy curves</a></li>
+<li><a href="#null-models-of-no-synergy">Null models of no synergy</a><ul>
+<li><a href="#occupancy">Occupancy</a></li>
+<li><a href="#classical-loewe-model">Classical Loewe model</a></li>
+<li><a href="#generalized-loewe-model">Generalized Loewe model</a></li>
+<li><a href="#highest-single-agent">Highest Single Agent</a></li>
+<li><a href="#bliss-independence-model">Bliss independence model</a></li>
+<li><a href="#alternative-loewe-generalization">Alternative Loewe Generalization</a></li>
+<li><a href="#calculation-procedure">Calculation procedure</a></li>
+</ul></li>
+<li><a href="#synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points">Synergy evaluation assuming equal variances for on- and off-axis points</a><ul>
+<li><a href="#meanr"><code>meanR</code></a></li>
+<li><a href="#maxr"><code>maxR</code></a></li>
+</ul></li>
+<li><a href="#synergy-evaluation-in-case-of-variance-heterogeneity">Synergy evaluation in case of variance heterogeneity</a><ul>
+<li><a href="#adapted-meanr">Adapted <code>meanR</code></a></li>
+<li><a href="#adapted-maxr">Adapted <code>maxR</code></a></li>
+<li><a href="#advantages-of-modvar-and-sepvar-methods-compared-to-assumption-of-equal-variances">Advantages of <code>ModVar</code> and <code>SepVar</code> methods compared to assumption of equal variances</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans (<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>) as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
-<p>Further chapters were added as extensions on top of the original article regarding variance heterogeneity and Bliss independence.</p>
+<p>Further chapters were added as extensions on top of the original article regarding variance heterogeneity, Bliss independence and alternative Loewe generalization.</p>
 <div id="marginal-monotherapy-curves" class="section level2">
 <h2>Marginal monotherapy curves</h2>
 <p>First, a monotherapy model is described by the following equation.</p>
@@ -275,6 +301,14 @@ y &amp; = b + \left(m - b\right) \times \textrm{occup} = \\
 <span class="math display">\[
 y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) - \tilde{f_1}(d_1)\tilde{f_2}(d_2) \right],
 \]</span> where <span class="math inline">\(m_{max}\)</span> is one of <span class="math inline">\(m_1\)</span> or <span class="math inline">\(m_2\)</span>, for which the value of <span class="math inline">\(|m_i - b|\)</span> is larger, and <span class="math display">\[ \tilde{f_i} = f_i\frac{m_i-b}{m_{max}-b}~~\text{for}~~i = 1, 2.\]</span></p>
+</div>
+<div id="alternative-loewe-generalization" class="section level3">
+<h3>Alternative Loewe Generalization</h3>
+<p>An alternative generalization of Loewe Additivity for the case of diferent asymptotes can be defined as a combination of Loewe and HSA approaches as follows:</p>
+<p>In a classical Loewe equation, predicted response <span class="math inline">\(y\)</span> at a given dose combination <span class="math inline">\((d_1, d_2)\)</span> can be found by solving the equation:</p>
+<p><span class="math display">\[ \frac{d_1}{D_1(y)} + \frac{d_2}{D_2(y)} = 1, \]</span></p>
+<p>where <span class="math inline">\(D_i(y) = \operatorname{EC50}_{i}\left(\frac{y-b}{m_i-y}\right)^{\frac{1}{|h_i|}}\)</span>, for <span class="math inline">\(i = 1, 2\)</span> is the dose of the <span class="math inline">\(i\)</span>-th compound that gives response <span class="math inline">\(y\)</span>. Note that here <span class="math inline">\(D_i\)</span> is properly defined only if <span class="math inline">\(y\)</span> is between <span class="math inline">\(b\)</span> and <span class="math inline">\(m_i\)</span>.</p>
+<p>For the case of different asymptotes, say when <span class="math inline">\(y &gt; m_1\)</span> (increasing curve) or <span class="math inline">\(y &lt; m_1\)</span> (decreasing curve), we set <span class="math inline">\(D_1(y) = +\infty,\)</span> so that the <span class="math inline">\(y\)</span> is determined from the equation <span class="math inline">\(d_2 = D_2(y)\)</span>, replicating what is done in the HSA approach.</p>
 </div>
 <div id="calculation-procedure" class="section level3">
 <h3>Calculation procedure</h3>

@@ -5,7 +5,7 @@
 \title{Generate data from parameters of marginal monotherapy model}
 \usage{
 generateData(pars, sigma, data = NULL, transforms = NULL,
-  null_model = c("loewe", "hsa", "bliss"), error = 1,
+  null_model = c("loewe", "hsa", "bliss", "loewe2"), error = 1,
   sampling_errors = NULL, wild_bootstrap = FALSE, ...)
 }
 \arguments{
@@ -32,7 +32,8 @@ information.}
 
 \item{null_model}{Specified null model for the expected response surface.
 Currently, allowed options are \code{"loewe"} for generalized Loewe model,
-and \code{"hsa"} for Highest Single Agent model.}
+\code{"hsa"} for Highest Single Agent model, \code{"bliss"} for Bliss additivity,
+and \code{"loewe2"} for the alternative Loewe generalization.}
 
 \item{error}{Type of error for resampling. \code{error = 1} (Default) adds
 normal errors to the simulated effects, \code{error = 2} adds errors sampled

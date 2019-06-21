@@ -5,7 +5,7 @@
 \title{Compute maxR statistic for each off-axis dose combination}
 \usage{
 maxR(data, fitResult, transforms = fitResult$transforms,
-  null_model = c("loewe", "hsa", "bliss"), Ymean, CP, reps,
+  null_model = c("loewe", "hsa", "bliss", "loewe2"), Ymean, CP, reps,
   nested_bootstrap = FALSE, B.B = NULL, B.CP = NULL, cutoff = 0.95,
   cl = NULL, method = c("equal", "model", "unequal"), ...)
 }
@@ -32,7 +32,8 @@ information.}
 
 \item{null_model}{Specified null model for the expected response surface.
 Currently, allowed options are \code{"loewe"} for generalized Loewe model,
-and \code{"hsa"} for Highest Single Agent model.}
+\code{"hsa"} for Highest Single Agent model, \code{"bliss"} for Bliss additivity,
+and \code{"loewe2"} for the alternative Loewe generalization.}
 
 \item{Ymean}{Aggregate summary of off-axis predicted responses. In
 particular, it should contain \code{"effect - predicted"} column. If

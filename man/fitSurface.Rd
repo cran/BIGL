@@ -5,7 +5,7 @@
 \title{Fit response surface model and compute meanR and maxR statistics}
 \usage{
 fitSurface(data, fitResult, transforms = fitResult$transforms,
-  null_model = c("loewe", "hsa", "bliss"), effect = "effect",
+  null_model = c("loewe", "hsa", "bliss", "loewe2"), effect = "effect",
   d1 = "d1", d2 = "d2", statistic = c("none", "meanR", "maxR",
   "both"), CP = NULL, B.CP = 50, B.B = NULL,
   nested_bootstrap = FALSE, error = 4, sampling_errors = NULL,
@@ -35,7 +35,8 @@ information.}
 
 \item{null_model}{Specified null model for the expected response surface.
 Currently, allowed options are \code{"loewe"} for generalized Loewe model,
-and \code{"hsa"} for Highest Single Agent model.}
+\code{"hsa"} for Highest Single Agent model, \code{"bliss"} for Bliss additivity,
+and \code{"loewe2"} for the alternative Loewe generalization.}
 
 \item{effect}{Name of the response column in the data ("effect")}
 

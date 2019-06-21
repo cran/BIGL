@@ -94,7 +94,7 @@ summary.ResponseSurface <- function(object, ...) {
   if (!is.null(object$meanR)) ans$meanR <- summary(object$meanR)
   if (!is.null(object$maxR)) ans$maxR <- summary(object$maxR)
 
-  ans$occup <- mean(object$occupancy$occupancy)
+  ans$occup <- if (!is.null(object$occupancy)) mean(object$occupancy$occupancy) else NULL
   ans$method <- object$method
 
   class(ans) <- "summary.ResponseSurface"
@@ -121,13 +121,19 @@ print.summary.ResponseSurface <- function(x, ...) {
     cat("Bliss independence with shared maximal response")
   else if (x$null_model == "bliss" & x$shared_asymptote == FALSE)
     cat("Bliss independence with differing maximal response")
+  else if (x$null_model == "loewe2" & x$shared_asymptote == TRUE)
+    cat("Standard Loewe Additivity") # FIXME: check
+  else if (x$null_model == "loewe2" & x$shared_asymptote == FALSE)
+    cat("Alternative generalization of Loewe Additivity")
   else
     cat(x$null_model)
 
   cat("\n")
   cat("Variance assumption used:", dQuote(x$method))
-  cat("\n")
-  cat("Mean occupancy rate:", x$occup)
+  if (!is.null(x$occup)) {
+    cat("\n")
+    cat("Mean occupancy rate:", x$occup)
+  }
   cat("\n\n")
   print(x$marginalFit)
   cat("\n")
@@ -157,6 +163,7 @@ fitted.ResponseSurface <- function(object, ...) {
   switch(object$null_model,
          "loewe" = generalizedLoewe(doseInput, parmInput)$response,
          "hsa" = hsa(doseInput, parmInput),
-         "bliss" = Blissindependence(doseInput, parmInput))
+         "bliss" = Blissindependence(doseInput, parmInput),
+         "loewe2" = harbronLoewe(doseInput, parmInput))
 
 }

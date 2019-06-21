@@ -29,7 +29,7 @@
 #'   predictOffAxis(data, fitResult, null_model = "hsa")
 predictOffAxis <- function(data, fitResult,
                            transforms = fitResult$transforms,
-                           null_model = c("loewe", "hsa", "bliss"), ...) {
+                           null_model = c("loewe", "hsa", "bliss", "loewe2"), ...) {
 
   ## Argument matching
   null_model <- match.arg(null_model)
@@ -38,12 +38,19 @@ predictOffAxis <- function(data, fitResult,
                                  "d2" = sort(unique(data$d2))))
   doseGrid <- expand.grid(uniqueDoses)
 
+  occupancy <- NULL
+  
   predSurface <- array(dim = lengths(uniqueDoses))
-  fitLoewe <- generalizedLoewe(doseGrid, fitResult$coef)
+  
   predSurface[] <- switch(null_model,
-                          "loewe" = fitLoewe$response,
+                          "loewe" = {
+                            fitLoewe <- generalizedLoewe(doseGrid, fitResult$coef)
+                            occupancy <- fitLoewe$occupancy
+                            fitLoewe$response
+                          },
                           "hsa" = hsa(doseGrid, fitResult$coef),
-                          "bliss" = Blissindependence(doseGrid, fitResult$coef))
+                          "bliss" = Blissindependence(doseGrid, fitResult$coef),
+                          "loewe2" = harbronLoewe(doseGrid, fitResult$coef))
 
   if (!is.null(transforms)) {
     CompositeT <- with(transforms,
@@ -63,5 +70,5 @@ predictOffAxis <- function(data, fitResult,
 
   return(list("offaxisZTable" = offaxisZTable,
               "predSurface" = predSurface,
-              "occupancy" = fitLoewe$occupancy))
+              "occupancy" = occupancy))
 }

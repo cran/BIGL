@@ -19,7 +19,8 @@
 #'   not be passed and if it is, the column will be replaced by simulated data.
 #' @param null_model Specified null model for the expected response surface.
 #'   Currently, allowed options are \code{"loewe"} for generalized Loewe model,
-#'   and \code{"hsa"} for Highest Single Agent model.
+#'   \code{"hsa"} for Highest Single Agent model, \code{"bliss"} for Bliss additivity,
+#'   and \code{"loewe2"} for the alternative Loewe generalization.
 #' @param error Type of error for resampling. \code{error = 1} (Default) adds
 #'   normal errors to the simulated effects, \code{error = 2} adds errors sampled
 #'   from a mixture of two normal distributions, \code{error = 3} generates errors
@@ -49,7 +50,7 @@
 #'   generateData(data = data[, c("d1", "d2")], pars = coefs, sigma = 1)
 generateData <- function(pars, sigma, data = NULL,
                          transforms = NULL,
-                         null_model = c("loewe", "hsa", "bliss"),
+                         null_model = c("loewe", "hsa", "bliss", "loewe2"),
                          error = 1, sampling_errors = NULL,
                          wild_bootstrap = FALSE, ...) {
   
@@ -81,7 +82,8 @@ generateData <- function(pars, sigma, data = NULL,
   ySim <- switch(null_model,
                  "loewe" = generalizedLoewe(data, pars, asymptotes = 2)$response,
                  "hsa" = hsa(data[, c("d1", "d2")], pars),
-                 "bliss" = Blissindependence(data[, c("d1", "d2")], pars))
+                 "bliss" = Blissindependence(data[, c("d1", "d2")], pars),
+                 "loewe2" = harbronLoewe(data[, c("d1", "d2")], pars))
   ySim <- with(transforms,
                PowerT(BiolT(ySim, compositeArgs), compositeArgs))
   
@@ -132,7 +134,7 @@ generateData <- function(pars, sigma, data = NULL,
 #'   CPBootstrap(data, fitResult, null_model = "loewe", B.CP = 5)
 CPBootstrap <- function(data, fitResult,
                         transforms = fitResult$transforms,
-                        null_model = c("loewe", "hsa", "bliss"), B.CP, ...) {
+                        null_model = c("loewe", "hsa", "bliss", "loewe2"), B.CP, ...) {
 
   ## Argument matching
   null_model <- match.arg(null_model)
@@ -176,7 +178,7 @@ CPBootstrap <- function(data, fitResult,
 #' @inheritParams generateData
 bootstrapData <- function(data, fitResult,
                           transforms = fitResult$transforms,
-                          null_model = c("loewe", "hsa", "bliss"), ...) {
+                          null_model = c("loewe", "hsa", "bliss", "loewe2"), ...) {
 
   ## Argument matching
   null_model <- match.arg(null_model)
@@ -236,7 +238,7 @@ bootstrapData <- function(data, fitResult,
 #'   simulateNull(data, fitResult, null_model = "hsa")
 simulateNull <- function(data, fitResult,
                          transforms = fitResult$transforms,
-                         null_model = c("loewe", "hsa", "bliss"), ...) {
+                         null_model = c("loewe", "hsa", "bliss", "loewe2"), ...) {
 
   ## Argument matching
   null_model <- match.arg(null_model)
