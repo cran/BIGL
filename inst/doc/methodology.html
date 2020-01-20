@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-06-20" />
+<meta name="date" content="2020-01-20" />
 
 <title>Methodology</title>
 
@@ -215,13 +215,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date">2019-06-20</h4>
+<h4 class="date">2020-01-20</h4>
 
 
 <div id="TOC">
 <ul>
 <li><a href="#marginal-monotherapy-curves">Marginal monotherapy curves</a></li>
-<li><a href="#null-models-of-no-synergy">Null models of no synergy</a><ul>
+<li><a href="#null-models-of-no-synergy">Null models of no synergy</a>
+<ul>
 <li><a href="#occupancy">Occupancy</a></li>
 <li><a href="#classical-loewe-model">Classical Loewe model</a></li>
 <li><a href="#generalized-loewe-model">Generalized Loewe model</a></li>
@@ -230,11 +231,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><a href="#alternative-loewe-generalization">Alternative Loewe Generalization</a></li>
 <li><a href="#calculation-procedure">Calculation procedure</a></li>
 </ul></li>
-<li><a href="#synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points">Synergy evaluation assuming equal variances for on- and off-axis points</a><ul>
+<li><a href="#synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points">Synergy evaluation assuming equal variances for on- and off-axis points</a>
+<ul>
 <li><a href="#meanr"><code>meanR</code></a></li>
 <li><a href="#maxr"><code>maxR</code></a></li>
 </ul></li>
-<li><a href="#synergy-evaluation-in-case-of-variance-heterogeneity">Synergy evaluation in case of variance heterogeneity</a><ul>
+<li><a href="#synergy-evaluation-in-case-of-variance-heterogeneity">Synergy evaluation in case of variance heterogeneity</a>
+<ul>
 <li><a href="#adapted-meanr">Adapted <code>meanR</code></a></li>
 <li><a href="#adapted-maxr">Adapted <code>maxR</code></a></li>
 <li><a href="#advantages-of-modvar-and-sepvar-methods-compared-to-assumption-of-equal-variances">Advantages of <code>ModVar</code> and <code>SepVar</code> methods compared to assumption of equal variances</a></li>
@@ -293,14 +296,15 @@ y &amp; = b + \left(m - b\right) \times \textrm{occup} = \\
 </div>
 <div id="bliss-independence-model" class="section level3">
 <h3>Bliss independence model</h3>
-<p>Bliss independence implies that two agents do not cooperate, i.e. act independently of each other. <!-- In the classical Bliss independence model where marginal models share baseline and maximum response, the predicted response at dose combination $(d_{1}, d_{2})$ is based on the fractional effects of the marginal responses: --></p>
-<p>Bliss independence model is formulated for the fractional responses <span class="math inline">\(f\)</span>, where the predicted response <span class="math inline">\(f_{12}\)</span> at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is defined as:</p>
+<p>Bliss independence implies that two agents do not cooperate, i.e. act independently of each other. <!-- In the classical Bliss independence model where marginal models share baseline and maximum response, the predicted response at dose combination $(d_{1}, d_{2})$ is based on the fractional effects of the marginal responses: --> Additionally, the assumption is that a decreasing monotherapy curves express the fractions of <em>unaffected</em> control populations, while increasing curves express the fractions of <em>affected</em> control populations.</p>
+<p>Bliss independence model is formulated for the fractional responses <span class="math inline">\(f\)</span> (“fraction affected”), where the predicted response <span class="math inline">\(f_{12}\)</span> at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is defined as:</p>
 <p><span class="math display">\[ f_{12}(d_1, d_2) = f_1(d_1) + f_2(d_2) - f_1(d_1)f_2(d_2), \]</span></p>
 <p>with <span class="math display">\[f_1(d_1) = \frac{y\left(d_1\right) - b}{m_1 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{|h_{1}|}}\]</span> <span class="math display">\[f_2(d_2) = \frac{y\left(d_2\right) - b}{m_2 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{|h_{2}|}}\]</span> In the classical Bliss independence model, marginal models share baseline and maximum response.</p>
 <p>To allow the compounds to have different maximal responses, the fractional responses are rescaled to the maximum range (i.e. absolute difference between baseline and maximal response). Then the predicted response is defined as:<br />
 <span class="math display">\[
 y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) - \tilde{f_1}(d_1)\tilde{f_2}(d_2) \right],
 \]</span> where <span class="math inline">\(m_{max}\)</span> is one of <span class="math inline">\(m_1\)</span> or <span class="math inline">\(m_2\)</span>, for which the value of <span class="math inline">\(|m_i - b|\)</span> is larger, and <span class="math display">\[ \tilde{f_i} = f_i\frac{m_i-b}{m_{max}-b}~~\text{for}~~i = 1, 2.\]</span></p>
+<p>This implementation of Bliss independence supports both compounds with decreasing and increasing monotherapy profiles. However using one compound with a decreasing profile and another with an increasing profile in combination is not supported.</p>
 </div>
 <div id="alternative-loewe-generalization" class="section level3">
 <h3>Alternative Loewe Generalization</h3>
@@ -382,6 +386,9 @@ r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
