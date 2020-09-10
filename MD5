@@ -1,4 +1,4 @@
-2ca42f9a508719617ecd293f6672f857 *DESCRIPTION
+5a4b64842f84e898113e4dcbf32cf889 *DESCRIPTION
 9b2557851a9fe9e4fcc912c529a76101 *NAMESPACE
 24e4877463b7ab26f12168e0ccee6a87 *R/Blissindependence.R
 6f0c79b94fd0472ec762a8282d4a5f67 *R/MarginalFit-methods.R
@@ -7,10 +7,10 @@
 ea25fd668e6882ae7521e4a5820ee185 *R/data.R
 a155d88963ff2a437455c84542aec573 *R/fitMarginals.R
 e94d26402cb523211ad84b1a95527316 *R/fitSurface.R
-ffa26195e278f248748fdbdeb38e36ae *R/generalizedLoewe.R
+fc268fd5289b6cab7dd78ff1e912667b *R/generalizedLoewe.R
 39bcc48d14a08ebbef7bba763401171a *R/harbronLoewe.R
 df47bed44780a25ebee1433c5976521c *R/helper.R
-54cc6e8d50fd8985874b20d6269189a8 *R/hsa.R
+f9b1ebe2c7384adf64b77c2a1f7fab91 *R/hsa.R
 79d44a0d2041676e32789ab6755ae426 *R/initialMarginal.R
 87cdb28a781ccd3a66ab7476ecb118bd *R/isobologram.R
 00b67d9c07dbd33e3192e7c5710e4199 *R/maxR-functions.R
@@ -23,12 +23,12 @@ f6abf5435613632d551d45950a94d400 *R/statistics.R
 7ee5968ebef2daf89a86fcbc770f3196 *build/vignette.rds
 0f67a5bd309c196fc18f1f9d6d60a63c *data/directAntivirals.RData
 9608b3c946e3f6b8443b66f0f472e435 *data/directAntivirals_ALL.RData
-f5fac58153ee60c47053a7a888c453e3 *inst/NEWS
+649f1a6941916fc87624c930c2398825 *inst/NEWS
 d0828f66c5be12f55d1299125e270ae5 *inst/doc/analysis.R
 3d6c330caee082c8419068499a230be7 *inst/doc/analysis.Rmd
-7445445fc3ed12d89344eb7e3ca91f45 *inst/doc/analysis.html
+7574280b852635936e6f1ce8778cecb4 *inst/doc/analysis.html
 cda0e1bedf2971ef54ad63733edb706a *inst/doc/methodology.Rmd
-7c10ffd5eef824a3451e4c28a5537a22 *inst/doc/methodology.html
+223611e64456e00a5c5f8b55013f9c54 *inst/doc/methodology.html
 33e134789ba451028f718adbc517fb9b *inst/ui/server.R
 e4c59ef3facb2f5216a48012e017cef3 *inst/ui/ui.R
 75e846d0c4891e5b16cecf3344364409 *man/Blissindependence.Rd
