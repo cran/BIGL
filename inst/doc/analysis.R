@@ -15,7 +15,7 @@ head(directAntivirals)
 
 ## -----------------------------------------------------------------------------
 subsetData <- function(data, i) {
-  ## Subset data to a single experiment and, optionaly, select the necessary
+  ## Subset data to a single experiment and, optionally, select the necessary
   ## columns only
   subset(data, experiment == i)[, c("effect", "d1", "d2")]
 }
@@ -96,7 +96,6 @@ plot(marginalFit) + ggtitle(paste("Direct-acting antivirals - Experiment" , i))
 
 ## ----analysis, message=FALSE, comment = NA------------------------------------
 rs <- fitSurface(data, marginalFit,
-##               transforms = transforms,
                  null_model = "loewe",
                  B.CP = 50, statistic = "none", parallel = FALSE)
 summary(rs)
@@ -172,18 +171,35 @@ plot(maxR_B, color = "maxR", legend = FALSE, main = "")
 view3d(0, -75)
 rglwidget()
 
+## ----summarySingleConfInt-----------------------------------------------------
+summary(maxR_B$confInt)
+
+## ----plotSingleConfInt, fig.height=5, fig.width=6-----------------------------
+plotConfInt(maxR_B, color = "effect-size")
+
 ## ----heterogenanalysis, fig.width=6, fig.height=5-----------------------------
 marginalFit <- fitMarginals(data, transforms = NULL)
 summary(marginalFit)
 
+resU <- fitSurface(data, marginalFit, method = "unequal", 
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+summary(resU)
+
+## ----modelVariancePlot, fig.width=6, fig.height=5-----------------------------
+plotMeanVarFit(data)
+plotMeanVarFit(data, log = "xy") #Clearer on the log-scale
+plotMeanVarFit(data, trans = "log") #Thresholded at maximum observed variance
+
+## ----modelVarianceSum, fig.width=6, fig.height=5------------------------------
 resM <- fitSurface(data, marginalFit, method = "model", 
     statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
 
-resU <- fitSurface(data, marginalFit, method = "unequal", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+## ----modelVarianceSumLogTransform, fig.width=6, fig.height=5, eval = FALSE----
+#  resL <- fitSurface(data, marginalFit, method = "model", trans = "log",
+#      statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
 
+## ----resM---------------------------------------------------------------------
 summary(resM) 
-summary(resU)
 
 ## ----fullanalysis, message=FALSE----------------------------------------------
 marginalFits <- list()

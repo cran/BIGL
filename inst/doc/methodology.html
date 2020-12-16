@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2020-09-10" />
+<meta name="date" content="2020-12-16" />
 
 <title>Methodology</title>
 
@@ -226,7 +226,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date">2020-09-10</h4>
+<h4 class="date">2020-12-16</h4>
 
 
 <div id="TOC">
@@ -251,8 +251,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li><a href="#adapted-meanr">Adapted <code>meanR</code></a></li>
 <li><a href="#adapted-maxr">Adapted <code>maxR</code></a></li>
-<li><a href="#advantages-of-modvar-and-sepvar-methods-compared-to-assumption-of-equal-variances">Advantages of <code>ModVar</code> and <code>SepVar</code> methods compared to assumption of equal variances</a></li>
+<li><a href="#bootstrapping-under-unequal-variances">Bootstrapping under unequal variances</a></li>
+<li><a href="#advantages-of-unequal-and-model-methods-compared-to-assumption-of-equal-variances">Advantages of <code>unequal</code> and <code>model</code> methods compared to assumption of equal variances</a></li>
 </ul></li>
+<li><a href="#effect-size-for-off-axis-points">Effect size for off-axis points</a>
+<ul>
+<li><a href="#confidence-interval">Confidence interval</a></li>
+<li><a href="#standard-error">Standard error</a></li>
+<li><a href="#single-effect-measure">Single effect measure</a></li>
+</ul></li>
+<li><a href="#on-resampling-residuals">On resampling residuals</a></li>
 </ul>
 </div>
 
@@ -319,7 +327,7 @@ y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) - \tilde{f_1}(d_1
 </div>
 <div id="alternative-loewe-generalization" class="section level3">
 <h3>Alternative Loewe Generalization</h3>
-<p>An alternative generalization of Loewe Additivity for the case of diferent asymptotes can be defined as a combination of Loewe and HSA approaches as follows:</p>
+<p>An alternative generalization of Loewe Additivity for the case of different asymptotes can be defined as a combination of Loewe and HSA approaches as follows:</p>
 <p>In a classical Loewe equation, predicted response <span class="math inline">\(y\)</span> at a given dose combination <span class="math inline">\((d_1, d_2)\)</span> can be found by solving the equation:</p>
 <p><span class="math display">\[ \frac{d_1}{D_1(y)} + \frac{d_2}{D_2(y)} = 1, \]</span></p>
 <p>where <span class="math inline">\(D_i(y) = \operatorname{EC50}_{i}\left(\frac{y-b}{m_i-y}\right)^{\frac{1}{|h_i|}}\)</span>, for <span class="math inline">\(i = 1, 2\)</span> is the dose of the <span class="math inline">\(i\)</span>-th compound that gives response <span class="math inline">\(y\)</span>. Note that here <span class="math inline">\(D_i\)</span> is properly defined only if <span class="math inline">\(y\)</span> is between <span class="math inline">\(b\)</span> and <span class="math inline">\(m_i\)</span>.</p>
@@ -367,21 +375,21 @@ r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 <div id="synergy-evaluation-in-case-of-variance-heterogeneity" class="section level2">
 <h2>Synergy evaluation in case of variance heterogeneity</h2>
 <p>In the methodology described above one important assumption is made regarding the variance of the on- and off-axis dose combinations. It is considered to be equal across all points. This assumption is also mentioned in the original article and its technical supplement.</p>
-<p>In reality it is often seen that the variance of the monotherapies is not equal to the variance of the off-axis combinations. The assumption of equal variances is thus not always valid. That is why the <code>meanR</code> and <code>maxR</code> test-statistics can also estimate the variances for on-axis (monotherapies) and off-axis dose-combinations separately. Two extra methods are described below: the <code>SepVar</code> method (Separated variance) and the <code>ModVar</code> method (Modeled variance). For both methods replicates are required and no variance-stabilizing transformations are required. The latter is often necessary when assuming equal variances.</p>
+<p>In reality it is often seen that the variance of the monotherapies is not equal to the variance of the off-axis combinations. The assumption of equal variances is thus not always valid. That is why the <code>meanR</code> and <code>maxR</code> test-statistics can also estimate the variances for on-axis (monotherapies) and off-axis dose-combinations separately. Two extra methods are described below: the <code>unequal</code> method (Separated variance) and the <code>model</code> method (Modeled variance). For both methods replicates are required and no variance-stabilizing transformations are required. The latter is often necessary when assuming equal variances.</p>
 <div id="adapted-meanr" class="section level3">
 <h3>Adapted <code>meanR</code></h3>
-<p>The adapted <code>meanR</code> test uses two separate variance estimates for (a) the monotherapies (= <span class="math inline">\(\sigma^{2}_{0}\)</span>) and (b) the dose combinations (= <span class="math inline">\(\Sigma_{1}\)</span>, a diagonal matrix). The notation for both <code>SepVar</code> as <code>ModVar</code> will be the same, but the estimation of <span class="math inline">\(\Sigma_{1}\)</span> will be different. The variance of the monotherapies <span class="math inline">\(\sigma^{2}_{0}\)</span> is estimated as <span class="math inline">\(\sigma^{2}\)</span> above by taking the MSE of the null model. The test statistic is given by:</p>
+<p>The adapted <code>meanR</code> test uses two separate variance estimates for (a) the monotherapies (= <span class="math inline">\(\sigma^{2}_{0}\)</span>) and (b) the dose combinations (= <span class="math inline">\(\Sigma_{1}\)</span>, a diagonal matrix). The notation for both <code>unequal</code> as <code>model</code> will be the same, but the estimation of <span class="math inline">\(\Sigma_{1}\)</span> will be different. The variance of the monotherapies <span class="math inline">\(\sigma^{2}_{0}\)</span> is estimated as <span class="math inline">\(\sigma^{2}\)</span> above by taking the MSE of the null model. The test statistic is given by:</p>
 <p><span class="math display">\[
 \operatorname{TestStat} = \frac{R^{T}\left(\Sigma_{1}D + \sigma^{2}_{0}C_{p}\right)^{-1}R}{n_{1}}
 \]</span></p>
 <ol style="list-style-type: decimal">
-<li><p><strong><code>SepVar</code> method</strong>: The variance for the dose combinations is estimated by taking the variance in each dose combination and then taking the mean of all these variances, thus <span class="math inline">\(\Sigma_{1} = \sigma^2_1 I_{n_1}\)</span>. The downside of this method is that the variance for all combinations is assumed to be equal. In reality the variance often depends on the mean effect. This is taken into account in the <code>ModVar</code> method.</p></li>
-<li><p><strong><code>ModVar</code> method</strong>: In this method the diagonal elements of <span class="math inline">\(\Sigma_{1}\)</span> are no longer estimated as single number but rather as a vector of variances. Each off-axis point has now its own variance. A linear model is fitted on the original dataset, modeling the variance of each off-axis point as a function of its mean effect. The estimated model parameters are then used to predict the variance for the corresponding mean effect measured for that dose combination. These predicted variances are placed in the diagonal of <span class="math inline">\(\Sigma_{1}\)</span>.</p></li>
+<li><p><strong><code>unequal</code> method</strong>: The variance for the dose combinations is estimated by taking the variance in each dose combination and then taking the mean of all these variances, thus <span class="math inline">\(\Sigma_{1} = \sigma^2_1 I_{n_1}\)</span>. The downside of this method is that the variance for all combinations is assumed to be equal. In reality the variance often depends on the mean effect. This is taken into account in the <code>model</code> method.</p></li>
+<li><p><strong><code>model</code> method</strong>: In this method the diagonal elements of <span class="math inline">\(\Sigma_{1}\)</span> are no longer estimated as single number but rather as a vector of variances. Each off-axis point has now its own variance. A linear model is fitted on the original dataset, modeling the variance of each off-axis point as a function of its mean effect. The estimated model parameters are then used to predict the variance for the corresponding mean effect measured for that dose combination. These predicted variances are placed in the diagonal of <span class="math inline">\(\Sigma_{1}\)</span>. Modelling the variance with a linear model may require a transformation, to achieve a better fit and to avoid negative variances being modelled. A log-transformation often makes a good impression.</p></li>
 </ol>
 </div>
 <div id="adapted-maxr" class="section level3">
 <h3>Adapted <code>maxR</code></h3>
-<p>The same approach is taken for the adapted <code>maxR</code> test statistic. Instead of using one estimated variance for both on- and off-axis points, two separate estimates are used. The estimates for <span class="math inline">\(\Sigma_{1}\)</span> are different depending on the method used (<code>ModVar</code> or <code>SepVar</code>). The methodology of estimating the variance is the same as was described in the “Adapted <code>meanR</code>” section above.</p>
+<p>The same approach is taken for the adapted <code>maxR</code> test statistic. Instead of using one estimated variance for both on- and off-axis points, two separate estimates are used. The estimates for <span class="math inline">\(\Sigma_{1}\)</span> are different depending on the method used (<code>unequal</code> or <code>model</code>). The methodology of estimating the variance is the same as was described in the “Adapted <code>meanR</code>” section above.</p>
 <p>The <code>maxR</code> test becomes</p>
 <p><span class="math display">\[
 \max \left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right|  \sim \max \left| Z_{1}, \dots, Z_{k} \right|
@@ -390,11 +398,82 @@ r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 \operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right| \right]_{k}
 \]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate.</p>
 </div>
-<div id="advantages-of-modvar-and-sepvar-methods-compared-to-assumption-of-equal-variances" class="section level3">
-<h3>Advantages of <code>ModVar</code> and <code>SepVar</code> methods compared to assumption of equal variances</h3>
-<p>The assumption of equal variances between monotherapies and off-axis dose-combinations fails to control the type I error rate around pre-specified level, when the variance of off-axis points increases (natural variance or outliers). This results in false positive synergy calls when in reality there were none. Both the <code>SepVar</code> and the <code>ModVar</code> methods control the type I error rate far better, with slightly better results obtained by the <code>ModVar</code> method.</p>
+<div id="bootstrapping-under-unequal-variances" class="section level3">
+<h3>Bootstrapping under unequal variances</h3>
+<p>In case of the <code>unequal</code> variance assumption, the bootstrap proceeds as before, with the off-axis residuals being pooled and resampled. With the <code>model</code> assumption, the resampling is more complicated, as the residuals are no longer exchangeable. One option is to rescale the observed residuals according to the mean-variance model (i.e. dividing them by their standard deviations), resample from this pool of standardized residuals, and then scale back to the true variance (by multiplying by the standard deviation). Yet this approach has proven to be unstable as it leads to extreme observations. An alternative (the default) is to generate zero-mean normal data with the modelled variances (see the <code>rescaleResids</code> argument in <code>fitSurface()</code>).</p>
+</div>
+<div id="advantages-of-unequal-and-model-methods-compared-to-assumption-of-equal-variances" class="section level3">
+<h3>Advantages of <code>unequal</code> and <code>model</code> methods compared to assumption of equal variances</h3>
+<p>The assumption of equal variances between monotherapies and off-axis dose-combinations fails to control the type I error rate around pre-specified level, when the variance of off-axis points increases (natural variance or outliers). This results in false positive synergy calls when in reality there were none. Both the <code>unequal</code> and the <code>model</code> methods control the type I error rate far better, with slightly better results obtained by the <code>model</code> method.</p>
 <p>Furthermore, the sensitivity and specificity of the <code>maxR</code> test statistics are higher with the methods assuming variance heterogeneity compared to the methods where equal variances are assumed.</p>
 </div>
+</div>
+<div id="effect-size-for-off-axis-points" class="section level2">
+<h2>Effect size for off-axis points</h2>
+<p>As with many statistical tests, the researcher may not only be interested in a measure of significance (e.g. a p-value), but also in a measure of effect size, and a measure of the imprecision of this estimated effect size. Here we develop confidence intervals for two types of effect sizes. The first is a pointwise effect size, which is defined at every off axis point as the difference between the true mean response and the expected response under additivity. It is estimated as <span class="math inline">\(E_{i} = \frac{1}{n_i}\sum_{j=1}^{n_i}(R_{ij}-\hat{R}_i)\)</span> with <span class="math inline">\(j=1, ..., n_i\)</span>, for every off-axis point <span class="math inline">\(i=1, ..., n_1\)</span>, whereby we strive to achieve a simultaneous coverage for all off-axis points of 95%.</p>
+<div id="confidence-interval" class="section level3">
+<h3>Confidence interval</h3>
+<p>Let <span class="math inline">\(e_i\)</span> denote the true effect size on off axis point <span class="math inline">\(i\)</span>, and call <span class="math inline">\(E_{i}\)</span> its estimate based on the data. Relying on the asymptotic normality of the estimator, an approximate (asymptotic) confidence interval would be formed as the set:</p>
+<p><span class="math display">\[\begin{equation}
+  \left\{ e: \left\vert \frac{E_{i}-e_i}{\hat{s}_i} \right\vert &lt; z_{\alpha/2} \right\}
+\end{equation}\]</span></p>
+<p>with <span class="math inline">\(\hat{s}_i\)</span> the estimated standard error of <span class="math inline">\(E_i\)</span>, and <span class="math inline">\(z_{\alpha/2}\)</span> the <span class="math inline">\(1-\alpha/2\)</span> quantile of the standard normal distribution.</p>
+<p>We know, however, from the meanR and maxR tests that the asymptotic distributions provide poor approximations. Therefore, we use the bootstrap here too to build the confidence intervals.</p>
+<p>For every bootstrap instance, bootstrap observations are sampled for on- as well as off axis points. For the on-axis points, a parametric bootstrap based on the estimated monothereapy curves is used, as for the calculation of the meanR and maxR statistics. Based on these on-axis bootstrap samples, new monotherapy curves are fitted with resulting residual variances bootstrap variance <span class="math inline">\(MSE_0^b\)</span>, and corresponding response surfaces with expected outcomes $_i^b $ are derived. For the off-axis points, with <span class="math inline">\(n_i\)</span> replicates at a given point, <span class="math inline">\(A_{ij} = R_{ij} - \bar{R}_i\)</span> are the pointwise residuals <span class="math inline">\(j = 1, ..., n_i\)</span>. Here <span class="math inline">\(R_{ij}\)</span> is the observed outcome and <span class="math inline">\(\bar{R}_i\)</span>, the average outcome at point <span class="math inline">\(i\)</span>, serves as an unbiased estimator of the true response. Note that these residuals are different from the residuals <span class="math inline">\(E_i = \bar{R}_i-\hat{R}_i\)</span> used to construct the test statistics; for <span class="math inline">\(A_{ij}\)</span> the departure with respect to the mean outcome at that off-axis point is used. These residuals are resampled with replacement from the observed residuals, possibly using rescaling as explained below. The resampled residuals are then added to the estimated effect sizes to obtain bootstrapped observations <span class="math inline">\(R_{ij}^b = \bar{R}_i + A_{ij}^b\)</span>, with <span class="math inline">\(b = 1, ...,B\)</span> denoting the bootstrap instance. This leads to the bootstrap effect sizes <span class="math inline">\(E^b_i = \bar{R}_i^b-\hat{R}_i^b\)</span> and test statistics <span class="math inline">\(\left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert\)</span>, using the standard deviations <span class="math inline">\(\hat{s}_i^b\)</span> from the bootstrap.</p>
+<p>Over all bootstrap instances, we then find the distribution of</p>
+<p><span class="math display">\[\begin{equation}
+  T = \max_i \left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert
+\end{equation}\]</span></p>
+<p>Call <span class="math inline">\(t_\alpha\)</span> the threshold such that <span class="math display">\[\begin{equation}
+  \text{P}\left\{T&gt;t_\alpha\right\} = \alpha
+\end{equation}\]</span></p>
+<p>Finally, we find for every off-axis point the confidence interval as the collection:</p>
+<p><span class="math display">\[\begin{equation}
+ \left\{ e: \left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert &lt; t_\alpha \right\}
+\end{equation}\]</span></p>
+</div>
+<div id="standard-error" class="section level3">
+<h3>Standard error</h3>
+<p>As an estimate of the standard error we use</p>
+<p><span class="math display">\[\begin{equation}
+    \hat{s}_i^b = \sqrt{\text{diag}(\boldsymbol{F}^b+\text{MSE}_0^b \boldsymbol{C}_p)_i},
+    \label{eq:confIntSe}
+\end{equation}\]</span></p>
+<p>with <span class="math inline">\(\boldsymbol{F}^b\)</span> equal to <span class="math inline">\(\text{MSE}_0^b\boldsymbol{D}\)</span>, <span class="math inline">\(\text{MSE}_1^b\boldsymbol{D}\)</span> or <span class="math inline">\(\boldsymbol{S}^b\)</span>, depending on which variance model is used. This standard error resembles the variance estimators of the meanR and maxR statistics discussed there.</p>
+<p>By using only the diagonal elements of <span class="math inline">\(\boldsymbol{F}^b\)</span>, we ignore the covariance between test statistics. We will use the studentised-range concept (which is also central to Tukey’s method for multiple testing) for controlling the family-wise error rate (FWER). For the covariance matrix <span class="math inline">\(\boldsymbol{C}_p\)</span> we use the one estimated for the observed data. This matrix turns out to be quite stable over the bootstrap runs; moreover the calculation of the matrix for each bootstrap sample would imply a time-consuming nested bootstrap procedure. On the other hand, <span class="math inline">\(MSE_0^b\)</span> is re-estimated with each bootstrap sample. Also <span class="math inline">\(\boldsymbol{F}^b\)</span> is re-estimated based on the bootstrapped data.</p>
+</div>
+<div id="single-effect-measure" class="section level3">
+<h3>Single effect measure</h3>
+<p>Researchers may also want to have a single measure for the strength of the synergy for a single experiment, e.g. in view of ranking compound combinations according to their synergistic effect. For this we calculate the average of the pointwise off-axis effect sizes. This is estimated as <span class="math inline">\(\bar{E} = \frac{1}{\sum_{i= 1}^{n_1}n_i }\sum_{i=1}^{n_1}\sum_{j= 1}^{n_i}(R_{ij}-\hat{R}_i)\)</span>. It may be considered as a measure of the “volume” between the expected and observed response surfaces, similar to the “integrated synergy” of . Note that this effect size may cause synergistic and antagonistic points to cancel out against one another, but we believe this scenario is unlikely. As before we would like a measure of imprecision for this effect size.</p>
+<div id="confidence-interval-1" class="section level4">
+<h4>Confidence interval</h4>
+<p>The construction of the bootstrap confidence interval for the single effect size follows the general procedure for bootstrap-t confidence intervals . Let <span class="math inline">\(\boldsymbol{F}\)</span> denote the estimated covariance matrix of the raw residuals as before.</p>
+<p>Using Equation  in the main text and the fact that</p>
+<p><span class="math display">\[\begin{equation}
+\mbox{Var}\left\{\bar{E}\right\} = \mbox{Var}\left\{\frac{1}{n_1}\sum_{i=1}^{n_1} E_i\right\} = \frac{1}{n_1^2}\left(\sum_{i=1}^{n_1} \mbox{Var}\left\{E_i\right\} + \sum_{i=1}^{n_1}\sum_{j=1}^{n_1}\mbox{Cov}\left\{E_i, E_j\right\}\right),
+    \label{eq:varE}
+\end{equation}\]</span></p>
+<p>the standard error of <span class="math inline">\(\bar{E}\)</span> is <span class="math inline">\(se(\bar{E}) = \frac{1}{n_1}\sqrt{\sum_{f \in \boldsymbol{F}} f}\)</span>. We obtain bootstrapped data for on- and off-axis points for bootstrap instances <span class="math inline">\(b=1, ..., B\)</span>, and calculate the corresponding mean residual and standard error <span class="math inline">\(\bar{E}_b\)</span> and <span class="math inline">\(se(\bar{E}_b)\)</span>. Then define the statistic</p>
+<p><span class="math display">\[\begin{equation}
+    Q_b = \frac{\bar{E}_b-\bar{E}}{se(\bar{E}_b)}
+    \label{eq:confIntSingle}
+\end{equation}\]</span></p>
+<p>Note that <span class="math inline">\(se(\bar{E}_b)\)</span> relies on the bootstrap covariance matrix <span class="math inline">\(\boldsymbol{F}^b\)</span>. Call (<span class="math inline">\(q_{\alpha/2}\)</span>, <span class="math inline">\(q_{1-\alpha/2}\)</span>) the quantiles of the bootstrap distribution such that <span class="math display">\[\begin{equation}
+  \text{P}\left\{Q_b&lt;q_{\alpha/2}\right\} = \text{P}\left\{Q_b&gt;q_{1-\alpha/2} \right\} = \alpha/2
+\end{equation}\]</span></p>
+<p>Finally, we find the confidence interval as</p>
+<p><span class="math display">\[\begin{equation} 
+ \bar{E} - se(\bar{E}_b)q_{\alpha/2}, \bar{E} + se(\bar{E}_b)q_{1-\alpha/2}
+\end{equation}\]</span></p>
+<p>Of course, this procedure can easily be adapted to find the sum of all raw residuals, but the mean may be better comparable across experiments with different designs.</p>
+</div>
+</div>
+</div>
+<div id="on-resampling-residuals" class="section level2">
+<h2>On resampling residuals</h2>
+<p>Depending on the mean-variance structure in the data, residuals are resampled differently. The same strategies are used for resampling 1) residuals with respect to the expected response surface <span class="math inline">\(R_{ij}\)</span> under the null hypothesis for the meanR and maxR statistics as for 2) residuals <span class="math inline">\(A_{ij}\)</span> with respect to the average at the off-axis point under the alternative hypothesis for constructing the confidence intervals. In the description below, we use <span class="math inline">\(U_{ij}\)</span> as generic notation for either <span class="math inline">\(R_{ij}\)</span> or <span class="math inline">\(A_{ij}\)</span>.</p>
+<p>In case of constant variability within the off-axis points, the residuals <span class="math inline">\(U_{ij}\)</span> can simply be pooled and resampled with replacement.</p>
+<p>When a linear mean-variance structure is assumed, one option is to rescale the pointwise residuals first to <span class="math inline">\(b_{ij} = \frac{U_{ij}}{\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}}\)</span>, then pool and resample them, and then scale them back to <span class="math inline">\(b_{ij}\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}\)</span> according to their new position <span class="math inline">\(i\)</span>. Yet in practice this leads to extreme observations, which destabilizes the fitting procedure. A second option is to use random draws from a zero-mean normal distribution with the modelled variance <span class="math inline">\(v^{-1}(\beta_0+\beta_1\mu_i)\)</span> to generate new <span class="math inline">\(U_{ij}\)</span>’s. This latter option was found to be more stable and is used as a default in the BIGL package.</p>
 </div>
 
 
