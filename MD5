@@ -1,4 +1,4 @@
-756f1ec2eaaef33c33f0f20aca52a32e *DESCRIPTION
+2a00a0922efb018455afa126f94fdc62 *DESCRIPTION
 4cf7f2a94072a7ef5cde72deaaec0912 *NAMESPACE
 24e4877463b7ab26f12168e0ccee6a87 *R/Blissindependence.R
 6f0c79b94fd0472ec762a8282d4a5f67 *R/MarginalFit-methods.R
@@ -26,18 +26,18 @@ d0f57201332a5aa9d7da91c2ae69b0c0 *R/plotMeanVarFit.R
 9d3fd90d5a1c62130b479b00a118950b *R/predictOffAxis.R
 e3a19cbcd3eed16da06c52378918b1d0 *R/predictResponseSurface.R
 8cb3a2290e3db4280787b6090d99d056 *R/runBIGL.R
-70adf11562c60dba1bc292b0e9887a99 *R/scaleResids.R
+b71e3507904f03fae59d3cf478337761 *R/scaleResids.R
 9191f9324215de77753fea9dd39b542c *R/statistics.R
 9c23bfcedcb6a9a37b49b021d00ee096 *R/transformations.R
 7ee5968ebef2daf89a86fcbc770f3196 *build/vignette.rds
 0f67a5bd309c196fc18f1f9d6d60a63c *data/directAntivirals.RData
 9608b3c946e3f6b8443b66f0f472e435 *data/directAntivirals_ALL.RData
-0f751c878813d5abc2e8d029bb9836e8 *inst/NEWS
+7d05a8436645da4b50508e2e99bb0680 *inst/NEWS
 bce569a0c62eff35e7a4a884606d9c4a *inst/doc/analysis.R
 c57becb67dc87e51b7f30fea3404543d *inst/doc/analysis.Rmd
-c167f6c4f9d2ffc41a02dcd0f563bb59 *inst/doc/analysis.html
+4d14677468533eaddeb12f4db62ba39e *inst/doc/analysis.html
 d5717ccd0cf2a11478b2754665878ffd *inst/doc/methodology.Rmd
-67fdbf244b82ffc9f7f0c4d03565f6c4 *inst/doc/methodology.html
+4dd28527b4f5ea36b4d44659de871a1e *inst/doc/methodology.html
 33e134789ba451028f718adbc517fb9b *inst/ui/server.R
 e4c59ef3facb2f5216a48012e017cef3 *inst/ui/ui.R
 75e846d0c4891e5b16cecf3344364409 *man/Blissindependence.Rd
@@ -104,7 +104,7 @@ aba063260056457776daab98b68cb485 *man/summary.ResponseSurface.Rd
 caab2bba11ea1d713992cc93a67656f5 *man/summary.maxR.Rd
 704b18ad7a635eb351cbfdd3fc122c2c *man/summary.meanR.Rd
 331297f2336310524148bfb3e8617d72 *man/vcov.MarginalFit.Rd
-45dde6b66d75437fb3d99098a311539d *tests/testthat.R
+6d18ce06ace52d60c89f3d188b25a815 *tests/testthat.R
 ae79a511d1fa07b342400137eb1ffa76 *tests/testthat/helper_calls.R
 9c138f17a0996408a43f71f51358c37d *tests/testthat/helper_marginals.R
 5ac7142d94785bb42bdbef5d457c97cb *tests/testthat/helper_statistics.R
