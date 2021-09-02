@@ -5,6 +5,12 @@ library(rgl)
 library(ggplot2)
 set.seed(12345)
 
+if (!requireNamespace("rmarkdown", quietly = TRUE) || !rmarkdown::pandoc_available("1.14")) {
+  warning(call. = FALSE, "These vignettes assume rmarkdown and pandoc
+          version 1.14. These were not found. Older versions will not work.")
+  knitr::knit_exit()
+}
+
 ## ----settings-----------------------------------------------------------------
 nExp <- 4             # Dataset has 11 experiments, we consider only 4
 cutoff <- 0.95        # Cutoff for p-values to use in plot.maxR() function
