@@ -62,10 +62,10 @@ plot(marginalFit) + ggtitle(paste("Direct-acting antivirals - Experiment" , i))
 
 ## ----marginalFitC, eval = FALSE-----------------------------------------------
 #  ## Parameter ordering: h1, h2, b, m1, m2, e1, e2
-#  ## Constraint 1: m1 = m2. Constraint 2: b = 10.
+#  ## Constraint 1: m1 = m2. Constraint 2: b = 0.1
 #  constraints <- list("matrix" = rbind(c(0, 0, 0, -1, 1, 0, 0),
 #                                       c(0, 0, 1, 0, 0, 0, 0)),
-#                      "vector" = c(0, 10))
+#                      "vector" = c(0, 0.1))
 #  
 #  ## Parameter estimates will now satisfy equality:
 #  ##   constraints$matrix %*% pars == constraints$vector
@@ -73,9 +73,9 @@ plot(marginalFit) + ggtitle(paste("Direct-acting antivirals - Experiment" , i))
 #               constraints = constraints)
 
 ## ----marginalFitFixed, eval = FALSE-------------------------------------------
-#  ## Set baseline at 1 and maximal responses at 0.
+#  ## Set baseline at 0.1 and maximal responses at 0.
 #  fitMarginals(data, transforms = transforms,
-#               fixed = c("m1" = 0, "m2" = 0, "b" = 1))
+#               fixed = c("m1" = 0, "m2" = 0, "b" = 0.1))
 
 ## ----fallback, eval = FALSE---------------------------------------------------
 #  nlslmFit <- tryCatch({
