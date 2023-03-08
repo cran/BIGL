@@ -1,7 +1,6 @@
 ## ----init, message = FALSE----------------------------------------------------
 library(BIGL)
 library(knitr)
-library(rgl)
 library(ggplot2)
 set.seed(12345)
 
@@ -111,8 +110,6 @@ isobologram(rs)
 
 ## ----plot3d, warning=FALSE, fig.align="center", fig.height=7, fig.width=7-----
 plot(rs, legend = FALSE, main = "")
-view3d(0, -75)
-rglwidget()
 
 ## ----analysis_hsa, message=FALSE, comment = NA--------------------------------
 rsh <- fitSurface(data, marginalFit,
@@ -168,14 +165,13 @@ kable(outPts, caption = paste0("Non-additive points for Experiment ", i))
 
 ## ----maxcontour, fig.align="center", fig.width=6, fig.height=5----------------
 contour(maxR_B,
-         ## colorPalette = c("blue", "black", "black", "red"),
+       colorPalette = c("blue", "white", "red"),
         main = paste0(" Experiment ", i, " contour plot for maxR"),
-        scientific = TRUE, digits = 3, cutoff = cutoff)
+        scientific = TRUE, digits = 3, cutoff = cutoff
+)
 
 ## ----plot3dmax, warning=FALSE, fig.height=7, fig.width=7----------------------
 plot(maxR_B, color = "maxR", legend = FALSE, main = "")
-view3d(0, -75)
-rglwidget()
 
 ## ----summarySingleConfInt-----------------------------------------------------
 summary(maxR_B$confInt)
