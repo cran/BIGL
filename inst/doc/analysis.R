@@ -129,6 +129,15 @@ rsl2 <- fitSurface(data, marginalFit,
                   B.CP = 50, statistic = "both", parallel = FALSE)
 summary(rsl2)
 
+## ----plot_2d_cross_section, message=FALSE, comment = NA, fig.width = 8, fig.height = 6----
+nullModels <- c("loewe", "loewe2", "bliss", "hsa")
+rs_list <- Map(fitSurface, null_model = nullModels, MoreArgs = list(
+        data = data, fitResult = marginalFit, 
+        B.CP = 50, statistic = "none", parallel = FALSE)
+)
+
+synergy_plot_bycomp(rs_list, ylab = "Response", plotBy = "Drug A", color = TRUE)
+
 ## ----meanrnorm, message = FALSE-----------------------------------------------
 meanR_N <- fitSurface(data, marginalFit,
                       statistic = "meanR", CP = rs$CP, B.B = NULL,
@@ -176,8 +185,20 @@ plot(maxR_B, color = "maxR", legend = FALSE, main = "")
 ## ----summarySingleConfInt-----------------------------------------------------
 summary(maxR_B$confInt)
 
-## ----plotSingleConfInt, fig.height=5, fig.width=6-----------------------------
+## ----plotSingleConfInt, fig.height=5, fig.width=8-----------------------------
 plotConfInt(maxR_B, color = "effect-size")
+
+## ----contour_effectsize, warning=FALSE, fig.align="center", fig.width=6, fig.height=5, message=FALSE, comment = NA----
+contour(
+    maxR_B,
+    colorPalette = c("Syn" = "blue", "None" = "white", "Ant" = "red"),
+    main = paste0(" Experiment ", i, " contour plot for effect size"),
+    color = "effect-size",
+    scientific = TRUE, digits = 3, cutoff = cutoff
+)
+
+## ----plot3d_effectsize, warning=FALSE, fig.height=7, fig.width=7, message=FALSE, comment = NA----
+plot(maxR_B, color = "effect-size", legend = FALSE, main = "", gradient = FALSE)
 
 ## ----heterogenanalysis, fig.width=6, fig.height=5-----------------------------
 marginalFit <- fitMarginals(data, transforms = NULL)
