@@ -16,6 +16,9 @@
  },
   digits,
   digitsFunc,
+  reverse.x = FALSE,
+  reverse.y = FALSE,
+  swapAxes = FALSE,
   ...
 )
 }
@@ -39,6 +42,12 @@
 \item{digits}{Numeric value indicating the number of digits used for numeric values. Whether \code{digitsFunc} is provided, this will be ignored.}
 
 \item{digitsFunc}{Function to be applied to numeric values like doses. This expects a single parameter.}
+
+\item{reverse.x}{Reverse x axis?}
+
+\item{reverse.y}{Reverse y axis?}
+
+\item{swapAxes}{Swap x and y axes?}
 
 \item{...}{Further arguments that are passed to \code{\link{format}} function
 for formatting of axis labels}

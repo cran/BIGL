@@ -33,6 +33,7 @@ plotResponseSurface(
   digitsFunc = function(x) {
      x
  },
+  reverse = FALSE,
   ...
 )
 }
@@ -57,7 +58,7 @@ one of the available null models, i.e. \code{"loewe"}, \code{"hsa"},
 
 \item{colorBy}{This parameter determines values on which coloring is based
 for the 3-dimensional surface. If matrix or a data frame with \code{d1} and
-{d2} columns is supplied, dose combinations from \code{colorBy} will be
+\code{d2} columns is supplied, dose combinations from \code{colorBy} will be
 matched automatically to the appropriate dose combinations in \code{data}.
 Unmatched dose combinations will be set to 0. This is especially useful for
 plotting results for off-axis estimates only, e.g. off-axis Z-scores or
@@ -113,6 +114,8 @@ If FALSE, \code{colorPalette} must contain length(breaks)-1 colours}
 \item{title}{String title (default "")}
 
 \item{digitsFunc}{Function to be applied to the axis values}
+
+\item{reverse}{Boolean indicating whether colours should be reversed (default FALSE).}
 
 \item{...}{Further arguments to format axis labels}
 }

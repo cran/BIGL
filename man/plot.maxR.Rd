@@ -17,6 +17,9 @@
   plevels = c(0.7, 0.8, 0.9, 0.95, 0.99, 0.999),
   cutoff = max(plevels),
   maxshow = NULL,
+  reverse.x = FALSE,
+  reverse.y = FALSE,
+  swapAxes = FALSE,
   ...
 )
 }
@@ -43,6 +46,12 @@ identity function is used.}
 \item{cutoff}{Probability cutoff to use for range of colors}
 
 \item{maxshow}{Forced value for range of colors}
+
+\item{reverse.x}{Reverse x axis?}
+
+\item{reverse.y}{Reverse y axis?}
+
+\item{swapAxes}{Swap x and y axes?}
 
 \item{...}{Further arguments that are passed to \code{\link{format}} function
 for formatting of axis labels}

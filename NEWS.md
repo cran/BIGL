@@ -1,3 +1,12 @@
+# BIGL 1.9.0 (2023-10-26)
+
+- reverse and swap axes for contour plot and effect sizes plot
+- add normal, gamma and two-point distributions to wild_bootstrap methodology
+- control (directional) False Coverage Rate in addition to Family Wise Error Rate 
+- add options to plot in grey scale
+- use Experiment 4 in vignette
+- warn about pending deprecation of transformations
+
 # BIGL 1.8.0 (2023-06-13)
 
 - new function `synergy_plot_bycomp()` to create plots for 2D cross-section of response surfaces from different null models

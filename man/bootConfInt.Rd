@@ -25,6 +25,10 @@ bootConfInt(
   invTransFun,
   model,
   rescaleResids,
+  wild_bootstrap,
+  wild_bootType,
+  control,
+  digits,
   ...
 )
 }
@@ -98,6 +102,20 @@ calculation of the confidence intervals?}
 
 \item{rescaleResids}{a boolean indicating whether to rescale residuals,
 or else normality of the residuals is assumed.}
+
+\item{wild_bootstrap}{Whether special bootstrap to correct for
+heteroskedasticity should be used. If \code{wild_bootstrap = TRUE}, errors
+are generated from \code{sampling_errors} multiplied by a random variable
+following Rademacher distribution. Argument is used only if \code{error = 4}.}
+
+\item{wild_bootType}{Type of distribution to be used for wild bootstrap. If \code{wild_bootstrap = TRUE}, 
+errors are generated from "rademacher", "gamma", "normal" or "two-point" distribution.}
+
+\item{control}{If \code{control = "FCR"} then algorithm controls false coverage rate, if \code{control = "dFCR"} then 
+algorithm controls directional false coverage rate, if \code{control = "FWER"} then 
+algorithm controls family wise error rate}
+
+\item{digits}{Numeric value indicating the number of digits used for numeric values in confidence intervals}
 
 \item{...}{Further arguments that will be later passed to
 \code{\link{generateData}} function during bootstrapping}

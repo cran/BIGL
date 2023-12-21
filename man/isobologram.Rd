@@ -4,7 +4,7 @@
 \alias{isobologram}
 \title{Isobologram of the response surface predicted by the null model}
 \usage{
-isobologram(x, grid.len = 100, logScale = TRUE, ...)
+isobologram(x, grid.len = 100, logScale = TRUE, greyScale = FALSE, ...)
 }
 \arguments{
 \item{x}{Output of \code{\link{fitSurface}}}
@@ -17,6 +17,9 @@ stay reasonably low.}
 
 \item{logScale}{If \code{logScale = TRUE}, then grid of doses is evenly
 spaced in the logarithmic scale.}
+
+\item{greyScale}{If \code{greyScale = TRUE}, then plot is in grey scale,
+otherwise in colour.}
 
 \item{...}{Further parameters that are not used at this moment.}
 }

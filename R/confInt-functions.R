@@ -53,11 +53,13 @@ print.summary.BIGLconfInt <- function(x, ...) {
 #' @param digits Numeric value indicating the number of digits used for numeric values
 #' @param xlab String for the x axis label
 #' @param ylab String for the y axis label
+#' @param greyScale If \code{greyScale = TRUE}, then plot is in grey scale,
+#'   otherwise in colour.
 #' @param ... additional arguments, currently ignored
 #' @importFrom stats setNames
 #' @export
 #' @note written after the contour() function in the \code{drugCombo} package
-plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 3, xlab, ylab, ...) {
+plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 3, xlab, ylab, greyScale = FALSE, ...) {
   
   if (missing(xlab)) xlab <- sprintf("Dose (%s)", x$names[1])
   if (missing(ylab)) ylab <- sprintf("Dose (%s)", x$names[2])
@@ -73,7 +75,7 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
     
     x <- merge(synOut, effectOut, by = c("d1","d2"))
   } else {
-    x <- x$offAxis
+    x <- x$confInt$offAxis
     names(x)[names(x) == "call"] <- "effectCall"
     #show doses on equidistant grid
     d1d2 <- rownames(x)
@@ -91,10 +93,15 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
     x$synLabel <- factor(x$synCall, labels = synCalls, levels = c("None", "Ant", "Syn"))
   }
   
-  legendColors <- c("white", "pink", "lightblue")
+  if(greyScale){
+    legendColors <- c("grey70", "#636363", "#FEFCFF")
+  } else {
+    legendColors <- c("white", "pink", "lightblue")
+  }
+  
   names(legendColors) <- synCalls
   # subset to only the colors that are present in the data
-  legendColors <- legendColors[names(legendColors) %in% as.character(unique(x$synLabel))]
+  # legendColors <- legendColors[names(legendColors) %in% as.character(unique(x$synLabel))]
   
   # text to show
   fmt <- sprintf("%%.%if\n(%%.%if, %%.%if)", digits, digits, digits)
@@ -120,10 +127,11 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
     scale_x_discrete(labels = format(as.numeric(levels(x$d1)), digits = digits)) +
     scale_y_discrete(labels = format(as.numeric(levels(x$d2)), digits = digits)) +
     scale_fill_manual(values = legendColors,
-                      guide = "none") +
+                      guide = "none", drop = FALSE) +
     scale_color_manual( # for a nicer legend
       values = setNames(1:3, nm = synCalls),
       limits = force,
+      drop = FALSE,
       guide = guide_legend(title = "call:",
                            override.aes = list(alpha = 1, shape = 22, size = 8, color = "grey",
                                                fill = legendColors))

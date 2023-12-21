@@ -16,6 +16,7 @@ generateData(
   model = NULL,
   method = "equal",
   wild_bootstrap = FALSE,
+  wild_bootType = "normal",
   rescaleResids,
   invTransFun,
   newtonRaphson = FALSE,
@@ -78,6 +79,9 @@ effect of an off-axis point. If no transformations are used the
 heteroskedasticity should be used. If \code{wild_bootstrap = TRUE}, errors
 are generated from \code{sampling_errors} multiplied by a random variable
 following Rademacher distribution. Argument is used only if \code{error = 4}.}
+
+\item{wild_bootType}{Type of distribution to be used for wild bootstrap. If \code{wild_bootstrap = TRUE}, 
+errors are generated from "rademacher", "gamma", "normal" or "two-point" distribution.}
 
 \item{rescaleResids}{a boolean indicating whether to rescale residuals,
 or else normality of the residuals is assumed.}

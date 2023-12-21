@@ -4,7 +4,7 @@
 #' @param ... Further arguments
 #' @export
 summary.maxR <- function(object, ...) {
-
+  
   ans <- list()
   ans$call <- object$Call
   ans$points <- outsidePoints(object$Ymean)
@@ -12,7 +12,7 @@ summary.maxR <- function(object, ...) {
                            "Syn" = sum(object$Ymean$call == "Syn"),
                            "Ant" = sum(object$Ymean$call == "Ant"),
                            "Total" = nrow(object$Ymean))
-
+  
   class(ans) <- append("summary.maxR", class(ans))
   ans
 }
@@ -23,12 +23,12 @@ summary.maxR <- function(object, ...) {
 #' @inheritParams summary.maxR
 #' @export
 print.summary.maxR <- function(x, ...) {
-
+  
   if (x$call != "None") {
-
+    
     x$points$`p-value` <- ifelse(x$points$`p-value` < 2e-16, "<2e-16",
                                  round(x$points$`p-value`, 5))
-
+    
     cat("\nEvidence for effects in data: ", x$call, "\n", sep="")
     cat("Points with significant deviations from the null: \n")
     print(x$points)
@@ -51,6 +51,7 @@ print.summary.maxR <- function(x, ...) {
 #' @param ... Further arguments that are passed to \code{\link{format}} function
 #'   for formatting of axis labels
 #' @inheritParams plotResponseSurface
+#' @inheritParams contour.ResponseSurface
 #' @inheritParams graphics::title
 #' @importFrom graphics axis filled.contour points title
 #' @importFrom grDevices extendrange rgb
@@ -61,21 +62,21 @@ plot.maxR <- function(x,
                       colorPalette = c("blue", "white", "red"),
                       logScale = TRUE, zTransform = function(z) { z },
                       plevels = c(0.7, 0.8, 0.9, 0.95, 0.99, 0.999),
-                      cutoff = max(plevels), maxshow = NULL, ...) {
-
+                      cutoff = max(plevels), maxshow = NULL, reverse.x = FALSE, reverse.y = FALSE, swapAxes = FALSE, ...) {
+  
   uniqueDoses <- with(x$Ymean,
                       list("d1" = sort(unique(d1)),
                            "d2" = sort(unique(d2))))
   doseGrid <- expand.grid(uniqueDoses)
-
+  
   log10T <- function(z) log10(z + 0.5 * min(z[z != 0]))
   transformF <- if (logScale) log10T else function(z) z
-
+  
   maxRvalues <- x$Ymean$R
   maxRvalues <- maxRvalues[match(with(doseGrid, paste(d1, d2)),
                                  with(x$Ymean, paste(d1, d2)))]
   maxRvalues[is.na(maxRvalues)] <- 0
-
+  
   if (is.null(maxshow)) {
     ## We show all values above cutoff in the same color
     maxshow <- quantile(attr(x$Ymean, "distr"), cutoff)
@@ -84,57 +85,108 @@ plot.maxR <- function(x,
       warning("No `maxshow` parameter specified, so 3.5 is used.")
     }
   }
-
+  
   origMaxRvalues <- maxRvalues # Keep unchanged for point sizes
   maxRvalues[maxRvalues > maxshow] <- maxshow
   maxRvalues[maxRvalues < -maxshow] <- -maxshow
-
+  
   ## Levels to show on color-scale
   zlevels <- sort(quantile(attr(x$Ymean, "distr"),
                            c(plevels[plevels < cutoff], cutoff)) %o% c(-1,1))
-
-  filled.contour(
-    x = transformF(uniqueDoses$d1),
-    y = transformF(uniqueDoses$d2),
-    z = matrix(maxRvalues, sapply(uniqueDoses, length)),
-    levels = zlevels,
-    color.palette = colorRampPalette(colorPalette, space = "rgb"),
-    plot.axes = {
-      axis(1, at = transformF(uniqueDoses$d1),
-           labels = format(uniqueDoses$d1, ...), cex.axis = 0.8)
-      axis(2, at = transformF(uniqueDoses$d2),
-           labels = format(uniqueDoses$d2, ...), cex.axis = 0.8)
-      points(expand.grid(x = transformF(uniqueDoses$d1),
-                         y = transformF(uniqueDoses$d2)),
-             pch = 20, col = rgb(0, 0, 0, 0.3),
-             ## Size proportional to maxR statistic
-             cex = matrix(abs(origMaxRvalues)/2,
-                          sapply(uniqueDoses, length)))
-    },
-    key.axes = {
-      axis(4, at = c(0, zlevels), tck = -0.1,
-           mgp = c(3, 0.3, 0), cex.axis = 0.7,
-           labels = c(
-             paste0("\u2191",
-                    if (colorPalette[1] == "blue") "Antagonism" else "Synergy",
-                    "\n\n \n\n",
-                    "\u2193",
-                    if (colorPalette[1] == "blue") "Synergy" else "Antagonism"),
-             paste0("\u2264", 1 - cutoff),
-             1 - rev(plevels[plevels < cutoff]),
-             1 - plevels[plevels < cutoff],
-             paste0("\u2264", 1 - cutoff))
-           )
-    },
-    key.title = title(main = "p-values", line = 1, cex.main = 1),
-    xlim = extendrange(transformF(uniqueDoses$d1)),
-    ylim = extendrange(transformF(uniqueDoses$d2)),
-    zlim = maxshow*c(-1, 1),
-    main = main,
-    xlab = xlab, ylab = ylab,
-    bty = "n"
-  )
-
+  
+  
+  if(swapAxes){
+    if(reverse.x) xlim <- rev(extendrange(transformF(uniqueDoses$d2))) else xlim <- extendrange(transformF(uniqueDoses$d2))
+    if(reverse.y) ylim <- rev(extendrange(transformF(uniqueDoses$d1))) else ylim <- extendrange(transformF(uniqueDoses$d1))
+    
+    filled.contour(
+      x = transformF(uniqueDoses$d2),
+      y = transformF(uniqueDoses$d1),
+      z = t(matrix(maxRvalues, sapply(uniqueDoses, length))),
+      levels = zlevels,
+      color.palette = colorRampPalette(colorPalette, space = "rgb"),
+      plot.axes = {
+        axis(1, at = transformF(uniqueDoses$d2),
+             labels = format(uniqueDoses$d2, ...), cex.axis = 0.8)
+        axis(2, at = transformF(uniqueDoses$d1),
+             labels = format(uniqueDoses$d1, ...), cex.axis = 0.8)
+        points(expand.grid(x = transformF(uniqueDoses$d2),
+                           y = transformF(uniqueDoses$d1)),
+               pch = 20, col = rgb(0, 0, 0, 0.3),
+               ## Size proportional to maxR statistic
+               cex = t(matrix(abs(origMaxRvalues)/2,
+                              sapply(uniqueDoses, length))))
+      },
+      key.axes = {
+        axis(4, at = c(0, zlevels), tck = -0.1,
+             mgp = c(3, 0.3, 0), cex.axis = 0.7,
+             labels = c(
+               paste0("\u2191",
+                      if (colorPalette[1] %in% c("blue", "white")) "Antagonism" else "Synergy",
+                      "\n\n \n\n",
+                      "\u2193",
+                      if (colorPalette[1] %in% c("blue", "white")) "Synergy" else "Antagonism"),
+               paste0("\u2264", 1 - cutoff),
+               1 - rev(plevels[plevels < cutoff]),
+               1 - plevels[plevels < cutoff],
+               paste0("\u2264", 1 - cutoff))
+        )
+      },
+      key.title = title(main = "p-values", line = 1, cex.main = 1),
+      xlim = xlim,
+      ylim = ylim,
+      zlim = maxshow*c(-1, 1),
+      main = main,
+      xlab = ylab, ylab = xlab,
+      bty = "n"
+    )
+  } else {
+    if(reverse.x) xlim <- rev(extendrange(transformF(uniqueDoses$d1))) else xlim <- extendrange(transformF(uniqueDoses$d1))
+    if(reverse.y) ylim <- rev(extendrange(transformF(uniqueDoses$d2))) else ylim <- extendrange(transformF(uniqueDoses$d2))
+    
+    filled.contour(
+      x = transformF(uniqueDoses$d1),
+      y = transformF(uniqueDoses$d2),
+      z = matrix(maxRvalues, sapply(uniqueDoses, length)),
+      levels = zlevels,
+      color.palette = colorRampPalette(colorPalette, space = "rgb"),
+      plot.axes = {
+        axis(1, at = transformF(uniqueDoses$d1),
+             labels = format(uniqueDoses$d1, ...), cex.axis = 0.8)
+        axis(2, at = transformF(uniqueDoses$d2),
+             labels = format(uniqueDoses$d2, ...), cex.axis = 0.8)
+        points(expand.grid(x = transformF(uniqueDoses$d1),
+                           y = transformF(uniqueDoses$d2)),
+               pch = 20, col = rgb(0, 0, 0, 0.3),
+               ## Size proportional to maxR statistic
+               cex = matrix(abs(origMaxRvalues)/2,
+                            sapply(uniqueDoses, length)))
+      },
+      key.axes = {
+        axis(4, at = c(0, zlevels), tck = -0.1,
+             mgp = c(3, 0.3, 0), cex.axis = 0.7,
+             labels = c(
+               paste0("\u2191",
+                      if (colorPalette[1] %in% c("blue", "white")) "Antagonism" else "Synergy",
+                      "\n\n \n\n",
+                      "\u2193",
+                      if (colorPalette[1] %in% c("blue", "white")) "Synergy" else "Antagonism"),
+               paste0("\u2264", 1 - cutoff),
+               1 - rev(plevels[plevels < cutoff]),
+               1 - plevels[plevels < cutoff],
+               paste0("\u2264", 1 - cutoff))
+        )
+      },
+      key.title = title(main = "p-values", line = 1, cex.main = 1),
+      xlim = xlim,
+      ylim = ylim,
+      zlim = maxshow*c(-1, 1),
+      main = main,
+      xlab = xlab, ylab = ylab,
+      bty = "n"
+    )
+  }
+  
 }
 
 #' List non-additive points
@@ -166,12 +218,12 @@ outsidePoints <- function(maxR, B = 10000) {
     df0 <- attr(maxR, "df0")
     stopifnot(length(n1) == 1)
     stopifnot(length(df0) == 1)
-
+    
     sim1 <- abs(matrix(rt(B*n1, df = df0), ncol = n1, byrow = TRUE))
     distr <- apply(sim1, 1, max)  #q1 <- quantile(apply(sim1, 1, max), cutoff)
     f <- ecdf(distr)
   } else f <- attr(maxR, "distr")
-
+  
   resDF <- maxR[maxR$sign, ]
   resDF$`p-value` <- 1-f(resDF$absR)
   if (nrow(resDF) > 0) resDF[, c(1:2, 4, 8, 7)] else NULL

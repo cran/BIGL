@@ -20,11 +20,14 @@ fitSurface(
   error = 4,
   sampling_errors = NULL,
   wild_bootstrap = FALSE,
+  wild_bootType = "normal",
+  control = "FWER",
   cutoff = 0.95,
   parallel = FALSE,
   progressBar = TRUE,
   method = c("equal", "model", "unequal"),
   confInt = TRUE,
+  digits = 9,
   bootRS = TRUE,
   trans = "identity",
   rescaleResids = FALSE,
@@ -102,6 +105,13 @@ heteroskedasticity should be used. If \code{wild_bootstrap = TRUE}, errors
 are generated from \code{sampling_errors} multiplied by a random variable
 following Rademacher distribution. Argument is used only if \code{error = 4}.}
 
+\item{wild_bootType}{Type of distribution to be used for wild bootstrap. If \code{wild_bootstrap = TRUE}, 
+errors are generated from "rademacher", "gamma", "normal" or "two-point" distribution.}
+
+\item{control}{If \code{control = "FCR"} then algorithm controls false coverage rate, if \code{control = "dFCR"} then 
+algorithm controls directional false coverage rate, if \code{control = "FWER"} then 
+algorithm controls family wise error rate}
+
 \item{cutoff}{Cut-off to use in maxR procedure for declaring non-additivity
 (default is 0.95).}
 
@@ -125,6 +135,8 @@ effect of an off-axis point. If no transformations are used the
 \code{"equal"} method can be chosen.}
 
 \item{confInt}{a boolean, should confidence intervals be returned?}
+
+\item{digits}{Numeric value indicating the number of digits used for numeric values in confidence intervals}
 
 \item{bootRS}{a boolean, should bootstrapped response surfaces be used in the
 calculation of the confidence intervals?}

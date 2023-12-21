@@ -9,10 +9,12 @@
 #' @param ... Further arguments that are passed to \code{\link{format}} function
 #'   for formatting of axis labels
 #' @inheritParams graphics::title
+#' @inheritParams contour.ResponseSurface
 #' @importFrom graphics axis filled.contour points title
 #' @importFrom grDevices extendrange rgb
-#' @importFrom ggplot2 ggplot scale_colour_stepsn
+#' @importFrom ggplot2 ggplot scale_colour_stepsn coord_flip
 #' @importFrom data.table rbindlist
+#' @importFrom scales reverse_trans
 #' @export
 `plot.effect-size` <- function(
   x,
@@ -23,7 +25,9 @@
   zTransform = function(z) { z },
   digits,
   digitsFunc,
-  ...
+  reverse.x = FALSE, 
+  reverse.y = FALSE, 
+  swapAxes = FALSE, ...
 ) {
   
   labels <- names(colorPalette)
@@ -61,7 +65,7 @@
   
   log10T <- function(z) log10(z + 0.5 * min(z[z != 0]))
   transformF <- if (logScale) log10T else function(z) z
-
+  
   breaks <- 1:3
   colourVec  <- colorPalette #colorRampPalette(colorPalette)(length(breaks) - 1)
   
@@ -106,14 +110,6 @@
       size = abs(x$estimate)/max(abs(x$estimate))*4 ## Size proportional to the effect size (normalized to be from 0 to 1)
     ) +
     scale_fill_manual("Call:", values = as.character(colourVec), labels = labels, drop = FALSE) + # values = colorPalette
-    scale_x_continuous(
-      breaks = unique(x$d1_t), 
-      labels = digitsFunc(unique(x$d1)), 
-    ) + 
-    scale_y_continuous(
-      breaks = unique(x$d2_t), 
-      labels = digitsFunc(unique(x$d2))
-    ) + 
     theme(
       panel.background = element_rect(
         fill = "white"
@@ -125,6 +121,36 @@
     ) +
     guides(colour = "none") +
     labs(title = main) + xlab(xlab) + ylab(ylab) 
+  
+  if(reverse.x){
+    p <- p + scale_x_continuous(
+      breaks = unique(x$d1_t), 
+      labels = digitsFunc(unique(x$d1)),
+      trans = reverse_trans()
+    ) 
+  } else {
+    p <- p + scale_x_continuous(
+      breaks = unique(x$d1_t), 
+      labels = digitsFunc(unique(x$d1)) 
+    ) 
+  }
+  
+  if(reverse.y){
+    p <- p + scale_y_continuous(
+      breaks = unique(x$d2_t), 
+      labels = digitsFunc(unique(x$d2)),
+      trans = reverse_trans()
+    ) 
+  } else {
+    p <- p + scale_y_continuous(
+      breaks = unique(x$d2_t), 
+      labels = digitsFunc(unique(x$d2))
+    ) 
+  }
+  
+  if(swapAxes){
+    p <- p + coord_flip()
+  }
   
   p
   

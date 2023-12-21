@@ -57,10 +57,15 @@ generateData <- function(pars, sigma, data = NULL,
 		transforms = NULL,
 		null_model = c("loewe", "hsa", "bliss", "loewe2"),
 		error = 1, sampling_errors = NULL, means = NULL,
-		model = NULL, method = "equal", wild_bootstrap = FALSE,
+		model = NULL, method = "equal", wild_bootstrap = FALSE, wild_bootType = "normal",
 		rescaleResids, invTransFun, newtonRaphson = FALSE, bootmethod = method, ...) {
 	
 	if(bootmethod == "model") bootmethod <- "unequal"
+	if(wild_bootstrap){
+		wild_bootstrap <- FALSE                  # we don't need wild bootstrap here; for on-axis observations
+		wild_bootType <- NULL
+	} 
+
 	
 	## Argument matching
 	null_model <- match.arg(null_model)
@@ -206,7 +211,7 @@ simulateNull <- function(data, fitResult, doseGrid,
 		## `fitMarginals` call (saved as `extraArgs`)
 		paramsMarginal <- list("data" = simData, "method" = method,
 				"start" = initPars, "model" = model, "transforms" = transforms,
-				"control" = control)
+				"control" = control) 
 		if (!is.null(fitResult$extraArgs) && is.list(fitResult$extraArgs))
 			# use `modifyList` here, since `control` could be user-defined
 			paramsMarginal <- modifyList(paramsMarginal, fitResult$extraArgs)

@@ -20,7 +20,7 @@
 #' @param colorPaletteNA Color used in the matrix of colours when the combination of doses doesn't exist (NA)
 #' @param colorBy This parameter determines values on which coloring is based
 #'   for the 3-dimensional surface. If matrix or a data frame with \code{d1} and
-#'   {d2} columns is supplied, dose combinations from \code{colorBy} will be
+#'   \code{d2} columns is supplied, dose combinations from \code{colorBy} will be
 #'   matched automatically to the appropriate dose combinations in \code{data}.
 #'   Unmatched dose combinations will be set to 0. This is especially useful for
 #'   plotting results for off-axis estimates only, e.g. off-axis Z-scores or
@@ -56,6 +56,7 @@
 #' @param height Height in pixels (optional, defaults to 800px).
 #' @param title String title (default "")
 #' @param digitsFunc Function to be applied to the axis values
+#' @param reverse Boolean indicating whether colours should be reversed (default FALSE). 
 #' @param ... Further arguments to format axis labels
 #' @return Plotly plot
 #' @importFrom stats median predict quantile
@@ -103,19 +104,24 @@ plotResponseSurface <- function(data, fitResult = NULL,
                                 gradient = TRUE,
                                 width = 800, height = 800, 
                                 title = "", 
-                                digitsFunc = function(x) {x}, ...
+                                digitsFunc = function(x) {x},
+                                reverse = FALSE, ...
 ) {
   ## Argument matching
   null_model <- match.arg(null_model)
-
+  
   if (missing(fitResult) & missing(predSurface)) 
     stop("Marginals fit result or predicted surface need to be supplied.")
-
+  
   if (is.character(colorBy) & all(colorBy %in% colors())) {
     colorPalette <- colorBy
     colorBy <- "colors"
   }
-
+	
+	if(!is.null(names(colorPalette))){
+		colorPalette <- colorPalette[c("Ant", "None", "Syn")]
+	}
+  
   ## Calculate extra arguments
   uniqueDoses <- with(data, list("d1" = sort(unique(d1)), "d2" = sort(unique(d2))))
   doseGrid <- expand.grid(uniqueDoses)
@@ -123,14 +129,14 @@ plotResponseSurface <- function(data, fitResult = NULL,
   log10T <- function(z) log10(z + 0.5 * min(z[z != 0]))
   ## Transform function for doses
   transformF <- if (logScale) log10T else function(z) z
-
+  
   zGrid <- predSurface
   ## If marginal fit information is provided, response surface can be
   ## automatically calculated.
   if (is.null(predSurface)) {
     respSurface <- predictResponseSurface(doseGrid, fitResult,
-                                  null_model = null_model,
-                                  transforms = transforms)
+                                          null_model = null_model,
+                                          transforms = transforms)
     if (!is.null(transforms)) {
       predSurface <- with(transforms,
                           InvPowerT(respSurface, compositeArgs))
@@ -139,33 +145,37 @@ plotResponseSurface <- function(data, fitResult = NULL,
     }
     zGrid <- predSurface
   }
-
+  
   ## If colorVec is a matrix with d1 and d2 columns, reorder it so that it
   ## matches the data ordering.
   if (inherits(colorBy, c("matrix", "data.frame"))) {
     stopifnot(c("d1", "d2") %in% colnames(colorBy))
     colorVec <- colorBy
     colorBy <- "asis"
-
+    
     coloredBy <- colorVec
     cols <- colnames(coloredBy)
     pCols <- which(!(cols %in% c("d1", "d2")))
     if (length(pCols) > 1) pCols <- min(pCols)
-
+    
     if (any(duplicated(coloredBy[, c("d1", "d2")]))) {
       coloredBy <- aggregate(coloredBy[, pCols],
                              by = coloredBy[, c("d1", "d2")], FUN = colorfun)
     }
-
+    
     colorVec <- rep(NA, nrow(doseGrid))
     for (i in 1L:nrow(doseGrid)) {
       ind <- match(paste(doseGrid[i,], collapse=";"),
                    apply(coloredBy[, c("d1", "d2")], 1,
                          function(x) paste(x, collapse=";")))
-      if (!is.na(ind)) colorVec[i] <- as.character(coloredBy[[pCols]][ind])
+      if("effectCall" %in% names(coloredBy)){
+        if (!is.na(ind)) colorVec[i] <- as.character(coloredBy[[pCols]][ind])
+      } else {
+        if (!is.na(ind)) colorVec[i] <- coloredBy[[pCols]][ind]
+      }
     }
   }
-
+  
   dataOffAxis <- with(data, data[d1 & d2, , drop = FALSE])
   predOffAxis <- predSurface[cbind(match(dataOffAxis$d1, uniqueDoses$d1), 
                                    match(dataOffAxis$d2, uniqueDoses$d2))]
@@ -173,7 +183,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
     warning("No off-axis observations were found. Surface won't be custom colored..")
     colorBy <- "none"
   }
-
+  
   surfaceColors <- colorRampPalette(colorPalette)(length(breaks) - 1)
   
   getFF = function(response){
@@ -182,9 +192,16 @@ plotResponseSurface <- function(data, fitResult = NULL,
     } else if(is.factor(response)){
       response
     } else if(is.character(response)){
-      factor(response, levels = c("Ant", "None", "Syn"), 
-             labels = c("Ant", "None", "Syn"),
-             ordered = TRUE)
+      
+      if (reverse) {  # b >= m1, m2 decreasing curves so labels are changed; if b < m1, m2 colours preserved
+        factor(response, levels = c("Syn", "None", "Ant"), 
+               labels = c("Syn", "None", "Ant"),
+               ordered = TRUE)
+      } else {
+        factor(response, levels = c("Ant", "None", "Syn"), 
+               labels = c("Ant", "None", "Syn"),
+               ordered = TRUE)
+      }
     }
   }
   surfaceColor <- function(response) {
@@ -192,24 +209,24 @@ plotResponseSurface <- function(data, fitResult = NULL,
     zcol <- surfaceColors[ff]
     return(zcol)
   }
-
+  
   getLabels <- function(response) {
     ff <- getFF(response)
     labels <- gsub(",", ", ", levels(ff))
     return(labels)
   }
-
+  
   ## Generate colors for the surface plot
   if (colorBy == "asis") {
     if(is.numeric(colorVec))
       colorVec[is.na(colorVec)] <- 0
     zcol <- surfaceColor(colorVec)
     labels <- getLabels(colorVec)
-
+    
   } else if (colorBy == "colors") {
     ## Use specified colors and recycle if necessary
     zcol <- rep(colorPalette, length(zGrid))
-
+    
   } else {
     ## Generate colors from terrain.colors by looking at range of zGrid
     zGridFloor <- floor(100 * zGrid)
@@ -221,11 +238,11 @@ plotResponseSurface <- function(data, fitResult = NULL,
   ## 3-dimensional surface plotting
   ##
   labnames <- c("Response", if (!is.null(fitResult$names))
-            fitResult$names else c("Compound 1", "Compound 2"))
+    fitResult$names else c("Compound 1", "Compound 2"))
   if (!is.null(attr(data, "orig.colnames")))
     labnames <- attr(data, "orig.colnames")
   
-
+  
   ## Plot with no axes/labels
   if (!is.null(plotfun))
     data <- aggregate(effect ~ d1 + d2, data, FUN = plotfun)[, names(data)]
@@ -235,7 +252,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
     xat <- match.arg(xat, c("pretty", "actual"))
     if (xat == "pretty") {
       xlab <-  axisTicks(range(transformF(uniqueDoses$d1)),
-                        log = logScale, nint = 3)
+                         log = logScale, nint = 3)
       if (logScale && length(xlab) > 4)
         xlab <- xlab[!(log10(xlab) %% 1)]
     } else xlab <- uniqueDoses$d1
@@ -248,7 +265,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
     yat <- match.arg(yat, c("pretty", "actual"))
     if (yat == "pretty") {
       ylab <-  axisTicks(range(transformF(uniqueDoses$d2)),
-                        log = logScale, nint = 3)
+                         log = logScale, nint = 3)
       if (logScale && length(ylab) > 4)
         ylab <- ylab[!(log10(ylab) %% 1)]
     } else ylab <- uniqueDoses$d2
@@ -257,12 +274,12 @@ plotResponseSurface <- function(data, fitResult = NULL,
     ylab <- yat
     yat <- transformF(yat)
   }
-
+  
   MatrixForColor <- matrix(as.numeric(factor(zcol, levels = unique(surfaceColors))), nrow = nrow(zGrid), ncol = ncol(zGrid))
   
   if (any(is.na(MatrixForColor))) {
     if (missing(colorPaletteNA)) colorPaletteNA <- "grey70"
-    if (!colorPaletteNA %in% colorPaletteNA) stop("Please indicate a colour for `colorPaletteNA` that is present in the `colorPalette` list")
+    if (!colorPaletteNA %in% colorPalette) stop("Please indicate a colour for `colorPaletteNA` that is present in the `colorPalette` list")
     MatrixForColor[is.na(MatrixForColor)] <- which(colorPalette %in% colorPaletteNA)[1]
   }
   
@@ -297,8 +314,8 @@ plotResponseSurface <- function(data, fitResult = NULL,
   data$color <- colorPoints[1 + 1 * (data$d2 == 0) + 2 * (data$d1 == 0)]
   data$color <- factor(data$color, levels = colorPoints)
   data$color <- droplevels(data$color)
-
-
+  
+  
   # Plot the main surface
   p <- plotly::plot_ly(
     height = height, width = width, colors = unique(colorPalette), 
@@ -352,7 +369,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
     )
     
   }
-    
+  
   if (legend) {
     # Categorical legend (only if colorPalette was named)
     if (!is.null(names(colorPalette))) {
@@ -364,7 +381,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
           showlegend = TRUE, marker = list(symbol = "square")
         )
       }
-
+      
       p <- layout(
         p,
         xaxis = list(
@@ -424,7 +441,7 @@ plotResponseSurface <- function(data, fitResult = NULL,
         legendgroup = "points"
       ) 
     }
-
+    
     # set legend layout
     p <- plotly::layout(
       p = p,
@@ -459,9 +476,9 @@ plotResponseSurface <- function(data, fitResult = NULL,
     displaylogo = FALSE,
     modeBarButtonsToRemove = c("orbitRotation", "resetCameraLastSave3d", "hoverClosest3d")
   )
-
+  
   p
-
+  
 }
 
 

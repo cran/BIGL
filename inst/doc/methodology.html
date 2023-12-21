@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2023-06-13" />
+<meta name="date" content="2023-12-20" />
 
 <title>Methodology</title>
 
@@ -237,44 +237,35 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Methodology</h1>
-<h4 class="date">2023-06-13</h4>
+<h4 class="date">2023-12-20</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#marginal-monotherapy-curves">Marginal monotherapy
-curves</a></li>
+<li><a href="#marginal-monotherapy-curves">Marginal monotherapy curves</a></li>
 <li><a href="#null-models-of-no-synergy">Null models of no synergy</a>
 <ul>
 <li><a href="#occupancy">Occupancy</a></li>
 <li><a href="#classical-loewe-model">Classical Loewe model</a></li>
 <li><a href="#generalized-loewe-model">Generalized Loewe model</a></li>
 <li><a href="#highest-single-agent">Highest Single Agent</a></li>
-<li><a href="#bliss-independence-model">Bliss independence
-model</a></li>
-<li><a href="#alternative-loewe-generalization">Alternative Loewe
-Generalization</a></li>
+<li><a href="#bliss-independence-model">Bliss independence model</a></li>
+<li><a href="#alternative-loewe-generalization">Alternative Loewe Generalization</a></li>
 <li><a href="#calculation-procedure">Calculation procedure</a></li>
 </ul></li>
-<li><a href="#synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points">Synergy
-evaluation assuming equal variances for on- and off-axis points</a>
+<li><a href="#synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points">Synergy evaluation assuming equal variances for on- and off-axis points</a>
 <ul>
 <li><a href="#meanr"><code>meanR</code></a></li>
 <li><a href="#maxr"><code>maxR</code></a></li>
 </ul></li>
-<li><a href="#synergy-evaluation-in-case-of-variance-heterogeneity">Synergy
-evaluation in case of variance heterogeneity</a>
+<li><a href="#synergy-evaluation-in-case-of-variance-heterogeneity">Synergy evaluation in case of variance heterogeneity</a>
 <ul>
 <li><a href="#adapted-meanr">Adapted <code>meanR</code></a></li>
 <li><a href="#adapted-maxr">Adapted <code>maxR</code></a></li>
-<li><a href="#bootstrapping-under-unequal-variances">Bootstrapping under
-unequal variances</a></li>
-<li><a href="#advantages-of-unequal-and-model-methods-compared-to-assumption-of-equal-variances">Advantages
-of <code>unequal</code> and <code>model</code> methods compared to
-assumption of equal variances</a></li>
+<li><a href="#bootstrapping-under-unequal-variances">Bootstrapping under unequal variances</a></li>
+<li><a href="#advantages-of-unequal-and-model-methods-compared-to-assumption-of-equal-variances">Advantages of <code>unequal</code> and <code>model</code> methods compared to assumption of equal variances</a></li>
 </ul></li>
-<li><a href="#effect-size-for-off-axis-points">Effect size for off-axis
-points</a>
+<li><a href="#effect-size-for-off-axis-points">Effect size for off-axis points</a>
 <ul>
 <li><a href="#confidence-interval">Confidence interval</a></li>
 <li><a href="#standard-error">Standard error</a></li>
@@ -284,554 +275,220 @@ points</a>
 </ul>
 </div>
 
-<p>Methodology described in this vignette is adapted from the article
-<em>“BIGL: Biochemically Intuitive Generalized Loewe null model for
-prediction of the expected combined effect compatible with partial
-agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R.
-Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans
-(<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>)
-as well as its technical supplement. We advise the reader to consult it
-for a deeper understanding of the procedure described next.</p>
-<p>Further chapters were added as extensions on top of the original
-article regarding variance heterogeneity, Bliss independence and
-alternative Loewe generalization.</p>
+<p>Methodology described in this vignette is adapted from the article <em>“BIGL: Biochemically Intuitive Generalized Loewe null model for prediction of the expected combined effect compatible with partial agonism and antagonism”</em> (2017) by K. Van der Borght, A. Tourny, R. Bagdziunas, O. Thas, M. Nazarov, H. Turner, B. Verbist and H. Ceulemans (<a href="https://dx.doi.org/10.1038/s41598-017-18068-5">doi:10.1038/s41598-017-18068-5</a>) as well as its technical supplement. We advise the reader to consult it for a deeper understanding of the procedure described next.</p>
+<p>Further chapters were added as extensions on top of the original article regarding variance heterogeneity, Bliss independence and alternative Loewe generalization.</p>
 <div id="marginal-monotherapy-curves" class="section level2">
 <h2>Marginal monotherapy curves</h2>
-<p>First, a monotherapy model is described by the following
-equation.</p>
-<p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 +
-\left(\frac{\operatorname{EC50}}{d}\right)^{|h|}} \]</span></p>
-<p>where <span class="math inline">\(y\)</span> is the response (or
-effect), <span class="math inline">\(d\)</span> is the dose (or
-concentration) of the compound, <span class="math inline">\(h\)</span>
-is the Hill’s coefficient and <span class="math inline">\(b\)</span> and
-<span class="math inline">\(m\)</span> are respectively baseline and
-maximum response for that compound. Lastly, <span class="math inline">\(\textrm{EC50}\)</span> stands for the dose level
-of the compound needed to attain the midpoint effect, i.e. <span class="math display">\[y\left(\textrm{EC50}\right) = b + \frac{m -
-b}{2}\]</span></p>
-<p>Note that <span class="math inline">\(m &gt; b\)</span> if and only
-if the response is increasing with the dose of the compound. If the
-response is decreasing, then <span class="math inline">\(m &lt;
-b\)</span>.</p>
-<p>This monotherapy equation is estimated for both compounds with the
-constraint that <span class="math inline">\(b\)</span>, the baseline
-level, is shared across compounds. This baseline level is denoted by
-<code>b</code> in the parameter vector. Additionally, <code>m1</code>
-and <code>m2</code> in the parameter vector stand for estimates of
-maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas
-<code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of
-the monotherapy curve for each compound. Lastly, <code>e1</code> and
-<code>e2</code> are log-transformed inflection points,
-i.e. <code>e1</code> <span class="math inline">\(=
-\log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
+<p>First, a monotherapy model is described by the following equation.</p>
+<p><span class="math display">\[ y\left(d\right) = b + \dfrac{m - b}{1 + \left(\frac{\operatorname{EC50}}{d}\right)^{|h|}} \]</span></p>
+<p>where <span class="math inline">\(y\)</span> is the response (or effect), <span class="math inline">\(d\)</span> is the dose (or concentration) of the compound, <span class="math inline">\(h\)</span> is the Hill’s coefficient and <span class="math inline">\(b\)</span> and <span class="math inline">\(m\)</span> are respectively baseline and maximum response for that compound. Lastly, <span class="math inline">\(\textrm{EC50}\)</span> stands for the dose level of the compound needed to attain the midpoint effect, i.e. <span class="math display">\[y\left(\textrm{EC50}\right) = b + \frac{m - b}{2}\]</span></p>
+<p>Note that <span class="math inline">\(m &gt; b\)</span> if and only if the response is increasing with the dose of the compound. If the response is decreasing, then <span class="math inline">\(m &lt; b\)</span>.</p>
+<p>This monotherapy equation is estimated for both compounds with the constraint that <span class="math inline">\(b\)</span>, the baseline level, is shared across compounds. This baseline level is denoted by <code>b</code> in the parameter vector. Additionally, <code>m1</code> and <code>m2</code> in the parameter vector stand for estimates of maximal responses <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, respectively, whereas <code>h1</code> and <code>h2</code> are Hill’s coefficients (slope) of the monotherapy curve for each compound. Lastly, <code>e1</code> and <code>e2</code> are log-transformed inflection points, i.e. <code>e1</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{1}\right)\)</span> and <code>e2</code> <span class="math inline">\(= \log\left(\textrm{EC50}_{2}\right)\)</span>.</p>
 </div>
 <div id="null-models-of-no-synergy" class="section level2">
 <h2>Null models of no synergy</h2>
 <div id="occupancy" class="section level3">
 <h3>Occupancy</h3>
-<p>Define the occupancy level <span class="math inline">\(\textrm{occup}\)</span>, i.e. the fractional
-(enzymatic) effect or observed effect relative to maximal effect, for
-both compounds at given dose levels as <span class="math display">\[
-\textrm{occup}_{1}\left(d_{1}\right) = \frac{1}{1 +
-\left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{h_{1}}}
+<p>Define the occupancy level <span class="math inline">\(\textrm{occup}\)</span>, i.e. the fractional (enzymatic) effect or observed effect relative to maximal effect, for both compounds at given dose levels as <span class="math display">\[
+\textrm{occup}_{1}\left(d_{1}\right) = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{h_{1}}}
 \]</span> <span class="math display">\[
-\textrm{occup}_{2}\left(d_{2}\right) = \frac{1}{1 +
-\left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{h_{2}}}
-\]</span> Alternatively, the above equations can be rearranged to
-express dose in terms of occupancy so that <span class="math display">\[
-d_{1} = \operatorname{EC50}_{1} \left(\frac{1}{\operatorname{occup_{1}}}
-- 1 \right)^{-1/h_{1}}
+\textrm{occup}_{2}\left(d_{2}\right) = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{h_{2}}}
+\]</span> Alternatively, the above equations can be rearranged to express dose in terms of occupancy so that <span class="math display">\[
+d_{1} = \operatorname{EC50}_{1} \left(\frac{1}{\operatorname{occup_{1}}} - 1 \right)^{-1/h_{1}}
 \]</span> <span class="math display">\[
-d_{2} = \operatorname{EC50}_{2} \left(\frac{1}{\operatorname{occup_{2}}}
-- 1 \right)^{-1/h_{2}}
-\]</span> Although the occupancy was considered here in the marginal
-case, it is equally well-defined when compounds are combined and is
-understood as the fraction of enzyme bound to any compound. It can thus
-be used to re-express classical Loewe additivity equations.</p>
+d_{2} = \operatorname{EC50}_{2} \left(\frac{1}{\operatorname{occup_{2}}} - 1 \right)^{-1/h_{2}}
+\]</span> Although the occupancy was considered here in the marginal case, it is equally well-defined when compounds are combined and is understood as the fraction of enzyme bound to any compound. It can thus be used to re-express classical Loewe additivity equations.</p>
 </div>
 <div id="classical-loewe-model" class="section level3">
 <h3>Classical Loewe model</h3>
-<p>In the classical Loewe model where both marginal models share upper
-<span class="math inline">\((m)\)</span> and lower <span class="math inline">\((b)\)</span> asymptotes, occupancy is defined as
-the solution to this additivity equation for each dose combination <span class="math inline">\((d_{1}, d_{2})\)</span>, namely <span class="math display">\[\frac{d_1\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{1}}}{\textrm{EC50}_{1}}+
-\frac{d_2\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{2}}}{\textrm{EC50}_{2}} = 1\]</span></p>
-<p>Once occupancy is computed, in the classical Loewe model the
-predicted response at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> can be calculated to be
-<span class="math display">\[\begin{equation}
+<p>In the classical Loewe model where both marginal models share upper <span class="math inline">\((m)\)</span> and lower <span class="math inline">\((b)\)</span> asymptotes, occupancy is defined as the solution to this additivity equation for each dose combination <span class="math inline">\((d_{1}, d_{2})\)</span>, namely <span class="math display">\[\frac{d_1\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}}+ 
+\frac{d_2\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}} = 1\]</span></p>
+<p>Once occupancy is computed, in the classical Loewe model the predicted response at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> can be calculated to be <span class="math display">\[\begin{equation}
 \begin{split}
 y &amp; = b + \left(m - b\right) \times \textrm{occup} = \\
 &amp; = b + \left(m - b\right) \times \textrm{occup}
 \times
-\left[\frac{d_{1}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} +
-\frac{d_{2}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
+\left[\frac{d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
 = \\
 &amp; = b + \textrm{occup} \times
-\left[\frac{ \left(m - b\right) d_{1}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{ \left(m - b\right)
-d_{2}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
+\left[\frac{ \left(m - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{ \left(m - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]
 \end{split}
 \end{equation}\]</span></p>
 </div>
 <div id="generalized-loewe-model" class="section level3">
 <h3>Generalized Loewe model</h3>
-<p>Generalized Loewe model extends the classical Loewe model by allowing
-compounds to have different upper asymptotes so that when adjusted, the
-above predicted response is written instead as <span class="math display">\[ y = b + \textrm{occup} \times
-\left[\frac{\left(m_{1} - b\right) d_{1}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{\left(m_{2} - b\right)
-d_{2}\left(\textrm{occup}^{-1} -
-1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
-<p>In particular, if <span class="math inline">\(m_{1} = m_{2}\)</span>,
-then generalized Loewe is equivalent to the classical Loewe.</p>
+<p>Generalized Loewe model extends the classical Loewe model by allowing compounds to have different upper asymptotes so that when adjusted, the above predicted response is written instead as <span class="math display">\[ y = b + \textrm{occup} \times \left[\frac{\left(m_{1} - b\right) d_{1}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{1}}}{\textrm{EC50}_{1}} + \frac{\left(m_{2} - b\right) d_{2}\left(\textrm{occup}^{-1} - 1\right)^{1/h_{2}}}{\textrm{EC50}_{2}}\right]\]</span></p>
+<p>In particular, if <span class="math inline">\(m_{1} = m_{2}\)</span>, then generalized Loewe is equivalent to the classical Loewe.</p>
 </div>
 <div id="highest-single-agent" class="section level3">
 <h3>Highest Single Agent</h3>
-<p>A null model based on the Highest Single Agent (HSA) model does not
-attempt to model interaction effects at all and the predicted effect of
-a combination is either the minimum (if marginal curves are decreasing)
-or the maximum (if marginal curves are increasing) of both monotherapy
-curves.</p>
+<p>A null model based on the Highest Single Agent (HSA) model does not attempt to model interaction effects at all and the predicted effect of a combination is either the minimum (if marginal curves are decreasing) or the maximum (if marginal curves are increasing) of both monotherapy curves.</p>
 </div>
 <div id="bliss-independence-model" class="section level3">
 <h3>Bliss independence model</h3>
-<p>Bliss independence implies that two agents do not cooperate, i.e. act
-independently of each other.
-<!-- In the classical Bliss independence model where marginal models share baseline and maximum response, the predicted response at dose combination $(d_{1}, d_{2})$ is based on the fractional effects of the marginal responses: -->
-Additionally, the assumption is that a decreasing monotherapy curves
-express the fractions of <em>unaffected</em> control populations, while
-increasing curves express the fractions of <em>affected</em> control
-populations.</p>
-<p>Bliss independence model is formulated for the fractional responses
-<span class="math inline">\(f\)</span> (“fraction affected”), where the
-predicted response <span class="math inline">\(f_{12}\)</span> at dose
-combination <span class="math inline">\((d_{1}, d_{2})\)</span> is
-defined as:</p>
-<p><span class="math display">\[ f_{12}(d_1, d_2) = f_1(d_1) + f_2(d_2)
-- f_1(d_1)f_2(d_2), \]</span></p>
-<p>with <span class="math display">\[f_1(d_1) = \frac{y\left(d_1\right)
-- b}{m_1 - b} = \frac{1}{1 +
-\left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{|h_{1}|}}\]</span>
-<span class="math display">\[f_2(d_2) = \frac{y\left(d_2\right) - b}{m_2
-- b} = \frac{1}{1 +
-\left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{|h_{2}|}}\]</span>
-In the classical Bliss independence model, marginal models share
-baseline and maximum response.</p>
-<p>To allow the compounds to have different maximal responses, the
-fractional responses are rescaled to the maximum range (i.e. absolute
-difference between baseline and maximal response). Then the predicted
-response is defined as:<br />
+<p>Bliss independence implies that two agents do not cooperate, i.e. act independently of each other. <!-- In the classical Bliss independence model where marginal models share baseline and maximum response, the predicted response at dose combination $(d_{1}, d_{2})$ is based on the fractional effects of the marginal responses: --> Additionally, the assumption is that a decreasing monotherapy curves express the fractions of <em>unaffected</em> control populations, while increasing curves express the fractions of <em>affected</em> control populations.</p>
+<p>Bliss independence model is formulated for the fractional responses <span class="math inline">\(f\)</span> (“fraction affected”), where the predicted response <span class="math inline">\(f_{12}\)</span> at dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is defined as:</p>
+<p><span class="math display">\[ f_{12}(d_1, d_2) = f_1(d_1) + f_2(d_2) - f_1(d_1)f_2(d_2), \]</span></p>
+<p>with <span class="math display">\[f_1(d_1) = \frac{y\left(d_1\right) - b}{m_1 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{1}}{d_{1}}\right)^{|h_{1}|}}\]</span> <span class="math display">\[f_2(d_2) = \frac{y\left(d_2\right) - b}{m_2 - b} = \frac{1}{1 + \left(\frac{\operatorname{EC50}_{2}}{d_{2}}\right)^{|h_{2}|}}\]</span> In the classical Bliss independence model, marginal models share baseline and maximum response.</p>
+<p>To allow the compounds to have different maximal responses, the fractional responses are rescaled to the maximum range (i.e. absolute difference between baseline and maximal response). Then the predicted response is defined as:<br />
 <span class="math display">\[
-y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) -
-\tilde{f_1}(d_1)\tilde{f_2}(d_2) \right],
-\]</span> where <span class="math inline">\(m_{max}\)</span> is one of
-<span class="math inline">\(m_1\)</span> or <span class="math inline">\(m_2\)</span>, for which the value of <span class="math inline">\(|m_i - b|\)</span> is larger, and <span class="math display">\[ \tilde{f_i} =
-f_i\frac{m_i-b}{m_{max}-b}~~\text{for}~~i = 1, 2.\]</span></p>
-<p>This implementation of Bliss independence supports both compounds
-with decreasing and increasing monotherapy profiles. However using one
-compound with a decreasing profile and another with an increasing
-profile in combination is not supported.</p>
+y = b + (m_{max}-b) \left[ \tilde{f_1}(d_1) + \tilde{f_2}(d_2) - \tilde{f_1}(d_1)\tilde{f_2}(d_2) \right],
+\]</span> where <span class="math inline">\(m_{max}\)</span> is one of <span class="math inline">\(m_1\)</span> or <span class="math inline">\(m_2\)</span>, for which the value of <span class="math inline">\(|m_i - b|\)</span> is larger, and <span class="math display">\[ \tilde{f_i} = f_i\frac{m_i-b}{m_{max}-b}~~\text{for}~~i = 1, 2.\]</span></p>
+<p>This implementation of Bliss independence supports both compounds with decreasing and increasing monotherapy profiles. However using one compound with a decreasing profile and another with an increasing profile in combination is not supported.</p>
 </div>
 <div id="alternative-loewe-generalization" class="section level3">
 <h3>Alternative Loewe Generalization</h3>
-<p>An alternative generalization of Loewe Additivity for the case of
-different asymptotes can be defined as a combination of Loewe and HSA
-approaches as follows:</p>
-<p>In a classical Loewe equation, predicted response <span class="math inline">\(y\)</span> at a given dose combination <span class="math inline">\((d_1, d_2)\)</span> can be found by solving the
-equation:</p>
-<p><span class="math display">\[ \frac{d_1}{D_1(y)} + \frac{d_2}{D_2(y)}
-= 1, \]</span></p>
-<p>where <span class="math inline">\(D_i(y) =
-\operatorname{EC50}_{i}\left(\frac{y-b}{m_i-y}\right)^{\frac{1}{|h_i|}}\)</span>,
-for <span class="math inline">\(i = 1, 2\)</span> is the dose of the
-<span class="math inline">\(i\)</span>-th compound that gives response
-<span class="math inline">\(y\)</span>. Note that here <span class="math inline">\(D_i\)</span> is properly defined only if <span class="math inline">\(y\)</span> is between <span class="math inline">\(b\)</span> and <span class="math inline">\(m_i\)</span>.</p>
-<p>For the case of different asymptotes, say when <span class="math inline">\(y &gt; m_1\)</span> (increasing curve) or <span class="math inline">\(y &lt; m_1\)</span> (decreasing curve), we set
-<span class="math inline">\(D_1(y) = +\infty,\)</span> so that the <span class="math inline">\(y\)</span> is determined from the equation <span class="math inline">\(d_2 = D_2(y)\)</span>, replicating what is done in
-the HSA approach.</p>
+<p>An alternative generalization of Loewe Additivity for the case of different asymptotes can be defined as a combination of Loewe and HSA approaches as follows:</p>
+<p>In a classical Loewe equation, predicted response <span class="math inline">\(y\)</span> at a given dose combination <span class="math inline">\((d_1, d_2)\)</span> can be found by solving the equation:</p>
+<p><span class="math display">\[ \frac{d_1}{D_1(y)} + \frac{d_2}{D_2(y)} = 1, \]</span></p>
+<p>where <span class="math inline">\(D_i(y) = \operatorname{EC50}_{i}\left(\frac{y-b}{m_i-y}\right)^{\frac{1}{|h_i|}}\)</span>, for <span class="math inline">\(i = 1, 2\)</span> is the dose of the <span class="math inline">\(i\)</span>-th compound that gives response <span class="math inline">\(y\)</span>. Note that here <span class="math inline">\(D_i\)</span> is properly defined only if <span class="math inline">\(y\)</span> is between <span class="math inline">\(b\)</span> and <span class="math inline">\(m_i\)</span>.</p>
+<p>For the case of different asymptotes, say when <span class="math inline">\(y &gt; m_1\)</span> (increasing curve) or <span class="math inline">\(y &lt; m_1\)</span> (decreasing curve), we set <span class="math inline">\(D_1(y) = +\infty,\)</span> so that the <span class="math inline">\(y\)</span> is determined from the equation <span class="math inline">\(d_2 = D_2(y)\)</span>, replicating what is done in the HSA approach.</p>
 </div>
 <div id="calculation-procedure" class="section level3">
 <h3>Calculation procedure</h3>
-<p>In order to evaluate any of the null models described above, the
-<code>fitSurface</code> function will use the monotherapy parameter
-estimates from the previous step. The idea is if there are synergistic
-or antagonistic effects, then administration of both compounds will lead
-to important deviations from what combined monotherapy data would
-suggest according to the null model. Routines within
-<code>fitSurface</code> function do essentially the following.</p>
+<p>In order to evaluate any of the null models described above, the <code>fitSurface</code> function will use the monotherapy parameter estimates from the previous step. The idea is if there are synergistic or antagonistic effects, then administration of both compounds will lead to important deviations from what combined monotherapy data would suggest according to the null model. Routines within <code>fitSurface</code> function do essentially the following.</p>
 <ol style="list-style-type: decimal">
-<li>Find occupancy for each combination of doses by solving the
-additivity equation of the classical Loewe model. This step does not
-require knowledge of the baseline or maximal response for either of the
-compounds. Occupancy solution is also reported in the HSA model case
-although occupancy plays no role in such a model.</li>
-<li>Compute the predicted response based on the above described response
-equations and the previously computed occupancy rate for each dose
-combination.</li>
-<li>If desired, the function will then calculate the selected statistic
-to evaluate the deviation of the predictions from the desired null
-model.</li>
+<li>Find occupancy for each combination of doses by solving the additivity equation of the classical Loewe model. This step does not require knowledge of the baseline or maximal response for either of the compounds. Occupancy solution is also reported in the HSA model case although occupancy plays no role in such a model.</li>
+<li>Compute the predicted response based on the above described response equations and the previously computed occupancy rate for each dose combination.</li>
+<li>If desired, the function will then calculate the selected statistic to evaluate the deviation of the predictions from the desired null model.</li>
 </ol>
 </div>
 </div>
 <div id="synergy-evaluation-assuming-equal-variances-for-on--and-off-axis-points" class="section level2">
-<h2>Synergy evaluation assuming equal variances for on- and off-axis
-points</h2>
-<p>Synergy is evaluated for all off-axis dose combinations, i.e. dose
-combinations that are not used in the monotherapy curve estimation.
-Synergy evaluation depends on the underlying null model and any of the
-above models, i.e. generalized or classical Loewe or Highest Single
-Agent, can be used for this purpose. We provide here a brief summary of
-both statistical tests. Technical derivations and further details are
-available in the article cited at the beginning of the document.</p>
+<h2>Synergy evaluation assuming equal variances for on- and off-axis points</h2>
+<p>Synergy is evaluated for all off-axis dose combinations, i.e. dose combinations that are not used in the monotherapy curve estimation. Synergy evaluation depends on the underlying null model and any of the above models, i.e. generalized or classical Loewe or Highest Single Agent, can be used for this purpose. We provide here a brief summary of both statistical tests. Technical derivations and further details are available in the article cited at the beginning of the document.</p>
 <p>To define test statistics, the following notations are used.</p>
 <ul>
-<li>Let <span class="math inline">\(y_{ij}\)</span> be the observed
-effect for replicate <span class="math inline">\(j\)</span> of dose
-combination <span class="math inline">\(i\)</span>, so that <span class="math inline">\(y_{11}, y_{12}, y_{13}, y_{21}, ...,
-y_{kn_{k}}\)</span> is a set of observed effects. We assume <span class="math inline">\(k\)</span> different dose combinations and <span class="math inline">\(n_{k}\)</span> replicates for each combination.
-The number of different off-axis dose combinations is denoted as <span class="math inline">\(n_{1}\)</span>.</li>
-<li><span class="math inline">\(p_{1}, ..., p_{k}\)</span> are the
-predicted responses for the <span class="math inline">\(k\)</span>
-off-axis dose combinations.</li>
-<li><span class="math inline">\(\sigma^{2}\)</span> is the variance of
-the replicate observations, assumed to be constant over all dose
-combinations, and estimated by taking MSE of the null model.</li>
-<li><span class="math inline">\(\operatorname{df}_{0}\)</span> is the
-number of degrees of freedom from the marginal model estimation.</li>
+<li>Let <span class="math inline">\(y_{ij}\)</span> be the observed effect for replicate <span class="math inline">\(j\)</span> of dose combination <span class="math inline">\(i\)</span>, so that <span class="math inline">\(y_{11}, y_{12}, y_{13}, y_{21}, ..., y_{kn_{k}}\)</span> is a set of observed effects. We assume <span class="math inline">\(k\)</span> different dose combinations and <span class="math inline">\(n_{k}\)</span> replicates for each combination. The number of different off-axis dose combinations is denoted as <span class="math inline">\(n_{1}\)</span>.</li>
+<li><span class="math inline">\(p_{1}, ..., p_{k}\)</span> are the predicted responses for the <span class="math inline">\(k\)</span> off-axis dose combinations.</li>
+<li><span class="math inline">\(\sigma^{2}\)</span> is the variance of the replicate observations, assumed to be constant over all dose combinations, and estimated by taking MSE of the null model.</li>
+<li><span class="math inline">\(\operatorname{df}_{0}\)</span> is the number of degrees of freedom from the marginal model estimation.</li>
 </ul>
-<p>We construct a vector <span class="math inline">\(R = (r_{1}, ...,
-r_{k})\)</span> which represents mean deviation from the predicted
-effect. In particular, <span class="math display">\[
+<p>We construct a vector <span class="math inline">\(R = (r_{1}, ..., r_{k})\)</span> which represents mean deviation from the predicted effect. In particular, <span class="math display">\[
 r_{k} = \frac{1}{n_{k}} \sum_{i = 1}^{n_{k}} y_{ki} - p_{k}
 \]</span></p>
-<p>With the help of bootstrapping, the covariance matrix of <span class="math inline">\(R\)</span> can be estimated under the null
-hypothesis of no synergy so that <span class="math inline">\(\operatorname{Var}\left(R\right) =
-\sigma^{2}\left(D + C_{p}\right)\)</span> where <span class="math inline">\(D\)</span> is a diagonal matrix with <span class="math inline">\(1 / n_{i}\)</span> in the <span class="math inline">\(i\)</span>-th position and <span class="math inline">\(C_{p}\)</span> is the covariance matrix obtained
-from bootstrap.</p>
+<p>With the help of bootstrapping, the covariance matrix of <span class="math inline">\(R\)</span> can be estimated under the null hypothesis of no synergy so that <span class="math inline">\(\operatorname{Var}\left(R\right) = \sigma^{2}\left(D + C_{p}\right)\)</span> where <span class="math inline">\(D\)</span> is a diagonal matrix with <span class="math inline">\(1 / n_{i}\)</span> in the <span class="math inline">\(i\)</span>-th position and <span class="math inline">\(C_{p}\)</span> is the covariance matrix obtained from bootstrap.</p>
 <div id="meanr" class="section level3">
 <h3><code>meanR</code></h3>
-<p>The <code>meanR</code> test will evaluate whether the null model
-globally fits well the observed data. It is derived using a lack-of-fit
-sum of squares technique. In particular, the test statistic is given by
-<span class="math display">\[
-\operatorname{TestStat} = \frac{R^{T}\left(D +
-C_{p}\right)^{-1}R}{n_{1}\sigma^{2}}
-\]</span> Assuming that residuals from the generalized Loewe model are
-normally distributed, it can be shown that this statistic follows an
-<span class="math inline">\(F_{n_{1}, \operatorname{df}_{0}}\)</span>
-distribution under the null. If these assumptions are not satisfied, the
-null distribution can be approximated by bootstrapping.</p>
+<p>The <code>meanR</code> test will evaluate whether the null model globally fits well the observed data. It is derived using a lack-of-fit sum of squares technique. In particular, the test statistic is given by <span class="math display">\[
+\operatorname{TestStat} = \frac{R^{T}\left(D + C_{p}\right)^{-1}R}{n_{1}\sigma^{2}}
+\]</span> Assuming that residuals from the generalized Loewe model are normally distributed, it can be shown that this statistic follows an <span class="math inline">\(F_{n_{1}, \operatorname{df}_{0}}\)</span> distribution under the null. If these assumptions are not satisfied, the null distribution can be approximated by bootstrapping.</p>
 </div>
 <div id="maxr" class="section level3">
 <h3><code>maxR</code></h3>
-<p>The <code>maxR</code> test evaluates whether the null model locally
-fits the observed data. In particular, it provides a test score for each
-off-axis combination. Based on the sign of this score, it can be
-determined whether synergy or antagonism is more likely and a formal
-test can be constructed. Under the null hypothesis of no lack-of-fit and
-normally distributed effects, <span class="math display">\[
-\max \left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma \sim
-\max \left| Z_{1}, \dots, Z_{k} \right|
-\]</span> where <span class="math inline">\(Z_{j} \sim
-N\left(0,1\right)\)</span>. More particularly, the test statistic for
-the <span class="math inline">\(k\)</span>-th off-axis dose combination
-<span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
-\operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left|
-R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma\right]_{k}
-\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the
-<span class="math inline">\(k\)</span>-th coordinate. This test
-statistic is then compared either to the null distribution based on
-normal approximation or a bootstrapped approximation.</p>
+<p>The <code>maxR</code> test evaluates whether the null model locally fits the observed data. In particular, it provides a test score for each off-axis combination. Based on the sign of this score, it can be determined whether synergy or antagonism is more likely and a formal test can be constructed. Under the null hypothesis of no lack-of-fit and normally distributed effects, <span class="math display">\[
+\max \left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma \sim \max \left| Z_{1}, \dots, Z_{k} \right|
+\]</span> where <span class="math inline">\(Z_{j} \sim N\left(0,1\right)\)</span>. More particularly, the test statistic for the <span class="math inline">\(k\)</span>-th off-axis dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
+\operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(D + C_{p}\right)^{-1/2} \right| / \sigma\right]_{k}
+\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate. This test statistic is then compared either to the null distribution based on normal approximation or a bootstrapped approximation.</p>
 </div>
 </div>
 <div id="synergy-evaluation-in-case-of-variance-heterogeneity" class="section level2">
 <h2>Synergy evaluation in case of variance heterogeneity</h2>
-<p>In the methodology described above one important assumption is made
-regarding the variance of the on- and off-axis dose combinations. It is
-considered to be equal across all points. This assumption is also
-mentioned in the original article and its technical supplement.</p>
-<p>In reality it is often seen that the variance of the monotherapies is
-not equal to the variance of the off-axis combinations. The assumption
-of equal variances is thus not always valid. That is why the
-<code>meanR</code> and <code>maxR</code> test-statistics can also
-estimate the variances for on-axis (monotherapies) and off-axis
-dose-combinations separately. Two extra methods are described below: the
-<code>unequal</code> method (Separated variance) and the
-<code>model</code> method (Modeled variance). For both methods
-replicates are required and no variance-stabilizing transformations are
-required. The latter is often necessary when assuming equal
-variances.</p>
+<p>In the methodology described above one important assumption is made regarding the variance of the on- and off-axis dose combinations. It is considered to be equal across all points. This assumption is also mentioned in the original article and its technical supplement.</p>
+<p>In reality it is often seen that the variance of the monotherapies is not equal to the variance of the off-axis combinations. The assumption of equal variances is thus not always valid. That is why the <code>meanR</code> and <code>maxR</code> test-statistics can also estimate the variances for on-axis (monotherapies) and off-axis dose-combinations separately. Two extra methods are described below: the <code>unequal</code> method (Separated variance) and the <code>model</code> method (Modeled variance). For both methods replicates are required and no variance-stabilizing transformations are required. The latter is often necessary when assuming equal variances.</p>
 <div id="adapted-meanr" class="section level3">
 <h3>Adapted <code>meanR</code></h3>
-<p>The adapted <code>meanR</code> test uses two separate variance
-estimates for (a) the monotherapies (= <span class="math inline">\(\sigma^{2}_{0}\)</span>) and (b) the dose
-combinations (= <span class="math inline">\(\Sigma_{1}\)</span>, a
-diagonal matrix). The notation for both <code>unequal</code> as
-<code>model</code> will be the same, but the estimation of <span class="math inline">\(\Sigma_{1}\)</span> will be different. The
-variance of the monotherapies <span class="math inline">\(\sigma^{2}_{0}\)</span> is estimated as <span class="math inline">\(\sigma^{2}\)</span> above by taking the MSE of the
-null model. The test statistic is given by:</p>
+<p>The adapted <code>meanR</code> test uses two separate variance estimates for (a) the monotherapies (= <span class="math inline">\(\sigma^{2}_{0}\)</span>) and (b) the dose combinations (= <span class="math inline">\(\Sigma_{1}\)</span>, a diagonal matrix). The notation for both <code>unequal</code> as <code>model</code> will be the same, but the estimation of <span class="math inline">\(\Sigma_{1}\)</span> will be different. The variance of the monotherapies <span class="math inline">\(\sigma^{2}_{0}\)</span> is estimated as <span class="math inline">\(\sigma^{2}\)</span> above by taking the MSE of the null model. The test statistic is given by:</p>
 <p><span class="math display">\[
-\operatorname{TestStat} = \frac{R^{T}\left(\Sigma_{1}D +
-\sigma^{2}_{0}C_{p}\right)^{-1}R}{n_{1}}
+\operatorname{TestStat} = \frac{R^{T}\left(\Sigma_{1}D + \sigma^{2}_{0}C_{p}\right)^{-1}R}{n_{1}}
 \]</span></p>
 <ol style="list-style-type: decimal">
-<li><p><strong><code>unequal</code> method</strong>: The variance for
-the dose combinations is estimated by taking the variance in each dose
-combination and then taking the mean of all these variances, thus <span class="math inline">\(\Sigma_{1} = \sigma^2_1 I_{n_1}\)</span>. The
-downside of this method is that the variance for all combinations is
-assumed to be equal. In reality the variance often depends on the mean
-effect. This is taken into account in the <code>model</code>
-method.</p></li>
-<li><p><strong><code>model</code> method</strong>: In this method the
-diagonal elements of <span class="math inline">\(\Sigma_{1}\)</span> are
-no longer estimated as single number but rather as a vector of
-variances. Each off-axis point has now its own variance. A linear model
-is fitted on the original dataset, modeling the variance of each
-off-axis point as a function of its mean effect. The estimated model
-parameters are then used to predict the variance for the corresponding
-mean effect measured for that dose combination. These predicted
-variances are placed in the diagonal of <span class="math inline">\(\Sigma_{1}\)</span>. Modelling the variance with a
-linear model may require a transformation, to achieve a better fit and
-to avoid negative variances being modelled. A log-transformation often
-makes a good impression.</p></li>
+<li><p><strong><code>unequal</code> method</strong>: The variance for the dose combinations is estimated by taking the variance in each dose combination and then taking the mean of all these variances, thus <span class="math inline">\(\Sigma_{1} = \sigma^2_1 I_{n_1}\)</span>. The downside of this method is that the variance for all combinations is assumed to be equal. In reality the variance often depends on the mean effect. This is taken into account in the <code>model</code> method.</p></li>
+<li><p><strong><code>model</code> method</strong>: In this method the diagonal elements of <span class="math inline">\(\Sigma_{1}\)</span> are no longer estimated as single number but rather as a vector of variances. Each off-axis point has now its own variance. A linear model is fitted on the original dataset, modeling the variance of each off-axis point as a function of its mean effect. The estimated model parameters are then used to predict the variance for the corresponding mean effect measured for that dose combination. These predicted variances are placed in the diagonal of <span class="math inline">\(\Sigma_{1}\)</span>. Modelling the variance with a linear model may require a transformation, to achieve a better fit and to avoid negative variances being modelled. A log-transformation often makes a good impression.</p></li>
 </ol>
 </div>
 <div id="adapted-maxr" class="section level3">
 <h3>Adapted <code>maxR</code></h3>
-<p>The same approach is taken for the adapted <code>maxR</code> test
-statistic. Instead of using one estimated variance for both on- and
-off-axis points, two separate estimates are used. The estimates for
-<span class="math inline">\(\Sigma_{1}\)</span> are different depending
-on the method used (<code>unequal</code> or <code>model</code>). The
-methodology of estimating the variance is the same as was described in
-the “Adapted <code>meanR</code>” section above.</p>
+<p>The same approach is taken for the adapted <code>maxR</code> test statistic. Instead of using one estimated variance for both on- and off-axis points, two separate estimates are used. The estimates for <span class="math inline">\(\Sigma_{1}\)</span> are different depending on the method used (<code>unequal</code> or <code>model</code>). The methodology of estimating the variance is the same as was described in the “Adapted <code>meanR</code>” section above.</p>
 <p>The <code>maxR</code> test becomes</p>
 <p><span class="math display">\[
-\max \left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2}
-\right|  \sim \max \left| Z_{1}, \dots, Z_{k} \right|
+\max \left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right|  \sim \max \left| Z_{1}, \dots, Z_{k} \right|
 \]</span></p>
-<p>where <span class="math inline">\(Z_{j} \sim
-N\left(0,1\right)\)</span>. In particular, the test statistic for the
-<span class="math inline">\(k\)</span>-th off-axis dose combination
-<span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
-\operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left|
-R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right|
-\right]_{k}
-\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the
-<span class="math inline">\(k\)</span>-th coordinate.</p>
+<p>where <span class="math inline">\(Z_{j} \sim N\left(0,1\right)\)</span>. In particular, the test statistic for the <span class="math inline">\(k\)</span>-th off-axis dose combination <span class="math inline">\((d_{1}, d_{2})\)</span> is computed as <span class="math display">\[
+\operatorname{TestStat}\left(d_{1}, d_{2}\right) = \left[\left| R^{T}\left(\Sigma_{1} D + \sigma^{2}_{0} C_{p}\right)^{-1/2} \right| \right]_{k}
+\]</span> where <span class="math inline">\(\left[\cdot\right]_{k}\)</span> indicates the <span class="math inline">\(k\)</span>-th coordinate.</p>
 </div>
 <div id="bootstrapping-under-unequal-variances" class="section level3">
 <h3>Bootstrapping under unequal variances</h3>
-<p>In case of the <code>unequal</code> variance assumption, the
-bootstrap proceeds as before, with the off-axis residuals being pooled
-and resampled. With the <code>model</code> assumption, the resampling is
-more complicated, as the residuals are no longer exchangeable. One
-option is to rescale the observed residuals according to the
-mean-variance model (i.e. dividing them by their standard deviations),
-resample from this pool of standardized residuals, and then scale back
-to the true variance (by multiplying by the standard deviation). Yet
-this approach has proven to be unstable as it leads to extreme
-observations. An alternative (the default) is to generate zero-mean
-normal data with the modelled variances (see the
-<code>rescaleResids</code> argument in <code>fitSurface()</code>).</p>
+<p>In case of the <code>unequal</code> variance assumption, the bootstrap proceeds as before, with the off-axis residuals being pooled and resampled. With the <code>model</code> assumption, the resampling is more complicated, as the residuals are no longer exchangeable. One option is to rescale the observed residuals according to the mean-variance model (i.e. dividing them by their standard deviations), resample from this pool of standardized residuals, and then scale back to the true variance (by multiplying by the standard deviation). Yet this approach has proven to be unstable as it leads to extreme observations. An alternative (the default) is to generate zero-mean normal data with the modelled variances (see the <code>rescaleResids</code> argument in <code>fitSurface()</code>).</p>
 </div>
 <div id="advantages-of-unequal-and-model-methods-compared-to-assumption-of-equal-variances" class="section level3">
-<h3>Advantages of <code>unequal</code> and <code>model</code> methods
-compared to assumption of equal variances</h3>
-<p>The assumption of equal variances between monotherapies and off-axis
-dose-combinations fails to control the type I error rate around
-pre-specified level, when the variance of off-axis points increases
-(natural variance or outliers). This results in false positive synergy
-calls when in reality there were none. Both the <code>unequal</code> and
-the <code>model</code> methods control the type I error rate far better,
-with slightly better results obtained by the <code>model</code>
-method.</p>
-<p>Furthermore, the sensitivity and specificity of the <code>maxR</code>
-test statistics are higher with the methods assuming variance
-heterogeneity compared to the methods where equal variances are
-assumed.</p>
+<h3>Advantages of <code>unequal</code> and <code>model</code> methods compared to assumption of equal variances</h3>
+<p>The assumption of equal variances between monotherapies and off-axis dose-combinations fails to control the type I error rate around pre-specified level, when the variance of off-axis points increases (natural variance or outliers). This results in false positive synergy calls when in reality there were none. Both the <code>unequal</code> and the <code>model</code> methods control the type I error rate far better, with slightly better results obtained by the <code>model</code> method.</p>
+<p>Furthermore, the sensitivity and specificity of the <code>maxR</code> test statistics are higher with the methods assuming variance heterogeneity compared to the methods where equal variances are assumed.</p>
 </div>
 </div>
 <div id="effect-size-for-off-axis-points" class="section level2">
 <h2>Effect size for off-axis points</h2>
-<p>As with many statistical tests, the researcher may not only be
-interested in a measure of significance (e.g. a p-value), but also in a
-measure of effect size, and a measure of the imprecision of this
-estimated effect size. Here we develop confidence intervals for two
-types of effect sizes. The first is a pointwise effect size, which is
-defined at every off axis point as the difference between the true mean
-response and the expected response under additivity. It is estimated as
-<span class="math inline">\(E_{i} =
-\frac{1}{n_i}\sum_{j=1}^{n_i}(R_{ij}-\hat{R}_i)\)</span> with <span class="math inline">\(j=1, ..., n_i\)</span>, for every off-axis point
-<span class="math inline">\(i=1, ..., n_1\)</span>, whereby we strive to
-achieve a simultaneous coverage for all off-axis points of 95%.</p>
+<p>As with many statistical tests, the researcher may not only be interested in a measure of significance (e.g. a p-value), but also in a measure of effect size, and a measure of the imprecision of this estimated effect size. Here we develop confidence intervals for two types of effect sizes. The first is a pointwise effect size, which is defined at every off axis point as the difference between the true mean response and the expected response under additivity. It is estimated as <span class="math inline">\(E_{i} = \frac{1}{n_i}\sum_{j=1}^{n_i}(R_{ij}-\hat{R}_i)\)</span> with <span class="math inline">\(j=1, ..., n_i\)</span>, for every off-axis point <span class="math inline">\(i=1, ..., n_1\)</span>, whereby we strive to achieve a simultaneous coverage for all off-axis points of 95%.</p>
 <div id="confidence-interval" class="section level3">
 <h3>Confidence interval</h3>
-<p>Let <span class="math inline">\(e_i\)</span> denote the true effect
-size on off axis point <span class="math inline">\(i\)</span>, and call
-<span class="math inline">\(E_{i}\)</span> its estimate based on the
-data. Relying on the asymptotic normality of the estimator, an
-approximate (asymptotic) confidence interval would be formed as the
-set:</p>
+<p>Let <span class="math inline">\(e_i\)</span> denote the true effect size on off axis point <span class="math inline">\(i\)</span>, and call <span class="math inline">\(E_{i}\)</span> its estimate based on the data. Relying on the asymptotic normality of the estimator, an approximate (asymptotic) confidence interval would be formed as the set:</p>
 <p><span class="math display">\[\begin{equation}
-  \left\{ e: \left\vert \frac{E_{i}-e_i}{\hat{s}_i} \right\vert &lt;
-z_{\alpha/2} \right\}
+  \left\{ e: \left\vert \frac{E_{i}-e_i}{\hat{s}_i} \right\vert &lt; z_{\alpha/2} \right\}
 \end{equation}\]</span></p>
-<p>with <span class="math inline">\(\hat{s}_i\)</span> the estimated
-standard error of <span class="math inline">\(E_i\)</span>, and <span class="math inline">\(z_{\alpha/2}\)</span> the <span class="math inline">\(1-\alpha/2\)</span> quantile of the standard
-normal distribution.</p>
-<p>We know, however, from the meanR and maxR tests that the asymptotic
-distributions provide poor approximations. Therefore, we use the
-bootstrap here too to build the confidence intervals.</p>
-<p>For every bootstrap instance, bootstrap observations are sampled for
-on- as well as off axis points. For the on-axis points, a parametric
-bootstrap based on the estimated monothereapy curves is used, as for the
-calculation of the meanR and maxR statistics. Based on these on-axis
-bootstrap samples, new monotherapy curves are fitted with resulting
-residual variances bootstrap variance <span class="math inline">\(MSE_0^b\)</span>, and corresponding response
-surfaces with expected outcomes $_i^b $ are derived. For the off-axis
-points, with <span class="math inline">\(n_i\)</span> replicates at a
-given point, <span class="math inline">\(A_{ij} = R_{ij} -
-\bar{R}_i\)</span> are the pointwise residuals <span class="math inline">\(j = 1, ..., n_i\)</span>. Here <span class="math inline">\(R_{ij}\)</span> is the observed outcome and <span class="math inline">\(\bar{R}_i\)</span>, the average outcome at point
-<span class="math inline">\(i\)</span>, serves as an unbiased estimator
-of the true response. Note that these residuals are different from the
-residuals <span class="math inline">\(E_i = \bar{R}_i-\hat{R}_i\)</span>
-used to construct the test statistics; for <span class="math inline">\(A_{ij}\)</span> the departure with respect to the
-mean outcome at that off-axis point is used. These residuals are
-resampled with replacement from the observed residuals, possibly using
-rescaling as explained below. The resampled residuals are then added to
-the estimated effect sizes to obtain bootstrapped observations <span class="math inline">\(R_{ij}^b = \bar{R}_i + A_{ij}^b\)</span>, with
-<span class="math inline">\(b = 1, ...,B\)</span> denoting the bootstrap
-instance. This leads to the bootstrap effect sizes <span class="math inline">\(E^b_i = \bar{R}_i^b-\hat{R}_i^b\)</span> and test
-statistics <span class="math inline">\(\left\vert \frac{E^b_i
--E_i}{\hat{s}^b_i} \right\vert\)</span>, using the standard deviations
-<span class="math inline">\(\hat{s}_i^b\)</span> from the bootstrap.</p>
+<p>with <span class="math inline">\(\hat{s}_i\)</span> the estimated standard error of <span class="math inline">\(E_i\)</span>, and <span class="math inline">\(z_{\alpha/2}\)</span> the <span class="math inline">\(1-\alpha/2\)</span> quantile of the standard normal distribution.</p>
+<p>We know, however, from the meanR and maxR tests that the asymptotic distributions provide poor approximations. Therefore, we use the bootstrap here too to build the confidence intervals.</p>
+<p>For every bootstrap instance, bootstrap observations are sampled for on- as well as off axis points. For the on-axis points, a parametric bootstrap based on the estimated monotherapy curves is used, as for the calculation of the meanR and maxR statistics. Based on these on-axis bootstrap samples, new monotherapy curves are fitted with resulting residual variances bootstrap variance <span class="math inline">\(MSE_0^b\)</span>, and corresponding response surfaces with expected outcomes $_i^b $ are derived. For the off-axis points, with <span class="math inline">\(n_i\)</span> replicates at a given point, <span class="math inline">\(A_{ij} = R_{ij} - \bar{R}_i\)</span> are the pointwise residuals <span class="math inline">\(j = 1, ..., n_i\)</span>. Here <span class="math inline">\(R_{ij}\)</span> is the observed outcome and <span class="math inline">\(\bar{R}_i\)</span>, the average outcome at point <span class="math inline">\(i\)</span>, serves as an unbiased estimator of the true response. Note that these residuals are different from the residuals <span class="math inline">\(E_i = \bar{R}_i-\hat{R}_i\)</span> used to construct the test statistics; for <span class="math inline">\(A_{ij}\)</span> the departure with respect to the mean outcome at that off-axis point is used. These residuals are resampled with replacement from the observed residuals, possibly using rescaling as explained below. The resampled residuals are then added to the estimated effect sizes to obtain bootstrapped observations <span class="math inline">\(R_{ij}^b = \bar{R}_i + A_{ij}^b\)</span>, with <span class="math inline">\(b = 1, ...,B\)</span> denoting the bootstrap instance.</p>
+<p>An extra option of using the wild bootstrap is also available. In this method, a new response variable is calculated by multiplying the sampled residuals <span class="math inline">\(R_i\)</span> with yet another random variable <span class="math inline">\(\upsilon_{ij}\)</span> so that the bootstrapped observations are given by</p>
+<p><span class="math display">\[R_{ij}^b = \bar{R}_i +  A_{ij}^b \upsilon_{ij}\]</span></p>
+<p>where <span class="math inline">\(v_{ij}\)</span> are independent random variables with mean zero and variance 1, and can be sampled from a normal, gamma, rademacher or two-point distributions.</p>
+<p>This leads to the bootstrap effect sizes <span class="math inline">\(E^b_i = \bar{R}_i^b-\hat{R}_i^b\)</span> and test statistics <span class="math inline">\(\left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert\)</span>, using the standard deviations <span class="math inline">\(\hat{s}_i^b\)</span> from the bootstrap.</p>
 <p>Over all bootstrap instances, we then find the distribution of</p>
 <p><span class="math display">\[\begin{equation}
   T = \max_i \left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert
 \end{equation}\]</span></p>
-<p>Call <span class="math inline">\(t_\alpha\)</span> the threshold such
-that <span class="math display">\[\begin{equation}
+<p>Call <span class="math inline">\(t_\alpha\)</span> the threshold such that <span class="math display">\[\begin{equation}
   \text{P}\left\{T&gt;t_\alpha\right\} = \alpha
 \end{equation}\]</span></p>
-<p>Finally, we find for every off-axis point the confidence interval as
-the collection:</p>
+<p>Finally, we find for every off-axis point the confidence interval as the collection:</p>
 <p><span class="math display">\[\begin{equation}
-\left\{ e: \left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert &lt;
-t_\alpha \right\}
+ \left\{ e: \left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert &lt; t_\alpha \right\}
 \end{equation}\]</span></p>
 </div>
 <div id="standard-error" class="section level3">
 <h3>Standard error</h3>
 <p>As an estimate of the standard error we use</p>
 <p><span class="math display">\[\begin{equation}
-    \hat{s}_i^b = \sqrt{\text{diag}(\boldsymbol{F}^b+\text{MSE}_0^b
-\boldsymbol{C}_p)_i},
+    \hat{s}_i^b = \sqrt{\text{diag}(\boldsymbol{F}^b+\text{MSE}_0^b \boldsymbol{C}_p)_i},
     \label{eq:confIntSe}
 \end{equation}\]</span></p>
-<p>with <span class="math inline">\(\boldsymbol{F}^b\)</span> equal to
-<span class="math inline">\(\text{MSE}_0^b\boldsymbol{D}\)</span>, <span class="math inline">\(\text{MSE}_1^b\boldsymbol{D}\)</span> or <span class="math inline">\(\boldsymbol{S}^b\)</span>, depending on which
-variance model is used. This standard error resembles the variance
-estimators of the meanR and maxR statistics discussed there.</p>
-<p>By using only the diagonal elements of <span class="math inline">\(\boldsymbol{F}^b\)</span>, we ignore the
-covariance between test statistics. We will use the studentised-range
-concept (which is also central to Tukey’s method for multiple testing)
-for controlling the family-wise error rate (FWER). For the covariance
-matrix <span class="math inline">\(\boldsymbol{C}_p\)</span> we use the
-one estimated for the observed data. This matrix turns out to be quite
-stable over the bootstrap runs; moreover the calculation of the matrix
-for each bootstrap sample would imply a time-consuming nested bootstrap
-procedure. On the other hand, <span class="math inline">\(MSE_0^b\)</span> is re-estimated with each
-bootstrap sample. Also <span class="math inline">\(\boldsymbol{F}^b\)</span> is re-estimated based on
-the bootstrapped data.</p>
+<p>with <span class="math inline">\(\boldsymbol{F}^b\)</span> equal to <span class="math inline">\(\text{MSE}_0^b\boldsymbol{D}\)</span>, <span class="math inline">\(\text{MSE}_1^b\boldsymbol{D}\)</span> or <span class="math inline">\(\boldsymbol{S}^b\)</span>, depending on which variance model is used. This standard error resembles the variance estimators of the meanR and maxR statistics discussed there.</p>
+<p>By using only the diagonal elements of <span class="math inline">\(\boldsymbol{F}^b\)</span>, we ignore the covariance between test statistics. We use the studentised-range concept (which is also central to Tukey’s method for multiple testing) for controlling the family-wise error rate (FWER) as default. Other available options are false coverage rate (FCR) and directional false coverage rate (dFCR). For the covariance matrix <span class="math inline">\(\boldsymbol{C}_p\)</span> we use the one estimated for the observed data. This matrix turns out to be quite stable over the bootstrap runs; moreover the calculation of the matrix for each bootstrap sample would imply a time-consuming nested bootstrap procedure. On the other hand, <span class="math inline">\(MSE_0^b\)</span> is re-estimated with each bootstrap sample. Also <span class="math inline">\(\boldsymbol{F}^b\)</span> is re-estimated based on the bootstrapped data.</p>
 </div>
 <div id="single-effect-measure" class="section level3">
 <h3>Single effect measure</h3>
-<p>Researchers may also want to have a single measure for the strength
-of the synergy for a single experiment, e.g. in view of ranking compound
-combinations according to their synergistic effect. For this we
-calculate the average of the pointwise off-axis effect sizes. This is
-estimated as <span class="math inline">\(\bar{E} = \frac{1}{\sum_{i=
-1}^{n_1}n_i }\sum_{i=1}^{n_1}\sum_{j=
-1}^{n_i}(R_{ij}-\hat{R}_i)\)</span>. It may be considered as a measure
-of the “volume” between the expected and observed response surfaces,
-similar to the “integrated synergy” of . Note that this effect size may
-cause synergistic and antagonistic points to cancel out against one
-another, but we believe this scenario is unlikely. As before we would
-like a measure of imprecision for this effect size.</p>
+<p>Researchers may also want to have a single measure for the strength of the synergy for a single experiment, e.g. in view of ranking compound combinations according to their synergistic effect. For this we calculate the average of the pointwise off-axis effect sizes. This is estimated as <span class="math inline">\(\bar{E} = \frac{1}{\sum_{i= 1}^{n_1}n_i }\sum_{i=1}^{n_1}\sum_{j= 1}^{n_i}(R_{ij}-\hat{R}_i)\)</span>. It may be considered as a measure of the “volume” between the expected and observed response surfaces, similar to the “integrated synergy” of . Note that this effect size may cause synergistic and antagonistic points to cancel out against one another, but we believe this scenario is unlikely. As before we would like a measure of imprecision for this effect size.</p>
 <div id="confidence-interval-1" class="section level4">
 <h4>Confidence interval</h4>
-<p>The construction of the bootstrap confidence interval for the single
-effect size follows the general procedure for bootstrap-t confidence
-intervals . Let <span class="math inline">\(\boldsymbol{F}\)</span>
-denote the estimated covariance matrix of the raw residuals as
-before.</p>
-<p>Using Equation <span class="math inline">\(\eqref{Eq_Var}\)</span> in
-the main text and the fact that</p>
+<p>The construction of the bootstrap confidence interval for the single effect size follows the general procedure for bootstrap-t confidence intervals . Let <span class="math inline">\(\boldsymbol{F}\)</span> denote the estimated covariance matrix of the raw residuals as before.</p>
+<p>Using Equation <span class="math inline">\(\eqref{Eq_Var}\)</span> in the main text and the fact that</p>
 <p><span class="math display">\[\begin{equation}
-\mbox{Var}\left\{\bar{E}\right\} =
-\mbox{Var}\left\{\frac{1}{n_1}\sum_{i=1}^{n_1} E_i\right\} =
-\frac{1}{n_1^2}\left(\sum_{i=1}^{n_1} \mbox{Var}\left\{E_i\right\} +
-\sum_{i=1}^{n_1}\sum_{j=1}^{n_1}\mbox{Cov}\left\{E_i,
-E_j\right\}\right),
+\mbox{Var}\left\{\bar{E}\right\} = \mbox{Var}\left\{\frac{1}{n_1}\sum_{i=1}^{n_1} E_i\right\} = \frac{1}{n_1^2}\left(\sum_{i=1}^{n_1} \mbox{Var}\left\{E_i\right\} + \sum_{i=1}^{n_1}\sum_{j=1}^{n_1}\mbox{Cov}\left\{E_i, E_j\right\}\right),
     \label{eq:varE}
 \end{equation}\]</span></p>
-<p>the standard error of <span class="math inline">\(\bar{E}\)</span> is
-<span class="math inline">\(se(\bar{E}) = \frac{1}{n_1}\sqrt{\sum_{f \in
-\boldsymbol{F}} f}\)</span>. We obtain bootstrapped data for on- and
-off-axis points for bootstrap instances <span class="math inline">\(b=1,
-..., B\)</span>, and calculate the corresponding mean residual and
-standard error <span class="math inline">\(\bar{E}_b\)</span> and <span class="math inline">\(se(\bar{E}_b)\)</span>. Then define the
-statistic</p>
+<p>the standard error of <span class="math inline">\(\bar{E}\)</span> is <span class="math inline">\(se(\bar{E}) = \frac{1}{n_1}\sqrt{\sum_{f \in \boldsymbol{F}} f}\)</span>. We obtain bootstrapped data for on- and off-axis points for bootstrap instances <span class="math inline">\(b=1, ..., B\)</span>, and calculate the corresponding mean residual and standard error <span class="math inline">\(\bar{E}_b\)</span> and <span class="math inline">\(se(\bar{E}_b)\)</span>. Then define the statistic</p>
 <p><span class="math display">\[\begin{equation}
     Q_b = \frac{\bar{E}_b-\bar{E}}{se(\bar{E}_b)}
     \label{eq:confIntSingle}
 \end{equation}\]</span></p>
-<p>Note that <span class="math inline">\(se(\bar{E}_b)\)</span> relies
-on the bootstrap covariance matrix <span class="math inline">\(\boldsymbol{F}^b\)</span>. Call (<span class="math inline">\(q_{\alpha/2}\)</span>, <span class="math inline">\(q_{1-\alpha/2}\)</span>) the quantiles of the
-bootstrap distribution such that <span class="math display">\[\begin{equation}
-  \text{P}\left\{Q_b&lt;q_{\alpha/2}\right\} =
-\text{P}\left\{Q_b&gt;q_{1-\alpha/2} \right\} = \alpha/2
+<p>Note that <span class="math inline">\(se(\bar{E}_b)\)</span> relies on the bootstrap covariance matrix <span class="math inline">\(\boldsymbol{F}^b\)</span>. Call (<span class="math inline">\(q_{\alpha/2}\)</span>, <span class="math inline">\(q_{1-\alpha/2}\)</span>) the quantiles of the bootstrap distribution such that <span class="math display">\[\begin{equation}
+  \text{P}\left\{Q_b&lt;q_{\alpha/2}\right\} = \text{P}\left\{Q_b&gt;q_{1-\alpha/2} \right\} = \alpha/2
 \end{equation}\]</span></p>
 <p>Finally, we find the confidence interval as</p>
-<p><span class="math display">\[\begin{equation}
-\bar{E} - se(\bar{E}_b)q_{\alpha/2}, \bar{E} +
-se(\bar{E}_b)q_{1-\alpha/2}
+<p><span class="math display">\[\begin{equation} 
+ \bar{E} - se(\bar{E}_b)q_{\alpha/2}, \bar{E} + se(\bar{E}_b)q_{1-\alpha/2}
 \end{equation}\]</span></p>
-<p>Of course, this procedure can easily be adapted to find the sum of
-all raw residuals, but the mean may be better comparable across
-experiments with different designs.</p>
+<p>Of course, this procedure can easily be adapted to find the sum of all raw residuals, but the mean may be better comparable across experiments with different designs.</p>
 </div>
 </div>
 </div>
 <div id="on-resampling-residuals" class="section level2">
 <h2>On resampling residuals</h2>
-<p>Depending on the mean-variance structure in the data, residuals are
-resampled differently. The same strategies are used for resampling 1)
-residuals with respect to the expected response surface <span class="math inline">\(R_{ij}\)</span> under the null hypothesis for the
-meanR and maxR statistics as for 2) residuals <span class="math inline">\(A_{ij}\)</span> with respect to the average at the
-off-axis point under the alternative hypothesis for constructing the
-confidence intervals. In the description below, we use <span class="math inline">\(U_{ij}\)</span> as generic notation for either
-<span class="math inline">\(R_{ij}\)</span> or <span class="math inline">\(A_{ij}\)</span>.</p>
-<p>In case of constant variability within the off-axis points, the
-residuals <span class="math inline">\(U_{ij}\)</span> can simply be
-pooled and resampled with replacement.</p>
-<p>When a linear mean-variance structure is assumed, one option is to
-rescale the pointwise residuals first to <span class="math inline">\(b_{ij} =
-\frac{U_{ij}}{\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}}\)</span>, then pool
-and resample them, and then scale them back to <span class="math inline">\(b_{ij}\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}\)</span>
-according to their new position <span class="math inline">\(i\)</span>.
-Yet in practice this leads to extreme observations, which destabilizes
-the fitting procedure. A second option is to use random draws from a
-zero-mean normal distribution with the modelled variance <span class="math inline">\(v^{-1}(\beta_0+\beta_1\mu_i)\)</span> to generate
-new <span class="math inline">\(U_{ij}\)</span>’s. This latter option
-was found to be more stable and is used as a default in the BIGL
-package.</p>
+<p>Depending on the mean-variance structure in the data, residuals are resampled differently. The same strategies are used for resampling 1) residuals with respect to the expected response surface <span class="math inline">\(R_{ij}\)</span> under the null hypothesis for the meanR and maxR statistics as for 2) residuals <span class="math inline">\(A_{ij}\)</span> with respect to the average at the off-axis point under the alternative hypothesis for constructing the confidence intervals. In the description below, we use <span class="math inline">\(U_{ij}\)</span> as generic notation for either <span class="math inline">\(R_{ij}\)</span> or <span class="math inline">\(A_{ij}\)</span>.</p>
+<p>In case of constant variability within the off-axis points, the residuals <span class="math inline">\(U_{ij}\)</span> can simply be pooled and resampled with replacement.</p>
+<p>When a linear mean-variance structure is assumed, one option is to rescale the pointwise residuals first to <span class="math inline">\(b_{ij} = \frac{U_{ij}}{\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}}\)</span>, then pool and resample them, and then scale them back to <span class="math inline">\(b_{ij}\sqrt{v^{-1}(\beta_0+\beta_1\mu_i)}\)</span> according to their new position <span class="math inline">\(i\)</span>. Yet in practice this leads to extreme observations, which destabilizes the fitting procedure. A second option is to use random draws from a zero-mean normal distribution with the modelled variance <span class="math inline">\(v^{-1}(\beta_0+\beta_1\mu_i)\)</span> to generate new <span class="math inline">\(U_{ij}\)</span>’s. This latter option was found to be more stable and is used as a default in the BIGL package.</p>
 </div>
 
 

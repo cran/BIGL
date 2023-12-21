@@ -4,7 +4,16 @@
 \alias{plot.BIGLconfInt}
 \title{Plot confidence intervals in a contour plot}
 \usage{
-\method{plot}{BIGLconfInt}(x, color = "effect-size", showAll = TRUE, digits = 3, xlab, ylab, ...)
+\method{plot}{BIGLconfInt}(
+  x,
+  color = "effect-size",
+  showAll = TRUE,
+  digits = 3,
+  xlab,
+  ylab,
+  greyScale = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{off axis confidence intervals, a data frame}
@@ -18,6 +27,9 @@
 \item{xlab}{String for the x axis label}
 
 \item{ylab}{String for the y axis label}
+
+\item{greyScale}{If \code{greyScale = TRUE}, then plot is in grey scale,
+otherwise in colour.}
 
 \item{...}{additional arguments, currently ignored}
 }

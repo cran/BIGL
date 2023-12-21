@@ -52,14 +52,14 @@ subsetData <- function(data, i) {
 }
 ```
 
-Now let us only pick `Experiment 1` to illustrate the functionality of the package.
+Now let us only pick `Experiment 4` to illustrate the functionality of the package.
 
 ```{r subset, out.width="100%"}
-i <- 1
+i <- 4
 data <- subsetData(directAntivirals, i)
 ```
 
-Dose-response data for `Experiment 1` will be used for a large share of the analysis presented here, therefore this subset is stored in a dataframe called `data`. Later, we will run the analysis for some other experiments as well.
+Dose-response data for `Experiment 4` will be used for a large share of the analysis presented here, therefore this subset is stored in a dataframe called `data`. Later, we will run the analysis for some other experiments as well.
 
 ## Data transformation
 
@@ -197,7 +197,7 @@ Other elements in the `MarginalFit` are currently unused for evaluating synergy 
 As an example, the following code generates a custom `MarginalFit` object that can be passed further to estimate a response surface under the null hypothesis.
 
 ```{r eval=FALSE}
-marginalFit <- list("coef" = c("h1" = 1, "h2" = 2, "b" = 0,
+customMarginalFit <- list("coef" = c("h1" = 1, "h2" = 2, "b" = 0,
                                "m1" = 1.2, "m2" = 1, "e1" = 0.5, "e2" = 0.5),
                     "sigma" = 0.1,
                     "df" = 123,
@@ -205,7 +205,7 @@ marginalFit <- list("coef" = c("h1" = 1, "h2" = 2, "b" = 0,
                     "shared_asymptote" = FALSE,
                     "method" = "nlslm",
                     "transforms" = transforms)
-class(marginalFit) <- append(class(marginalFit), "MarginalFit")
+class(customMarginalFit) <- append(class(customMarginalFit), "MarginalFit")
 ```
 
 Note that during bootstrapping this would use `minpack.lm::nlsLM` function to re-estimate parameters from data following the null. A custom optimizer for bootstrapping is currently not implemented.
@@ -221,6 +221,14 @@ Five types of null models are available for calculating expected response surfac
 * Bliss independence model is used when `null_model = "bliss"`. In the situations when maximal responses are constrained to be equal, the classical Bliss independence approach is used, when they are not equal, the Bliss independence calculation is performed on responses rescaled to the maximum range (i.e. absolute difference between baseline and maximal response).	
 * Alternative Loewe Generalization is used when `null_model = "loewe2"`. If the asymptotes are constrained to be equal, this reduces to the classical Loewe. Note that if `shared_asymptote = TRUE` constraints are used, this also reduces to classical Loewe model.
 
+
+Three methods are available to control for errors
+
+* Family wise error rate is used if `control = "FWER"`
+* False coverage rate is used if `control = "FCR"`
+* Directional false coverage rate is used if `control = "dFCR"`
+
+
 ### (Generalized) Loewe model
 
 If transformation functions were estimated using `fitMarginals`, these will be automatically recycled from the `marginalFit` object when doing calculations for the response surface fit. Alternatively, transformation functions can be passed by a separate argument. Since the `marginalFit` object was estimated without the shared asymptote constraint, the following will compute the response surface based on the generalized Loewe model.
@@ -228,7 +236,9 @@ If transformation functions were estimated using `fitMarginals`, these will be a
 ```{r analysis, message=FALSE, comment = NA}
 rs <- fitSurface(data, marginalFit,
                  null_model = "loewe",
-                 B.CP = 50, statistic = "none", parallel = FALSE)
+                 B.CP = 50, statistic = "none", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rs)
 ```
 
@@ -256,7 +266,9 @@ For the Highest Single Agent null model to work properly, it is expected that bo
 ```{r analysis_hsa, message=FALSE, comment = NA}
 rsh <- fitSurface(data, marginalFit,
                   null_model = "hsa",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsh)
 ```
 
@@ -269,7 +281,9 @@ Also for the Bliss independence null model to work properly, it is expected that
 ```{r analysis_bliss, message=FALSE, comment = NA}
 rsb <- fitSurface(data, marginalFit, 
                   null_model = "bliss",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsb)
 ```
 
@@ -282,7 +296,9 @@ Also for the Alternative Loewe Generalization null model to work properly, it is
 ```{r analysis_loewe2, message=FALSE, comment = NA}
 rsl2 <- fitSurface(data, marginalFit, 
                   null_model = "loewe2",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsl2)
 ```
 
@@ -299,7 +315,9 @@ The user has the option to define which compound will be shown in the panels and
 nullModels <- c("loewe", "loewe2", "bliss", "hsa")
 rs_list <- Map(fitSurface, null_model = nullModels, MoreArgs = list(
         data = data, fitResult = marginalFit, 
-        B.CP = 50, statistic = "none", parallel = FALSE)
+        B.CP = 50, statistic = "none", parallel = FALSE,
+        wild_bootstrap = TRUE, wild_bootType = "normal",
+        control = "dFCR")
 )
 
 synergy_plot_bycomp(rs_list, ylab = "Response", plotBy = "Drug A", color = TRUE)
@@ -337,7 +355,9 @@ The previous piece of code assumes normal errors. If we drop this assumption, we
 ```{r meanrnonnorm, message = FALSE}
 meanR_B <- fitSurface(data, marginalFit,
                       statistic = "meanR", CP = rs$CP, B.B = 20,
-                      parallel = FALSE)
+                      parallel = FALSE,
+                     wild_bootstrap = TRUE, wild_bootType = "normal",
+                     control = "dFCR")
 ```
 
 Both tests use the same calculated F-statistic but compare it to different null distributions. In this particular case, both tests lead to identical results.
@@ -359,7 +379,9 @@ maxR_N <- fitSurface(data, marginalFit,
                      parallel = FALSE)
 maxR_B <- fitSurface(data, marginalFit,
                      statistic = "maxR", CP = rs$CP, B.B = 20,
-                     parallel = FALSE)
+                     parallel = FALSE,
+                     wild_bootstrap = TRUE, wild_bootType = "normal",
+                     control = "dFCR")
 maxR_both <- rbind(summary(maxR_N$maxR)$totals,
                    summary(maxR_B$maxR)$totals)
 ```
@@ -417,14 +439,16 @@ contour(
     maxR_B,
     colorPalette = c("Syn" = "blue", "None" = "white", "Ant" = "red"),
     main = paste0(" Experiment ", i, " contour plot for effect size"),
-    color = "effect-size",
+    colorBy = "effect-size",
     scientific = TRUE, digits = 3, cutoff = cutoff
 )
 ```
 
 
 ```{r plot3d_effectsize, warning=FALSE, fig.height=7, fig.width=7, message=FALSE, comment = NA}
-plot(maxR_B, color = "effect-size", legend = FALSE, main = "", gradient = FALSE)
+plot(maxR_B, color = "effect-size", legend = FALSE, main = "", gradient = FALSE,
+     colorPalette = c("Ant" = "red", "None" = "white", "Syn" = "blue"),
+     colorPaletteNA = "white")
 ```
 
 
@@ -450,7 +474,9 @@ marginalFit <- fitMarginals(data, transforms = NULL)
 summary(marginalFit)
 
 resU <- fitSurface(data, marginalFit, method = "unequal", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+                      wild_bootstrap = TRUE, wild_bootType = "normal",
+                      control = "dFCR")
 summary(resU)
 ```
 
@@ -467,7 +493,9 @@ The linear fit seems fine in this case.
 
 ```{r modelVarianceSum, fig.width=6, fig.height=5}
 resM <- fitSurface(data, marginalFit, method = "model", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+                      wild_bootstrap = TRUE, wild_bootType = "normal",
+                      control = "dFCR")
 ```
 
 If the log transformation yielded a better fit, then this could be achieved by
@@ -475,7 +503,9 @@ using the following option.
 
 ```{r modelVarianceSumLogTransform, fig.width=6, fig.height=5, eval = FALSE}
 resL <- fitSurface(data, marginalFit, method = "model", trans = "log", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+                      wild_bootstrap = TRUE, wild_bootType = "normal",
+                      control = "dFCR")
 ```
 
 Negative variances were modelled, but variance model has the smallest observed variances as minimum so we can proceed.`
@@ -502,7 +532,10 @@ for (i in seq_len(nExp)) {
   ## Predict response surface based on generalized Loewe model
   respSurface <- fitSurface(data, marginalFit,
                             statistic = "maxR", B.CP = 20,
-                            parallel = FALSE)
+                            parallel = FALSE,
+                            wild_bootstrap = TRUE, wild_bootType = "normal",
+                            control = "dFCR"
+                            )
 
   datasets[[i]] <- data
   marginalFits[[i]] <- marginalFit

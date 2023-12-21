@@ -4,14 +4,31 @@
 \alias{contour.ResponseSurface}
 \title{Method for plotting of contours based on maxR statistics}
 \usage{
-\method{contour}{ResponseSurface}(x, colorBy = "maxR", ...)
+\method{contour}{ResponseSurface}(
+  x,
+  colorBy = "maxR",
+  reverse.x = FALSE,
+  reverse.y = FALSE,
+  swapAxes = FALSE,
+  greyScale = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Output of \code{\link{fitSurface}}}
 
 \item{colorBy}{String indicating the characteristic to use for coloring ("maxR" or "effect-size"). By default, "maxR".}
 
-\item{...}{Further parameters passed to \code{\link{plot.maxR}}}
+\item{reverse.x}{Reverse x axis?}
+
+\item{reverse.y}{Reverse y axis?}
+
+\item{swapAxes}{Swap x and y axes?}
+
+\item{greyScale}{If \code{greyScale = TRUE}, then plot is in grey scale,
+otherwise in colour.}
+
+\item{...}{Further parameters passed to \code{\link{plot.maxR}} or \code{\link{plot.effect-size}}}
 }
 \description{
 Method for plotting of contours based on maxR statistics

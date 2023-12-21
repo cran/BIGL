@@ -26,7 +26,7 @@ subsetData <- function(data, i) {
 }
 
 ## ----subset, out.width="100%"-------------------------------------------------
-i <- 1
+i <- 4
 data <- subsetData(directAntivirals, i)
 
 ## ----transformations----------------------------------------------------------
@@ -89,7 +89,7 @@ plot(marginalFit) + ggtitle(paste("Direct-acting antivirals - Experiment" , i))
 #    })
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  marginalFit <- list("coef" = c("h1" = 1, "h2" = 2, "b" = 0,
+#  customMarginalFit <- list("coef" = c("h1" = 1, "h2" = 2, "b" = 0,
 #                                 "m1" = 1.2, "m2" = 1, "e1" = 0.5, "e2" = 0.5),
 #                      "sigma" = 0.1,
 #                      "df" = 123,
@@ -97,12 +97,14 @@ plot(marginalFit) + ggtitle(paste("Direct-acting antivirals - Experiment" , i))
 #                      "shared_asymptote" = FALSE,
 #                      "method" = "nlslm",
 #                      "transforms" = transforms)
-#  class(marginalFit) <- append(class(marginalFit), "MarginalFit")
+#  class(customMarginalFit) <- append(class(customMarginalFit), "MarginalFit")
 
 ## ----analysis, message=FALSE, comment = NA------------------------------------
 rs <- fitSurface(data, marginalFit,
                  null_model = "loewe",
-                 B.CP = 50, statistic = "none", parallel = FALSE)
+                 B.CP = 50, statistic = "none", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rs)
 
 ## ----image, warning=FALSE, comment = NA, fig.width = 6, fig.height = 4, fig.align = "center"----
@@ -114,26 +116,34 @@ plot(rs, legend = FALSE, main = "")
 ## ----analysis_hsa, message=FALSE, comment = NA--------------------------------
 rsh <- fitSurface(data, marginalFit,
                   null_model = "hsa",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsh)
 
 ## ----analysis_bliss, message=FALSE, comment = NA------------------------------
 rsb <- fitSurface(data, marginalFit, 
                   null_model = "bliss",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsb)
 
 ## ----analysis_loewe2, message=FALSE, comment = NA-----------------------------
 rsl2 <- fitSurface(data, marginalFit, 
                   null_model = "loewe2",
-                  B.CP = 50, statistic = "both", parallel = FALSE)
+                  B.CP = 50, statistic = "both", parallel = FALSE,
+                 wild_bootstrap = TRUE, wild_bootType = "normal",
+                 control = "dFCR")
 summary(rsl2)
 
 ## ----plot_2d_cross_section, message=FALSE, comment = NA, fig.width = 8, fig.height = 6----
 nullModels <- c("loewe", "loewe2", "bliss", "hsa")
 rs_list <- Map(fitSurface, null_model = nullModels, MoreArgs = list(
         data = data, fitResult = marginalFit, 
-        B.CP = 50, statistic = "none", parallel = FALSE)
+        B.CP = 50, statistic = "none", parallel = FALSE,
+        wild_bootstrap = TRUE, wild_bootType = "normal",
+        control = "dFCR")
 )
 
 synergy_plot_bycomp(rs_list, ylab = "Response", plotBy = "Drug A", color = TRUE)
@@ -146,7 +156,9 @@ meanR_N <- fitSurface(data, marginalFit,
 ## ----meanrnonnorm, message = FALSE--------------------------------------------
 meanR_B <- fitSurface(data, marginalFit,
                       statistic = "meanR", CP = rs$CP, B.B = 20,
-                      parallel = FALSE)
+                      parallel = FALSE,
+                     wild_bootstrap = TRUE, wild_bootType = "normal",
+                     control = "dFCR")
 
 ## ----meanresults, echo=FALSE--------------------------------------------------
 MeanR_both <- rbind("Normal errors" = c(meanR_N$meanR$FStat, meanR_N$meanR$p.value),
@@ -160,7 +172,9 @@ maxR_N <- fitSurface(data, marginalFit,
                      parallel = FALSE)
 maxR_B <- fitSurface(data, marginalFit,
                      statistic = "maxR", CP = rs$CP, B.B = 20,
-                     parallel = FALSE)
+                     parallel = FALSE,
+                     wild_bootstrap = TRUE, wild_bootType = "normal",
+                     control = "dFCR")
 maxR_both <- rbind(summary(maxR_N$maxR)$totals,
                    summary(maxR_B$maxR)$totals)
 
@@ -193,19 +207,23 @@ contour(
     maxR_B,
     colorPalette = c("Syn" = "blue", "None" = "white", "Ant" = "red"),
     main = paste0(" Experiment ", i, " contour plot for effect size"),
-    color = "effect-size",
+    colorBy = "effect-size",
     scientific = TRUE, digits = 3, cutoff = cutoff
 )
 
 ## ----plot3d_effectsize, warning=FALSE, fig.height=7, fig.width=7, message=FALSE, comment = NA----
-plot(maxR_B, color = "effect-size", legend = FALSE, main = "", gradient = FALSE)
+plot(maxR_B, color = "effect-size", legend = FALSE, main = "", gradient = FALSE,
+     colorPalette = c("Ant" = "red", "None" = "white", "Syn" = "blue"),
+     colorPaletteNA = "white")
 
 ## ----heterogenanalysis, fig.width=6, fig.height=5-----------------------------
 marginalFit <- fitMarginals(data, transforms = NULL)
 summary(marginalFit)
 
 resU <- fitSurface(data, marginalFit, method = "unequal", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+                      wild_bootstrap = TRUE, wild_bootType = "normal",
+                      control = "dFCR")
 summary(resU)
 
 ## ----modelVariancePlot, fig.width=6, fig.height=5-----------------------------
@@ -215,11 +233,15 @@ plotMeanVarFit(data, trans = "log") #Thresholded at maximum observed variance
 
 ## ----modelVarianceSum, fig.width=6, fig.height=5------------------------------
 resM <- fitSurface(data, marginalFit, method = "model", 
-    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+    statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+                      wild_bootstrap = TRUE, wild_bootType = "normal",
+                      control = "dFCR")
 
 ## ----modelVarianceSumLogTransform, fig.width=6, fig.height=5, eval = FALSE----
 #  resL <- fitSurface(data, marginalFit, method = "model", trans = "log",
-#      statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE)
+#      statistic = "both", B.CP = 20, B.B = 20, parallel = FALSE,
+#                        wild_bootstrap = TRUE, wild_bootType = "normal",
+#                        control = "dFCR")
 
 ## ----resM---------------------------------------------------------------------
 summary(resM) 
@@ -238,7 +260,10 @@ for (i in seq_len(nExp)) {
   ## Predict response surface based on generalized Loewe model
   respSurface <- fitSurface(data, marginalFit,
                             statistic = "maxR", B.CP = 20,
-                            parallel = FALSE)
+                            parallel = FALSE,
+                            wild_bootstrap = TRUE, wild_bootType = "normal",
+                            control = "dFCR"
+                            )
 
   datasets[[i]] <- data
   marginalFits[[i]] <- marginalFit

@@ -32,17 +32,25 @@ synergy_plot_bycomp <- function(ls, xlab = NULL, ylab = NULL, color = FALSE, plo
 	nmes <- names(ls)
 	tmp <- lapply(nmes, function(nn) {
 	  res <- ls[[nn]]$offAxisTable[, c("d1", "d2", "effect", "predicted")]
+	  
+	  if(!is.null(ls[[nn]]$transforms)){
+	    res$effect <- ls[[nn]]$transforms$InvPowerT(res$effect, args = ls[[nn]]$transforms$compositeArgs)
+	    res$predicted <- ls[[nn]]$transforms$InvPowerT(res$predicted, args = ls[[nn]]$transforms$compositeArgs)
+	  }
+	  
 	  colnames(res)[colnames(res) == "predicted"] <- nn
 	  res
 	})
 	
 	plot_df <- tmp[[1]]
-	
+
 	if (length(tmp) > 1) {
 		for (i in 2:length(tmp)) {
 		  plot_df <- merge(plot_df, tmp[[i]], by = c("d1", "d2", "effect"))
 		}
 	}
+	
+
 	
 	if (is.null(plotBy)) {
 		plotBy <- ls[[1]]$names[1]

@@ -286,8 +286,17 @@ with $\hat{s}_i$ the estimated standard error of $E_i$, and $z_{\alpha/2}$ the $
 
 We know, however, from the meanR and maxR tests that the asymptotic distributions provide poor approximations. Therefore, we use the bootstrap here too to build the confidence intervals. 
 
-For every bootstrap instance, bootstrap observations are sampled for on- as well as off axis points. For the on-axis points, a parametric bootstrap based on the estimated monothereapy curves is used, as for the calculation of the meanR and maxR statistics. Based on these on-axis bootstrap samples, new monotherapy curves are fitted with resulting residual variances bootstrap variance $MSE_0^b$, and corresponding response surfaces with expected outcomes $\hat{R}_i^b
-$ are derived. For the off-axis points, with $n_i$ replicates at a given point, $A_{ij} = R_{ij} - \bar{R}_i$ are the pointwise residuals $j = 1, ..., n_i$. Here $R_{ij}$ is the observed outcome and $\bar{R}_i$, the average outcome at point $i$, serves as an unbiased estimator of the true response. Note that these residuals are different from the residuals $E_i = \bar{R}_i-\hat{R}_i$ used to construct the test statistics; for $A_{ij}$ the departure with respect to the mean outcome at that off-axis point is used. These residuals are resampled with replacement from the observed residuals, possibly using rescaling as explained below. The resampled residuals are then added to the estimated effect sizes to obtain bootstrapped observations $R_{ij}^b = \bar{R}_i + A_{ij}^b$, with $b = 1, ...,B$ denoting the bootstrap instance. This leads to the bootstrap effect sizes $E^b_i = \bar{R}_i^b-\hat{R}_i^b$ and test statistics $\left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert$, using the standard deviations $\hat{s}_i^b$ from the bootstrap.
+For every bootstrap instance, bootstrap observations are sampled for on- as well as off axis points. For the on-axis points, a parametric bootstrap based on the estimated monotherapy curves is used, as for the calculation of the meanR and maxR statistics. Based on these on-axis bootstrap samples, new monotherapy curves are fitted with resulting residual variances bootstrap variance $MSE_0^b$, and corresponding response surfaces with expected outcomes $\hat{R}_i^b
+$ are derived. For the off-axis points, with $n_i$ replicates at a given point, $A_{ij} = R_{ij} - \bar{R}_i$ are the pointwise residuals $j = 1, ..., n_i$. Here $R_{ij}$ is the observed outcome and $\bar{R}_i$, the average outcome at point $i$, serves as an unbiased estimator of the true response. Note that these residuals are different from the residuals $E_i = \bar{R}_i-\hat{R}_i$ used to construct the test statistics; for $A_{ij}$ the departure with respect to the mean outcome at that off-axis point is used. These residuals are resampled with replacement from the observed residuals, possibly using rescaling as explained below. The resampled residuals are then added to the estimated effect sizes to obtain bootstrapped observations $R_{ij}^b = \bar{R}_i + A_{ij}^b$, with $b = 1, ...,B$ denoting the bootstrap instance. 
+
+An extra option of using the wild bootstrap is also available. In this method, a new response variable is calculated by multiplying the sampled residuals $R_i$ with yet another random variable $\upsilon_{ij}$ so that the bootstrapped observations are given by
+
+$$R_{ij}^b = \bar{R}_i +  A_{ij}^b \upsilon_{ij}$$
+
+where $v_{ij}$ are independent random variables with mean zero and variance 1, and can be sampled from a normal, gamma, rademacher or two-point distributions.
+
+
+This leads to the bootstrap effect sizes $E^b_i = \bar{R}_i^b-\hat{R}_i^b$ and test statistics $\left\vert \frac{E^b_i -E_i}{\hat{s}^b_i} \right\vert$, using the standard deviations $\hat{s}_i^b$ from the bootstrap.
 
 Over all bootstrap instances, we then find the distribution of
 
@@ -317,7 +326,8 @@ As an estimate of the standard error we use
 
 with $\mb{F}^b$ equal to $\MSE_0^b\mb{D}$, $\MSE_1^b\mb{D}$ or $\mb{S}^b$, depending on which variance model is used. This standard error resembles the variance estimators of the meanR and maxR statistics discussed there.
 
- By using only the diagonal elements of $\mb{F}^b$, we ignore the covariance between test statistics. We will use the studentised-range concept (which is also central to Tukey's method for multiple testing) for controlling the family-wise error rate (FWER). For the covariance matrix $\mb{C}_p$ we use the one estimated for the observed data. This matrix turns out to be quite stable over the bootstrap runs; moreover the calculation of the matrix for each bootstrap sample would imply a time-consuming nested bootstrap procedure. On the other hand, $MSE_0^b$ is re-estimated with each bootstrap sample. Also $\mb{F}^b$ is re-estimated based on the bootstrapped data.
+ By using only the diagonal elements of $\mb{F}^b$, we ignore the covariance between test statistics. We use the studentised-range concept (which is also central to Tukey's method for multiple testing) for controlling the family-wise error rate (FWER) as default. Other available options are false coverage rate (FCR)
+and directional false coverage rate (dFCR). For the covariance matrix $\mb{C}_p$ we use the one estimated for the observed data. This matrix turns out to be quite stable over the bootstrap runs; moreover the calculation of the matrix for each bootstrap sample would imply a time-consuming nested bootstrap procedure. On the other hand, $MSE_0^b$ is re-estimated with each bootstrap sample. Also $\mb{F}^b$ is re-estimated based on the bootstrapped data.
 
 ### Single effect measure
 

@@ -11,10 +11,12 @@
 #'   stay reasonably low.
 #' @param logScale If \code{logScale = TRUE}, then grid of doses is evenly
 #'   spaced in the logarithmic scale.
+#' @param greyScale If \code{greyScale = TRUE}, then plot is in grey scale,
+#'   otherwise in colour.
 #' @param ... Further parameters that are not used at this moment.
 #' @import ggplot2
 #' @export
-isobologram <- function(x, grid.len = 100, logScale = TRUE, ...) {
+isobologram <- function(x, grid.len = 100, logScale = TRUE, greyScale = FALSE, ...) {
 
   ## Generate evenly spaced grid either on a linear or a log-scale
   genSeq <- function(doses) {
@@ -58,6 +60,15 @@ isobologram <- function(x, grid.len = 100, logScale = TRUE, ...) {
   if (!is.null(attr(x$data, "orig.colnames"))) {
     labnames <- unlist(attr(x$data, "orig.colnames"))
   }
+  
+  if(greyScale){
+    colourPalette <- c("#F0F0F0", "#D9D9D9", "#BDBDBD", 
+                       "#969696", "#737373", "#525252", "#252525", "#000000") #"#FFFFFF" white is too white
+  } else {
+    colourPalette <- c("steelblue", "lightsteelblue", "lightblue",
+                       "floralwhite", "beige", "khaki",
+                       "orange1", "tomato3", "red")
+  }
 
   p <- ggplot(melt.surface,
               aes(x = .data$d1, y = .data$d2, z = .data$effect, fill = .data$effect)) +
@@ -65,9 +76,7 @@ isobologram <- function(x, grid.len = 100, logScale = TRUE, ...) {
     geom_tile() +
     labs(x = labnames[2], y = labnames[3]) +
     scale_fill_gradientn(labnames[1],
-                         colours = c("steelblue", "lightsteelblue", "lightblue",
-                                     "floralwhite", "beige", "khaki",
-                                     "orange1", "tomato3", "red")) +
+                         colours = colourPalette) +
     geom_contour(bins = 7, col = "black", linewidth = 0.2)
 
   xBreaks <- unique(x$data$d1)

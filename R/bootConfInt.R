@@ -13,16 +13,16 @@ bootConfInt = function(Total, idUnique, bootStraps,
     transforms, respS, B.B, method,
     CP, reps, n1, cutoff, R, fitResult,
     bootRS, data_off, posEffect = all(Total$effect >= 0),
-    transFun, invTransFun, model, rescaleResids, ...) {
+    transFun, invTransFun, model, rescaleResids, wild_bootstrap, wild_bootType, control, digits, ...) {
   Total <- Total[Total$d1 & Total$d2, ]
-  sampling_errors <- Total$effect - Total$meaneffect
+  sampling_errors <- Total$effect - Total$meaneffect								# sampling errors for off Axis points
   A <- getA(data_off, fitResult, method, CP, reps, n1, transFun = transFun,
       invTransFun = invTransFun)
   bootEffectSizesList <- lapply(bootStraps, function(bb) {
         #Do use bootstrapped response surface for complete mimicry of variability
         dat_off_resam <- within(Total, {
-              effect <- addResids(Total$meaneffect, sampling_errors, method,
-                  rescaleResids, model, invTransFun)
+              effect <- wildbootAddResids(Total$meaneffect, sampling_errors, method,
+                          rescaleResids, model, invTransFun, wild_bootstrap, wild_bootType) 
               #Sample with replacement
               if (posEffect) {
                 effect <- abs(effect)
@@ -37,13 +37,79 @@ bootConfInt = function(Total, idUnique, bootStraps,
       })
   bootEffectSizes <- vapply(bootEffectSizesList, FUN.VALUE = c(R), function(x) x$R)
   bootAs <- vapply(bootEffectSizesList, FUN.VALUE = diag(A), function(x) sqrt(diag(x$A)))
+  
+  # specify here two ways of constructing confidence intervals
+  # 1) simultaneous CI; i.e. controls FWER
+  # 2) False coverage rate CI, i.e. controls false coverage proportion
+  
+  
+  
   #Off axis confidence interval
-  bootEffectSizesStand <- abs(bootEffectSizes-c(R))/bootAs
-  maxEffectSizes <- apply(bootEffectSizesStand, 2, max)
-  effectSizeQuant <- quantile(maxEffectSizes, cutoff, na.rm = TRUE)
-  confInt <- c(R) + outer(effectSizeQuant*sqrt(diag(A)),
-      c("lower" = -1, "upper" = 1))
-  rownames(confInt) <- rownames(bootEffectSizesStand)
+  if (control == "FCR") {                                                                            # Control False coverage rate
+    tgrid <- seq(0, 10, by = 0.01) 
+    
+    bootEffectSizesStand <- abs(bootEffectSizes-c(R))/bootAs                                     # Tb - standardized statistic
+    tcount <- c()
+    for (i in 1:ncol(bootEffectSizesStand)){
+      count <- c()
+      for (j in  1:length(tgrid)){
+        tt <- sum(bootEffectSizesStand[,i]>tgrid[j])
+        count <- c(count,tt)
+      }
+      tcount <- rbind(tcount,count)
+    }
+    prob <- apply(tcount,2,sum)/(length(R)*ncol(bootEffectSizesStand))
+    
+    id <- min(which(prob <= 1-cutoff))
+    effectSizeQuant <- tgrid[id]                                                                    # t-alpha  we need for FCR
+    
+    confInt <- c(R) + outer(effectSizeQuant*sqrt(diag(A)),
+                            c("lower" = -1, "upper" = 1))
+    R <- round(R, digits = digits)                                                                     # round the result t two decimal places
+    confInt <- round(confInt, digits = digits)
+    rownames(confInt) <- rownames(bootEffectSizesStand)
+    
+  } else if (control == "dFCR"){                                                              # controlling directional false coverage rate
+    tgrid <- seq(0, 5, by = 0.01) 
+    bootEffectSizesStand <- abs(bootEffectSizes-c(R))/bootAs                             # Tb - standardized statistic
+    EE.med<-median(abs(R))                                                               # estimated effect median value
+    zz <- (abs(R)<EE.med)
+    EE <- R
+    EE[zz] <- 0                                                                            # Estimated effect size set to zero if smaller than median effect size
+    Nb <- matrix(nrow = ncol(bootEffectSizes),ncol= length(tgrid))
+    
+    for (j in 1:ncol(bootEffectSizes)){
+      thresh <- lapply(tgrid, function(i){
+        low <- bootEffectSizes[,j]-i*bootAs[,j]
+        upp <- bootEffectSizes[,j]+ i*bootAs[,j]
+        res <- ((low>0)&(upp>0)&(EE<=0))|((low<0)&(upp<0)&(EE>=0))|((low<0)&(upp>0)&((EE<low)|(EE>upp)))          # directional false coverage 
+        list("res" = res)
+      })
+      threshtot <-  sapply(thresh, function(y) y[["res"]])
+      Nb[j,]<- apply(threshtot, 2, mean)
+    }
+    
+    E.Nb <- apply(Nb,2,mean)
+    t.alpha <- tgrid[which.min(abs(E.Nb-(1-cutoff)))]
+    confInt <- c(R) + outer(t.alpha*sqrt(diag(A)),
+                            c("lower" = -1, "upper" = 1))
+    R <- round(R, digits = digits)                                                                   # round the result to two decimal places
+    confInt <- round(confInt, digits = digits)
+    rownames(confInt) <- rownames(bootEffectSizesStand) 
+    
+  } else {                                                                                         # default controls FWER
+    
+    # Off axis confidence interval, control FWER
+    bootEffectSizesStand <- abs(bootEffectSizes-c(R))/bootAs
+    maxEffectSizes <- apply(bootEffectSizesStand, 2, max)
+    effectSizeQuant <- quantile(maxEffectSizes, cutoff, na.rm = TRUE)
+    confInt <- c(R) + outer(effectSizeQuant*sqrt(diag(A)),
+                            c("lower" = -1, "upper" = 1))
+    R <- round(R, digits = digits)                                                                     # round the result t two decimal places
+    confInt <- round(confInt, digits = digits)
+    
+    rownames(confInt) <- rownames(bootEffectSizesStand)
+  }
   
   coefFit <- fitResult$coef
   eq  <- coefFit["m1"] == coefFit["b"] && coefFit["m2"] == coefFit["b"]
@@ -51,7 +117,7 @@ bootConfInt = function(Total, idUnique, bootStraps,
   dec <- coefFit["m1"] <= coefFit["b"] && coefFit["m2"] <= coefFit["b"]
   
   call <- rep("None", length(R))
-  call[confInt[, "lower"] >= 0] <- if (eq) {
+  call[confInt[, "lower"] > 0] <- if (eq) {
         "Undefined"
       } else if (inc) {
         "Syn"
@@ -59,7 +125,7 @@ bootConfInt = function(Total, idUnique, bootStraps,
         "Ant"
       } else 
         "Undefined"
-  call[confInt[, "upper"] <= 0] <- if (eq) {
+  call[confInt[, "upper"] < 0] <- if (eq) {
         "Undefined"
       } else if (inc) {
         "Ant"

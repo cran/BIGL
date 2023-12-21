@@ -75,6 +75,7 @@
 #'   \code{"model"} method is recommended. If transformations are used, only the
 #'   \code{"equal"} method can be chosen.
 #' @param confInt a boolean, should confidence intervals be returned?
+#' @param digits Numeric value indicating the number of digits used for numeric values in confidence intervals
 #' @param bootRS a boolean, should bootstrapped response surfaces be used in the
 #'  calculation of the confidence intervals?
 #' @param trans,invtrans the transformation function for the variance and its
@@ -86,6 +87,11 @@
 #' @param asymptotes Number of asymptotes. It can be either \code{1}
 #'   as in standard Loewe model or \code{2} as in generalized Loewe model.
 #' @param bootmethod The resampling method to be used in the bootstraps. Defaults to the same as method
+#' @param wild_bootType Type of distribution to be used for wild bootstrap. If \code{wild_bootstrap = TRUE}, 
+#'   errors are generated from "rademacher", "gamma", "normal" or "two-point" distribution. 
+#' @param control If \code{control = "FCR"} then algorithm controls false coverage rate, if \code{control = "dFCR"} then 
+#'   algorithm controls directional false coverage rate, if \code{control = "FWER"} then 
+#'   algorithm controls family wise error rate
 #' @inheritParams generateData
 #' @importFrom parallel makeCluster clusterSetRNGStream detectCores stopCluster parLapply
 #' @importFrom progress progress_bar
@@ -124,9 +130,9 @@ fitSurface <- function(data, fitResult,
                        effect = "effect", d1 = "d1", d2 = "d2",
                        statistic = c("none", "meanR", "maxR", "both"),
                        CP = NULL, B.CP = 50, B.B = NULL, nested_bootstrap = FALSE,
-                       error = 4, sampling_errors = NULL, wild_bootstrap = FALSE,
+                       error = 4, sampling_errors = NULL, wild_bootstrap = FALSE, wild_bootType = "normal", control = "FWER",
                        cutoff = 0.95, parallel = FALSE, progressBar = TRUE,
-                       method = c("equal", "model", "unequal"), confInt = TRUE,
+                       method = c("equal", "model", "unequal"), confInt = TRUE, digits = 9,
                        bootRS = TRUE, trans = "identity", rescaleResids = FALSE,
                        invtrans = switch(trans, "identity" = "identity", "log" = "exp"),
                        newtonRaphson = FALSE, asymptotes = 2, bootmethod = method) {
@@ -154,7 +160,7 @@ fitSurface <- function(data, fitResult,
   #Off-axis data and predictions
   data_off = with(data, data[d1 & d2, , drop = FALSE])
   uniqueDoses <- with(data, list("d1" = sort(unique(d1)),
-     "d2" = sort(unique(d2))))
+                                 "d2" = sort(unique(d2))))
   doseGrid <- expand.grid(uniqueDoses)
   offAxisFit = fitOffAxis(fitResult, null_model = null_model,
                                doseGrid = doseGrid, newtonRaphson = newtonRaphson)
@@ -247,10 +253,10 @@ fitSurface <- function(data, fitResult,
      #Start bootstrapping
        paramsBootstrap <- list("data"  =data,
           "fitResult" = fitResult, "transforms" = transforms,
-                              "null_model" = null_model,
+          "null_model" = null_model,
           "error" = error, "sampling_errors" = sampling_errors,
-                             "wild_bootstrap" = wild_bootstrap, "bootmethod" = bootmethod,
-                              "method" = method, "doseGrid" = doseGrid,
+          "wild_bootstrap" = wild_bootstrap, "bootmethod" = bootmethod,
+          "method" = method, "doseGrid" = doseGrid,
           "startvalues" = startvalues, "pb" = pb, "progressBar" = progressBar,
           "model" = model, "means" = Total$meaneffect, "rescaleResids" = rescaleResids,
           "invTransFun" = invTransFun, "newtonRaphson" = newtonRaphson,
@@ -275,7 +281,8 @@ fitSurface <- function(data, fitResult,
                           "Total" = Total, "n1" = length(R), "method" = method,
                           "respS" = offAxisPredAll, "bootRS" = bootRS,
                           "doseGridOff" = doseGridOff[names(R),], "transFun" = transFun,
-                          "invTransFun" = invTransFun, "model" = model, "rescaleResids" = rescaleResids)
+                          "invTransFun" = invTransFun, "model" = model, "rescaleResids" = rescaleResids,
+                          "wild_bootstrap" = wild_bootstrap, "wild_bootType" = wild_bootType, "control" = control, "digits" = digits)
   statObj <- NULL
   if (statistic %in% c("meanR", "both"))
       statObj <- c(statObj, list("meanR" = do.call(meanR, paramsStatistics)))

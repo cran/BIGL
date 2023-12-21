@@ -45,6 +45,7 @@
 #' @importFrom minpack.lm nlsLM
 #' @importFrom stats nls
 #' @importFrom utils modifyList
+#' @importFrom lifecycle deprecate_warn
 #' @return This function returns a \code{MarginalFit} object with monotherapy
 #'   coefficient estimates and diverse information regarding monotherapy
 #'   estimation. \code{MarginalFit} object is essentially a list with
@@ -76,6 +77,13 @@ fitMarginals <- function(data, transforms = NULL, start = NULL,
                          ...) {
 
   method <- match.arg(method)
+	
+
+    if(!is.null(transforms)){
+			deprecate_warn(when = "newer versions", 
+					what = "BIGL::fitMarginals(transformations = 'will be deprecated')", 
+					details = "Please transform response before all analysis.")
+    }
 
   ## Verify column names of input dataframe
   if (!all(c("effect", "d1", "d2") %in% colnames(data)))
