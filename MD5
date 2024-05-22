@@ -1,6 +1,6 @@
-213f30f168b7b0cec3486af3f3900361 *DESCRIPTION
+9f72a3aabe6453af0ff6d77f31a7318b *DESCRIPTION
 96394d9448e9e1e959bc0c5622a10843 *NAMESPACE
-ba5701a208dcb93dc615188470b21412 *NEWS.md
+59a9e32005e3f83b0fe934cc35ddbae4 *NEWS.md
 9221420f41084622822de6d6b12e612e *R/Blissindependence.R
 a1ee6a58b107358288b16d8cdd9c4c2b *R/MarginalFit-methods.R
 a5ee7e1f10b0786e933dd1804b7906fe *R/ResponseSurface-methods.R
@@ -29,7 +29,7 @@ ccd4c9dc47e9953da203faf70925bd07 *R/modelVar.R
 367dbb43e73314ec78960c7661f51e67 *R/predictResponseSurface.R
 49262c270f398cd49fb5e07e021564aa *R/runBIGL.R
 892676da2b9a124468b203f7b6e83d78 *R/scaleResids.R
-b8455e3d396a94326b283ef7872094cc *R/splitPlot.R
+60eeb54c42e05a088dc47b31631c6705 *R/splitPlot.R
 2c6296e57aab8b5efa603de2b82cf3f1 *R/statistics.R
 dff85300ffe3d93b4449c6dbee0ad8f6 *R/transformations.R
 eebf23cd293d0a95c147eff712910127 *build/vignette.rds
@@ -37,9 +37,9 @@ eebf23cd293d0a95c147eff712910127 *build/vignette.rds
 9608b3c946e3f6b8443b66f0f472e435 *data/directAntivirals_ALL.RData
 3aa52326848a857d188f2f0c26117e6a *inst/doc/analysis.R
 0e2a5bd487edfd81c2d82e82a46eb85c *inst/doc/analysis.Rmd
-04f3f2af4d50d9e90f529e80dafce5b7 *inst/doc/analysis.html
+fac38abb577197c410ea60152059a18c *inst/doc/analysis.html
 bbed1101fbfcbb7533e397a03f0056e4 *inst/doc/methodology.Rmd
-961e5bd423e602ea8473dd915c1cbb13 *inst/doc/methodology.html
+514220844f3c8efbc91ee3f8024d5716 *inst/doc/methodology.html
 e7e220e3e1af3ec1cc58cc6572041c81 *inst/ui/server.R
 d04f0df1a33f38534c7d23be3d73a458 *inst/ui/ui.R
 3bd829daa2a789b107c2613649c6ab60 *man/Blissindependence.Rd
@@ -109,7 +109,7 @@ be777432d21e2822b24d9b0491143329 *man/summary.ResponseSurface.Rd
 ff62a16c8955e9717ee1106ef0f5028d *man/summary.meanR.Rd
 5f978f2062f584cf2adf2884fb490bda *man/synergy_plot_bycomp.Rd
 8340096c09346efddf17d6fdffb63cc2 *man/vcov.MarginalFit.Rd
-06a6ba6d6342aed8b7852c4c9d9b1944 *man/wildbootAddResids.Rd
+69b145da462db225c0a4f90d4f9612f9 *man/wildbootAddResids.Rd
 b4cc99fd71b22598612962d4db5d6c06 *tests/testthat.R
 bc90c8074d169047c9f5592ccd99a4a5 *tests/testthat/helper_calls.R
 325524619af13e3a8c1b0da8edd50b19 *tests/testthat/helper_marginals.R

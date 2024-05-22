@@ -1,3 +1,7 @@
+# BIGL 1.9.1 (2024-05-02)
+
+- fix bug 2D plots if non-unique rows
+
 # BIGL 1.9.0 (2023-10-26)
 
 - reverse and swap axes for contour plot and effect sizes plot
