@@ -51,7 +51,7 @@
     effectOut$d2 <- as.numeric(gsub(".+_(.+)", "\\1", rownames(effectOut)))
     x <- merge(synOut, effectOut, by = c("d1","d2"))
   } else {
-    x <- x$offAxis
+    x <- x$confInt$offAxis
     names(x)[names(x) == "call"] <- "effectCall"
     #show doses on equidistant grid
     d1d2 <- rownames(x)
@@ -103,7 +103,8 @@
   p <- ggplot(data = x, aes(x = .data$d1_t, y = .data$d2_t)) + 
     geom_contour_filled(
       aes(z = .data$effectCallNum, colour = .data$effectCallNum), 
-      breaks = c(0, breaks/adjFactor)
+      breaks = c(0, breaks/adjFactor),
+			show.legend = TRUE
     ) + 
     geom_point(
       colour = rgb(0, 0, 0, 0.3),

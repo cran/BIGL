@@ -119,7 +119,7 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
                  labels = sort(unique(x$d2)), ordered = TRUE)
   
   p <- ggplot(data = x, aes(x = .data$d1, y = .data$d2)) +
-    geom_tile(aes(fill = .data$synLabel), color = "grey") +
+    geom_tile(aes(fill = .data$synLabel), color = "grey", show.legend = TRUE) +
     geom_text(aes(label = .data$label), show.legend = FALSE, size = 3) +
     # invisible points, used only for labels
     geom_point(aes(color = .data$synLabel), alpha = 0) +

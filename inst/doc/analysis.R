@@ -1,4 +1,4 @@
-## ----init, message = FALSE----------------------------------------------------
+## ----init, message = FALSE, warning = FALSE-----------------------------------
 library(BIGL)
 library(knitr)
 library(ggplot2)

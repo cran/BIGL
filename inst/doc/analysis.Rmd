@@ -13,7 +13,7 @@ vignette: >
 
 We first load the necessary packages and set some pre-defined values needed to replicate the analysis.
 
-```{r init, message = FALSE}
+```{r init, message = FALSE, warning = FALSE}
 library(BIGL)
 library(knitr)
 library(ggplot2)

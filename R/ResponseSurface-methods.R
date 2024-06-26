@@ -110,8 +110,11 @@ plot.ResponseSurface <- function(x, color = c("z-score", "maxR", "occupancy", "e
 #' @export
 contour.ResponseSurface <- function(x, colorBy = "maxR", reverse.x = FALSE, reverse.y = FALSE, swapAxes = FALSE, greyScale = FALSE, ...) {
   
-  if (!exists("maxR", x))
+  if (colorBy == "maxR" && !exists("maxR", x))
     stop("maxR statistics were not found.")
+	
+	if (colorBy == "effect-size" && !exists("confInt", x))
+		stop("effect sizes were not found.")
   
   cpdNames <- if (!is.null(x$names)) x$names else c("Compound 1", "Compound 2")
   

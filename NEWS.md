@@ -1,3 +1,8 @@
+# BIGL 1.9.2 (2024-06-24)
+
+- fix bug missing colours in legends for contour and effect size plots
+- fix bug contour plot for effect sizes if no maxR defined
+
 # BIGL 1.9.1 (2024-05-02)
 
 - fix bug 2D plots if non-unique rows
