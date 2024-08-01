@@ -1,3 +1,8 @@
+# BIGL 1.9.3 (2024-07-24)
+
+- allow specification of text size and own colours in plotConfInt
+- fix bug isolating points in 3D plot
+
 # BIGL 1.9.2 (2024-06-24)
 
 - fix bug missing colours in legends for contour and effect size plots

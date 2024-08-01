@@ -12,6 +12,7 @@
   xlab,
   ylab,
   greyScale = FALSE,
+  size = 3,
   ...
 )
 }
@@ -31,7 +32,9 @@
 \item{greyScale}{If \code{greyScale = TRUE}, then plot is in grey scale,
 otherwise in colour.}
 
-\item{...}{additional arguments, currently ignored}
+\item{size}{font size}
+
+\item{...}{additional arguments}
 }
 \description{
 Plot confidence intervals in a contour plot

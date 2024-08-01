@@ -55,11 +55,14 @@ print.summary.BIGLconfInt <- function(x, ...) {
 #' @param ylab String for the y axis label
 #' @param greyScale If \code{greyScale = TRUE}, then plot is in grey scale,
 #'   otherwise in colour.
-#' @param ... additional arguments, currently ignored
+#' @param size font size
+#' @param ... additional arguments
 #' @importFrom stats setNames
 #' @export
 #' @note written after the contour() function in the \code{drugCombo} package
-plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 3, xlab, ylab, greyScale = FALSE, ...) {
+plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 3, xlab, ylab, greyScale = FALSE, size = 3, ...) {
+	
+	args <- list(...)
   
   if (missing(xlab)) xlab <- sprintf("Dose (%s)", x$names[1])
   if (missing(ylab)) ylab <- sprintf("Dose (%s)", x$names[2])
@@ -92,14 +95,18 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
   } else {
     x$synLabel <- factor(x$synCall, labels = synCalls, levels = c("None", "Ant", "Syn"))
   }
+	
+	if(!exists("colorPalette", args)) {
+		if(greyScale){
+			legendColors <- c("grey70", "#636363", "#FEFCFF")
+		} else {
+			legendColors <- c("white", "pink", "lightblue")
+		}
+		names(legendColors) <- synCalls
+	} else {
+		legendColors <- args$colorPalette[c("None", "Ant", "Syn")]
+	}
   
-  if(greyScale){
-    legendColors <- c("grey70", "#636363", "#FEFCFF")
-  } else {
-    legendColors <- c("white", "pink", "lightblue")
-  }
-  
-  names(legendColors) <- synCalls
   # subset to only the colors that are present in the data
   # legendColors <- legendColors[names(legendColors) %in% as.character(unique(x$synLabel))]
   
@@ -120,7 +127,7 @@ plot.BIGLconfInt <- function(x, color = "effect-size", showAll = TRUE, digits = 
   
   p <- ggplot(data = x, aes(x = .data$d1, y = .data$d2)) +
     geom_tile(aes(fill = .data$synLabel), color = "grey", show.legend = TRUE) +
-    geom_text(aes(label = .data$label), show.legend = FALSE, size = 3) +
+    geom_text(aes(label = .data$label), show.legend = FALSE, size = size) +
     # invisible points, used only for labels
     geom_point(aes(color = .data$synLabel), alpha = 0) +
     # round dose labels to digits

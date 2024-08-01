@@ -63,6 +63,8 @@
 #' @importFrom grDevices axisTicks colorRampPalette colors terrain.colors
 #' @importFrom graphics plot.new
 #' @importFrom plotly plot_ly add_surface add_markers layout config
+#' @importFrom htmlwidgets onRender
+#' @importFrom magrittr `%>%`
 #' @export
 #' @examples
 #' \dontrun{
@@ -437,9 +439,29 @@ plotResponseSurface <- function(data, fitResult = NULL,
         showlegend = legend,
         text = paste0("d1: ", digitsFunc(df$d1), "\nd2: ", digitsFunc(df$d2), "\neffect: ", digitsFunc(df$effect)),
         hoverinfo = "text",
-        name = pointNames[xcolor],
-        legendgroup = "points"
-      ) 
+        name = pointNames[xcolor]#,
+        #legendgroup = "points"
+      ) %>%
+			onRender("
+							function(el, x) {
+							el.on('plotly_click', function() {
+							
+							update = {'marker.color[2]': 'rgba(31,119,180,0)'};
+							Plotly.restyle(el, update, [1]);
+							
+							});
+							}
+							") %>%
+			onRender("
+							function(el, x) {
+							el.on('plotly_doubleclick', function() {
+							
+							update = {'marker.color[2]': 'rgba(31,119,180,1)'};
+							Plotly.restyle(el, update, [1]);
+							
+							});
+							}
+							")
     }
     
     # set legend layout
